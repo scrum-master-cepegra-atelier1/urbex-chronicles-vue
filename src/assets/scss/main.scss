@@ -1,0 +1,17 @@
+// Import avec la nouvelle syntaxe @use
+@use 'sass:color';
+@use './variables' as vars;
+@use './mixins' as mixins;
+
+// Forward des variables et mixins pour les autres fichiers
+@forward './variables';
+@forward './mixins';
+
+// Base styles
+@use './base';
+
+// Composants
+@use './components';
+
+// Utilitaires
+@use './utilities';

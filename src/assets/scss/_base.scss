@@ -1,0 +1,42 @@
+@use 'sass:color';
+@use './variables' as vars;
+@use './mixins' as mixins;
+
+// Reset et styles de base
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: vars.$font-size-base;
+  line-height: 1.6;
+  color: vars.$dark-color;
+  background-color: vars.$light-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-bottom: vars.$spacing-md;
+  font-weight: 600;
+}
+
+p {
+  margin-bottom: vars.$spacing-sm;
+}
+
+a {
+  color: vars.$primary-color;
+  text-decoration: none;
+  @include mixins.transition(color);
+
+  &:hover {
+    color: color.adjust(vars.$primary-color, $lightness: -10%);
+  }
+}

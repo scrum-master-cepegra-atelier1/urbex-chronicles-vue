@@ -1,0 +1,37 @@
+@use './variables' as vars;
+
+// Mixin pour les breakpoints responsive
+@mixin respond-to($breakpoint) {
+  @if $breakpoint == 'sm' {
+    @media (min-width: vars.$breakpoint-sm) {
+      @content;
+    }
+  }
+  @if $breakpoint == 'md' {
+    @media (min-width: vars.$breakpoint-md) {
+      @content;
+    }
+  }
+  @if $breakpoint == 'lg' {
+    @media (min-width: vars.$breakpoint-lg) {
+      @content;
+    }
+  }
+  @if $breakpoint == 'xl' {
+    @media (min-width: vars.$breakpoint-xl) {
+      @content;
+    }
+  }
+}
+
+// Mixin pour centrer un élément
+@mixin center-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Mixin pour les transitions
+@mixin transition($properties: all, $duration: 0.3s, $timing: ease) {
+  transition: $properties $duration $timing;
+}

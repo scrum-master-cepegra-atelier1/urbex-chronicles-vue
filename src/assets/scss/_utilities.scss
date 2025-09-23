@@ -1,0 +1,259 @@
+@use './variables' as vars;
+
+// Classes utilitaires
+
+// Margins
+.margin--none {
+  margin: 0;
+}
+.margin--xs {
+  margin: vars.$spacing-xs;
+}
+.margin--sm {
+  margin: vars.$spacing-sm;
+}
+.margin--md {
+  margin: vars.$spacing-md;
+}
+.margin--lg {
+  margin: vars.$spacing-lg;
+}
+.margin--xl {
+  margin: vars.$spacing-xl;
+}
+
+// Margin Top
+.margin__top--none {
+  margin-top: 0;
+}
+.margin__top--xs {
+  margin-top: vars.$spacing-xs;
+}
+.margin__top--sm {
+  margin-top: vars.$spacing-sm;
+}
+.margin__top--md {
+  margin-top: vars.$spacing-md;
+}
+.margin__top--lg {
+  margin-top: vars.$spacing-lg;
+}
+.margin__top--xl {
+  margin-top: vars.$spacing-xl;
+}
+
+// Margin Bottom
+.margin__bottom--none {
+  margin-bottom: 0;
+}
+.margin__bottom--xs {
+  margin-bottom: vars.$spacing-xs;
+}
+.margin__bottom--sm {
+  margin-bottom: vars.$spacing-sm;
+}
+.margin__bottom--md {
+  margin-bottom: vars.$spacing-md;
+}
+.margin__bottom--lg {
+  margin-bottom: vars.$spacing-lg;
+}
+.margin__bottom--xl {
+  margin-bottom: vars.$spacing-xl;
+}
+
+// Paddings
+.padding--none {
+  padding: 0;
+}
+.padding--xs {
+  padding: vars.$spacing-xs;
+}
+.padding--sm {
+  padding: vars.$spacing-sm;
+}
+.padding--md {
+  padding: vars.$spacing-md;
+}
+.padding--lg {
+  padding: vars.$spacing-lg;
+}
+.padding--xl {
+  padding: vars.$spacing-xl;
+}
+
+// Padding Top
+.padding__top--none {
+  padding-top: 0;
+}
+.padding__top--xs {
+  padding-top: vars.$spacing-xs;
+}
+.padding__top--sm {
+  padding-top: vars.$spacing-sm;
+}
+.padding__top--md {
+  padding-top: vars.$spacing-md;
+}
+.padding__top--lg {
+  padding-top: vars.$spacing-lg;
+}
+.padding__top--xl {
+  padding-top: vars.$spacing-xl;
+}
+
+// Padding Bottom
+.padding__bottom--none {
+  padding-bottom: 0;
+}
+.padding__bottom--xs {
+  padding-bottom: vars.$spacing-xs;
+}
+.padding__bottom--sm {
+  padding-bottom: vars.$spacing-sm;
+}
+.padding__bottom--md {
+  padding-bottom: vars.$spacing-md;
+}
+.padding__bottom--lg {
+  padding-bottom: vars.$spacing-lg;
+}
+.padding__bottom--xl {
+  padding-bottom: vars.$spacing-xl;
+}
+
+// Text alignment
+.text--left {
+  text-align: left;
+}
+.text--center {
+  text-align: center;
+}
+.text--right {
+  text-align: right;
+}
+.text--justify {
+  text-align: justify;
+}
+
+// Font sizes
+.text__size--small {
+  font-size: vars.$font-size-small;
+}
+.text__size--base {
+  font-size: vars.$font-size-base;
+}
+.text__size--large {
+  font-size: vars.$font-size-large;
+}
+.text__size--xl {
+  font-size: vars.$font-size-xl;
+}
+
+// Font weights
+.text__weight--light {
+  font-weight: 300;
+}
+.text__weight--normal {
+  font-weight: 400;
+}
+.text__weight--medium {
+  font-weight: 500;
+}
+.text__weight--bold {
+  font-weight: 600;
+}
+
+// Display
+.display--none {
+  display: none;
+}
+.display--block {
+  display: block;
+}
+.display--flex {
+  display: flex;
+}
+.display--inline {
+  display: inline;
+}
+.display--inline-block {
+  display: inline-block;
+}
+
+// Flex utilities
+.flex__justify--center {
+  justify-content: center;
+}
+.flex__justify--between {
+  justify-content: space-between;
+}
+.flex__justify--around {
+  justify-content: space-around;
+}
+.flex__justify--start {
+  justify-content: flex-start;
+}
+.flex__justify--end {
+  justify-content: flex-end;
+}
+
+.flex__align--center {
+  align-items: center;
+}
+.flex__align--start {
+  align-items: flex-start;
+}
+.flex__align--end {
+  align-items: flex-end;
+}
+.flex__align--stretch {
+  align-items: stretch;
+}
+
+.flex__direction--row {
+  flex-direction: row;
+}
+.flex__direction--column {
+  flex-direction: column;
+}
+
+// Colors
+.color--primary {
+  color: vars.$primary-color;
+}
+.color--secondary {
+  color: vars.$secondary-color;
+}
+.color--danger {
+  color: vars.$danger-color;
+}
+.color--warning {
+  color: vars.$warning-color;
+}
+.color--dark {
+  color: vars.$dark-color;
+}
+.color--light {
+  color: vars.$light-color;
+}
+
+// Background colors
+.background--primary {
+  background-color: vars.$primary-color;
+}
+.background--secondary {
+  background-color: vars.$secondary-color;
+}
+.background--danger {
+  background-color: vars.$danger-color;
+}
+.background--warning {
+  background-color: vars.$warning-color;
+}
+.background--dark {
+  background-color: vars.$dark-color;
+}
+.background--light {
+  background-color: vars.$light-color;
+}
