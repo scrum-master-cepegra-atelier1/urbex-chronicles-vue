@@ -1,32 +1,48 @@
 /**
- * Service API pour URBEX CHRONICLES
- * Gère les appels HTTP vers différentes APIs de manière scalable
+ * API Service for URBEX CHRONICLES
+ * Handles HTTP calls to different APIs in a scalable manner
+ *
+ * @class ApiService
+ * @description Centralized service for making HTTP requests with automatic authentication
+ * @example
+ * // Use predefined Strapi instance
+ * import { strapiApi } from '@/services/ApiService'
+ * const data = await strapiApi.get('/articles')
+ *
+ * // Create custom instance
+ * const customApi = new ApiService('https://api.example.com', 'your-token')
  */
 
 class ApiService {
+  /**
+   * Creates an instance of ApiService
+   * @param {string|null} baseUrl - Base URL for API calls (defaults to environment variable)
+   * @param {string|null} apiKey - API key for authentication (defaults to environment variable)
+   */
   constructor(baseUrl = null, apiKey = null) {
-    // Utilise les variables d'environnement ou les paramètres fournis
+    // Use environment variables or provided parameters
     this.baseUrl = baseUrl || import.meta.env.VITE_API_BASE_URL || ''
     this.apiKey = apiKey || import.meta.env.VITE_API_KEY || null
     this.defaultHeaders = {
       'Content-Type': 'application/json',
     }
 
-    // Ajoute la clé API si elle existe
+    // Add API key if it exists
     if (this.apiKey) {
       this.defaultHeaders['Authorization'] = `Bearer ${this.apiKey}`
     }
   }
 
   /**
-   * Effectue une requête HTTP
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {object} options - Options fetch
-   * @returns {Promise<any>} - Réponse de l'API
+   * Performs an HTTP request
+   * @param {string} endpoint - The API endpoint
+   * @param {object} options - Fetch options
+   * @returns {Promise<any>} - API response
+   * @throws {Error} - HTTP error with status code
    */
   async request(endpoint, options = {}) {
     const url = `${this.baseUrl}${endpoint}`
-    
+
     const config = {
       headers: {
         ...this.defaultHeaders,
@@ -37,17 +53,17 @@ class ApiService {
 
     try {
       const response = await fetch(url, config)
-      
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`)
       }
 
-      // Vérifie si la réponse contient du JSON
+      // Check if response contains JSON
       const contentType = response.headers.get('content-type')
       if (contentType && contentType.includes('application/json')) {
         return await response.json()
       }
-      
+
       return await response.text()
     } catch (error) {
       console.error('API Error:', error)
@@ -56,10 +72,10 @@ class ApiService {
   }
 
   /**
-   * Requête GET
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {object} options - Options supplémentaires
-   * @returns {Promise<any>} - Données récupérées
+   * GET request
+   * @param {string} endpoint - The API endpoint
+   * @param {object} options - Additional options
+   * @returns {Promise<any>} - Retrieved data
    */
   async get(endpoint, options = {}) {
     return this.request(endpoint, {
@@ -69,11 +85,11 @@ class ApiService {
   }
 
   /**
-   * Requête POST
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {object} data - Données à envoyer
-   * @param {object} options - Options supplémentaires
-   * @returns {Promise<any>} - Réponse de l'API
+   * POST request
+   * @param {string} endpoint - The API endpoint
+   * @param {object} data - Data to send
+   * @param {object} options - Additional options
+   * @returns {Promise<any>} - API response
    */
   async post(endpoint, data = null, options = {}) {
     return this.request(endpoint, {
@@ -84,11 +100,11 @@ class ApiService {
   }
 
   /**
-   * Requête PUT
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {object} data - Données à envoyer
-   * @param {object} options - Options supplémentaires
-   * @returns {Promise<any>} - Réponse de l'API
+   * PUT request
+   * @param {string} endpoint - The API endpoint
+   * @param {object} data - Data to send
+   * @param {object} options - Additional options
+   * @returns {Promise<any>} - API response
    */
   async put(endpoint, data = null, options = {}) {
     return this.request(endpoint, {
@@ -99,11 +115,11 @@ class ApiService {
   }
 
   /**
-   * Requête PATCH
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {object} data - Données à envoyer
-   * @param {object} options - Options supplémentaires
-   * @returns {Promise<any>} - Réponse de l'API
+   * PATCH request
+   * @param {string} endpoint - The API endpoint
+   * @param {object} data - Data to send
+   * @param {object} options - Additional options
+   * @returns {Promise<any>} - API response
    */
   async patch(endpoint, data = null, options = {}) {
     return this.request(endpoint, {
@@ -114,10 +130,10 @@ class ApiService {
   }
 
   /**
-   * Requête DELETE
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {object} options - Options supplémentaires
-   * @returns {Promise<any>} - Réponse de l'API
+   * DELETE request
+   * @param {string} endpoint - The API endpoint
+   * @param {object} options - Additional options
+   * @returns {Promise<any>} - API response
    */
   async delete(endpoint, options = {}) {
     return this.request(endpoint, {
@@ -127,15 +143,15 @@ class ApiService {
   }
 
   /**
-   * Upload de fichier
-   * @param {string} endpoint - L'endpoint de l'API
-   * @param {FormData} formData - Données du formulaire
-   * @param {object} options - Options supplémentaires
-   * @returns {Promise<any>} - Réponse de l'API
+   * File upload
+   * @param {string} endpoint - The API endpoint
+   * @param {FormData} formData - Form data to upload
+   * @param {object} options - Additional options
+   * @returns {Promise<any>} - API response
    */
   async upload(endpoint, formData, options = {}) {
     const headers = { ...this.defaultHeaders }
-    // Supprime Content-Type pour laisser le navigateur gérer les multipart/form-data
+    // Remove Content-Type to let browser handle multipart/form-data
     delete headers['Content-Type']
 
     return this.request(endpoint, {
@@ -147,11 +163,11 @@ class ApiService {
   }
 }
 
-// Instance par défaut pour Strapi
+// Default instance for Strapi
 export const strapiApi = new ApiService(
   import.meta.env.VITE_STRAPI_BASE_URL,
   import.meta.env.VITE_STRAPI_TOKEN,
 )
 
-// Export de la classe pour créer d'autres instances
+// Export the class to create other instances
 export default ApiService
