@@ -1,8 +1,44 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
+
+const routes = [
+  {
+    path: '/',
+    name: 'Home',
+    component: () => import('@/views/HomeView.vue'),
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import('@/views/LoginView.vue'),
+    meta: { requiresGuest: true },
+  },
+  {
+    path: '/register',
+    name: 'Register',
+    component: () => import('@/views/RegisterView.vue'),
+    meta: { requiresGuest: true },
+  },
+]
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [],
+  routes,
+})
+
+// Guard pour rediriger les utilisateurs connectés
+router.beforeEach((to, from, next) => {
+  const authStore = useAuthStore()
+
+  // Initialiser l'état d'authentification
+  authStore.initializeAuth()
+
+  // Si la route nécessite d'être invité (non connecté) et que l'utilisateur est connecté
+  if (to.meta.requiresGuest && authStore.isAuthenticated) {
+    next('/')
+  } else {
+    next()
+  }
 })
 
 export default router
