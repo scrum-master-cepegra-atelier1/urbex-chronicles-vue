@@ -33,7 +33,15 @@ class AuthService {
       // Store token in localStorage
       if (response.jwt) {
         localStorage.setItem('authToken', response.jwt)
-        localStorage.setItem('user', JSON.stringify(response.user))
+        try {
+          const userData= await strapiApi.get(`/users/me`, {
+            headers: { Authorization: `Bearer ${response.jwt}` },
+          })
+          console.log(userData)
+          localStorage.setItem('user', JSON.stringify(userData))
+        } catch (error) {
+          console.error('Error fetching user data:', error)
+        }
       }
 
       return response
