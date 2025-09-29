@@ -19,6 +19,12 @@ const routes = [
     component: () => import('@/views/RegisterView.vue'),
     meta: { requiresGuest: true },
   },
+  {
+    path: '/profile',//need to add user id
+    name: 'Profile',
+    component: () => import('@/views/ProfileView.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 const router = createRouter({
