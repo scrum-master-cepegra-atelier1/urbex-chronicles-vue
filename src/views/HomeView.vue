@@ -42,6 +42,7 @@ const handleLogout = () => {
   console.log('Déconnexion réussie')
 }
 
+
 onMounted(() => {
   // Initialiser l'état d'authentification au chargement
   authStore.initializeAuth()
