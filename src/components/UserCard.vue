@@ -34,7 +34,7 @@ if setup
   <div class="user-card__progress">
     <p class="user-card__progress__title">{{ user.experience }} XP</p>
     <progress class="user-card__progres__bar" :value="user.experience" max="100"></progress>
-    <p class="user-card__progress__level">Next level: {{ user.level ? user.level : 1 }}</p>
+    <p class="user-card__progress__level">Next level: {{ user.level ? user.level+1 : 1 }}</p>
   </div>
 </section>
 </template>

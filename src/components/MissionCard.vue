@@ -13,7 +13,16 @@
 
 <script setup>
 //import api
+import { useMissionStore } from '@/stores/mission';
+import { onBeforeMount } from 'vue';
 
+const missionStore = useMissionStore();
+
+onBeforeMount(async () => {
+  await missionStore.getMissions();
+  console.log(missionStore.missions.data);
+  localStorage.setItem('missions', JSON.stringify(missionStore.missions.data));
+})
 </script>
 
 <style lang='scss' scoped>
