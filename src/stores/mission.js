@@ -23,6 +23,8 @@ export const useMissionStore = defineStore("mission", {
  state: () => ({
     /** @type {Array|null} all missions object array */
     missions: [],
+    /** @type {string|null} JWT authentication token from auth store */
+    jwtToken: authStore.token,
  }),
 /*
   Store getters
@@ -37,12 +39,14 @@ export const useMissionStore = defineStore("mission", {
  actions: {
     async getMissions() {
       try {
-        const token = localStorage.getItem('authToken')
         this.missions = await apiService.get('/missions?populate=*', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${this.jwtToken}`,
           },
         });
+        // Store missions in localStorage & in store
+        localStorage.setItem('missions', JSON.stringify(this.missions.data));
+        this.missions = JSON.parse(localStorage.getItem('missions'));
       } catch (error) {
         console.error('Error fetching missions:', error);
       }
