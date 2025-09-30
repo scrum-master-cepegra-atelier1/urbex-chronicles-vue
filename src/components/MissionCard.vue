@@ -4,7 +4,7 @@
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ missionStore.missions[1].title }}</h2>
+    <h2 class="mission-card__info__title">{{ missionStore.missions[0].title }}</h2>
     <p class="mission-card__info__description">This is a brief description of the mission. It provides an overview of what the mission entails and its objectives.</p>
     <button class="mission-card__info__start-button">Start Mission</button>
   </aside>
@@ -49,11 +49,12 @@ onBeforeMount(async () => {
     &__info {
       grid-area: 1 / -1;
       display: grid;
-      grid-template-rows: repeat(3, 1fr);
+      grid-template-rows: repeat(4, 1fr);
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
       grid-template-areas: "title title"
        "description description" 
+       "description description"
        "-- start-button";
       padding: 1rem;
       &__title {

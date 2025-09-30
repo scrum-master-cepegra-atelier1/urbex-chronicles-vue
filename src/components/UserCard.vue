@@ -33,7 +33,7 @@ if setup
   </div>
   <div class="user-card__progress">
     <p class="user-card__progress__title">{{ user.experience }} XP</p>
-    <progress class="user-card__progres__bar" :value="user.experience" max="100"></progress>
+    <progress class="user-card__progress__bar" :value="user.experience" max="100"></progress>
     <p class="user-card__progress__level">Next level: {{ user.level ? user.level+1 : 1 }}</p>
   </div>
 </section>
@@ -120,11 +120,13 @@ const user = computed(() => AuthStore.user)
     }
   }
 
-  &__progress-bar {
+  &__progress{
     width: 100%;
-    height: 20px;
-    border-radius: 10px;
-    background-color: #ddd;
+    &__bar {
+      width: 100%;
+      height: 20px;
+      border-radius: 10px;
+    }
   }
 }
 </style> 
