@@ -27,13 +27,15 @@ onBeforeMount(async () => {
 <style lang='scss' scoped>
 //squared card version
 .mission-card {
-  overflow: hidden;
+  //size
   max-width: 400px;
   aspect-ratio: 1/1;
-  border: 1px solid #ccc;
-  border-radius: 8px;
   margin: auto;
+  //container styles
+  border: 1px solid #ccc;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
   display: grid;
     &__image {
       grid-area: 1 / -1;
