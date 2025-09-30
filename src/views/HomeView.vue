@@ -11,6 +11,8 @@
           <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
           <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
         </div>
+        <UserCard :user="authStore.user" />
+        <MissionCard v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
@@ -32,10 +34,20 @@
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
+import { useMissionStore } from '@/stores/mission.js'
+//components
+import MissionCard from '@/components/MissionCard.vue'
+import UserCard from '@/components/UserCard.vue'
 
+//stores
 const authStore = useAuthStore()
+const missionStore = useMissionStore()
+
+onBeforeMount(async () => {
+  await missionStore.getMissions();
+})
 
 const handleLogout = () => {
   authStore.logout()

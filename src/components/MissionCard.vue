@@ -1,10 +1,20 @@
 <template>
-<section class="mission-card">
+<section class="mission-card" v-if="displayMode === 'squared'">
   <figure class="mission-card__image">
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ missionStore.missions[0].title }}</h2>
+    <h2 class="mission-card__info__title">{{ mission.title}}</h2>
+    <p class="mission-card__info__description">This is a brief description of the mission. It provides an overview of what the mission entails and its objectives.</p>
+    <button class="mission-card__info__start-button">Start Mission</button>
+  </aside>
+</section>
+<section class="mission-card" v-else>
+  <figure class="mission-card__image">
+    <img src="https://placehold.co/400x200?text=Mission+Long" alt="Mission Image" class="mission-card__image__img"/>
+  </figure>
+  <aside class="mission-card__info">
+    <h2 class="mission-card__info__title">{{ mission.title }}</h2>
     <p class="mission-card__info__description">This is a brief description of the mission. It provides an overview of what the mission entails and its objectives.</p>
     <button class="mission-card__info__start-button">Start Mission</button>
   </aside>
@@ -31,12 +41,16 @@ defineProps({
     validator(value) {
       return ['squared', 'long'].includes(value) //only allow these two values
     }
-  }
+  },
+  mission: {
+    type: Object,
+    default: () => ({ title: 'Default Mission' }),
+  },
 })
-//computed class for mode
+/*computed class for mode
 const cardClass = computed(() => {
   return displayMode === 'squared' ? 'mission-card--squared' : 'mission-card--long';
-});
+});*/
 </script>
 
 <style lang='scss' scoped>
