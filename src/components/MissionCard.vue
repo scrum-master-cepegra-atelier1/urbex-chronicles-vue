@@ -1,5 +1,5 @@
 <template>
-<section class="mission-card" v-if="displayMode === 'squared'">
+<section :class="['mission-card', 'mission-card--'+displayMode]">
   <figure class="mission-card__image">
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
@@ -9,22 +9,12 @@
     <button class="mission-card__info__start-button">Start Mission</button>
   </aside>
 </section>
-<section class="mission-card" v-else>
-  <figure class="mission-card__image">
-    <img src="https://placehold.co/400x200?text=Mission+Long" alt="Mission Image" class="mission-card__image__img"/>
-  </figure>
-  <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ mission.title }}</h2>
-    <p class="mission-card__info__description">This is a brief description of the mission. It provides an overview of what the mission entails and its objectives.</p>
-    <button class="mission-card__info__start-button">Start Mission</button>
-  </aside>
-</section>
 </template>
 
 <script setup>
 //import api
 import { useMissionStore } from '@/stores/mission';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, computed } from 'vue';
 
 const missionStore = useMissionStore();
 
@@ -47,19 +37,15 @@ defineProps({
     default: () => ({ title: 'Default Mission' }),
   },
 })
-/*computed class for mode
+//computed class for mode
 const cardClass = computed(() => {
   return displayMode === 'squared' ? 'mission-card--squared' : 'mission-card--long';
-});*/
+});
 </script>
 
 <style lang='scss' scoped>
-//squared card version
+//general properties
 .mission-card {
-  //size
-  max-width: 400px;
-  aspect-ratio: 1/1;
-  margin: auto;
   //container styles
   border: 1px solid #ccc;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -106,4 +92,21 @@ const cardClass = computed(() => {
       }
     }
 }
+//squared card
+  .mission-card--squared {
+    //squared card version
+    //size
+    max-width: 400px;
+    aspect-ratio: 1/1;
+    margin: auto;
+    //grid layout
+  }
+
+  //long card
+  .mission-card--long {
+    //size
+    max-width: 800px;
+    aspect-ratio: 2/1;
+    margin: auto;
+  }
 </style>

@@ -21,7 +21,7 @@ if setup
   </figure>
   <aside class="user-card__info">
     <h2 class="user-card__info__name">{{ user.username }}</h2>
-    <p class="user-card__info__title">Titre: {{ user.title ? user.title : 'Gros noob' }}</p>
+    <p class="user-card__info__title">Titre: {{ user.title ? user.title : 'Sans souliers' }}</p>
   </aside>
   <div class="user-card__badges">
     <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
