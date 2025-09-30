@@ -1,0 +1,23 @@
+<template>
+  <!--User card profile-->
+ <UserCard />
+ <!--Select mission-->
+ <MissionCard />
+ <!--Logout-->
+</template>
+ 
+<script setup>
+import { ref, computed } from 'vue'
+//components
+import UserCard from '@/components/UserCard.vue'
+import MissionCard from '@/components/MissionCard.vue'
+
+//stores
+import { useAuthStore } from '@/stores/auth.js'
+const authStore = useAuthStore()
+
+</script>
+
+
+<style lang='scss' scoped>
+</style>
