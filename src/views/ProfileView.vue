@@ -2,7 +2,7 @@
   <!--User card profile-->
  <UserCard />
  <!--Select mission-->
- <MissionCard />
+ <MissionCard display-mode="squared"/>
  <!--Logout-->
 </template>
  

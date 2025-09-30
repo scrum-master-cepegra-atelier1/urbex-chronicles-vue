@@ -22,6 +22,21 @@ onBeforeMount(async () => {
   await missionStore.getMissions();
   console.log(missionStore.missions);
 })
+
+//define props for display mode
+defineProps({
+  displayMode: {
+    type: String,
+    default: 'squared',
+    validator(value) {
+      return ['squared', 'long'].includes(value) //only allow these two values
+    }
+  }
+})
+//computed class for mode
+const cardClass = computed(() => {
+  return displayMode === 'squared' ? 'mission-card--squared' : 'mission-card--long';
+});
 </script>
 
 <style lang='scss' scoped>
