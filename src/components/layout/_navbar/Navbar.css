@@ -1,0 +1,19 @@
+@import '@/assets/css/tailwindcss.css';
+
+.navigation-container{
+  @apply fixed bottom-0 w-full  p-4 rounded-t-2xl pb-8;
+  background-color: var(--color-main);
+}
+
+.navigation-list{
+  @apply flex flex-row justify-center ;
+}
+
+.navigation-list__item{
+  @apply list-none font-bold text-xl p-2;
+}
+
+.navigation-label{
+  @apply relative text-white/25;
+}
+

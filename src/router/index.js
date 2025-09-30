@@ -36,6 +36,9 @@ router.beforeEach((to, from, next) => {
   // Si la route nécessite d'être invité (non connecté) et que l'utilisateur est connecté
   if (to.meta.requiresGuest && authStore.isAuthenticated) {
     next('/')
+  } else if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+    // Bloque l'accès aux routes qui exigent l'authentification
+    next('/login')
   } else {
     next()
   }
