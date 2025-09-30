@@ -16,7 +16,7 @@ if setup
 -->
 <section class="user-card">
   <figure class="user-card__avatar">
-    <img src="https://placehold.co/200x200" alt="User avatar" class="user-card__avatar__img"/>
+    <img src="https://placehold.co/200x200?text=Avatar" alt="User avatar" class="user-card__avatar__img"/>
     <p class="user-card__avatar__level"> Level: 21</p>
   </figure>
   <aside class="user-card__info">
@@ -24,12 +24,17 @@ if setup
     <p class="user-card__info__title">Titre: {{ user.title ? user.title : 'Gros noob' }}</p>
   </aside>
   <div class="user-card__badges">
-    <img src="https://placehold.co/50x50" alt="Badge" />
-    <img src="https://placehold.co/50x50" alt="Badge" />
-    <img src="https://placehold.co/50x50" alt="Badge" />
+    <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
+    <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
+    <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
   </div>
   <div class="user-card__cogwheel">
-    <img src="https://placehold.co/200x200" alt="Cogwheel" />
+    <img src="https://placehold.co/200x200?text=Settings" alt="Cogwheel" />
+  </div>
+  <div class="user-card__progress">
+    <p class="user-card__progress__title">{{ user.experience }} XP</p>
+    <progress class="user-card__progres__bar" :value="user.experience" max="100"></progress>
+    <p class="user-card__progress__level">Next level: {{ user.level ? user.level : 1 }}</p>
   </div>
 </section>
 </template>
@@ -45,7 +50,8 @@ const user = computed(() => AuthStore.user)
 <style lang='scss' scoped>
 .user-card {
   display: flex;
-  flex-direction: row;
+  flex-flow: row wrap;
+  gap:1.5rem;
   align-items: center;
   background-color: #f9f9f9;
   border-radius: 10px;
@@ -112,6 +118,13 @@ const user = computed(() => AuthStore.user)
       height: 30px;
       cursor: pointer;
     }
+  }
+
+  &__progress-bar {
+    width: 100%;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #ddd;
   }
 }
 </style> 
