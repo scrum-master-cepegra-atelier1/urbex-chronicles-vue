@@ -42,6 +42,7 @@ export const useAuthStore = defineStore('auth', {
      * @returns {boolean} True if user has valid token
      */
     isAuthenticated: (state) => !!state.token,
+    userTitle: (state) => state.user.title,
 
     /**
      * Get current user information

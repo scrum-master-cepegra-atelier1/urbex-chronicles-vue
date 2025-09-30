@@ -80,7 +80,7 @@ class ApiService {
   async get(endpoint, options = {}) {
     return this.request(endpoint, {
       method: 'GET',
-      ...options,
+      ...options, 
     })
   }
 
