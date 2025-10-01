@@ -12,7 +12,7 @@
           <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
         </div>
         <UserCard :user="authStore.user" />
-        <MissionCard v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="card"/>
+        <MissionCard v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>

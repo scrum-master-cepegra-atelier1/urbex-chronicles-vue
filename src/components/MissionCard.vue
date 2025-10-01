@@ -1,12 +1,12 @@
 <template>
-<section :class="['mission-card', 'mission-card--'+displayMode]">
+<section class="mission-card" :class="'mission-card--'+displayMode">
   <figure class="mission-card__image">
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
     <h2 class="mission-card__info__title">{{ mission.title}}</h2>
-    <p class="mission-card__info__description">This is a brief description of the mission. It provides an overview of what the mission entails and its objectives.</p>
-    <button class="mission-card__info__start-button">Start Mission</button>
+    <p class="mission-card__info__description">This is a brief description of the mission.</p>
+    <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start Mission</button>
   </aside>
 </section>
 </template>
@@ -52,33 +52,23 @@ const cardClass = computed(() => {
   border-radius: 8px;
   overflow: hidden;
   display: grid;
+  margin-block: 1rem;
     &__image {
-      grid-area: 1 / -1;
       overflow: hidden;
       &__img {
-        width: 100%;
         height: 100%;
         object-fit: cover;
       }
     }
     &__info {
-      grid-area: 1 / -1;
       display: grid;
-      grid-template-rows: repeat(4, 1fr);
-      grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
-      grid-template-areas: "title title"
-       "description description" 
-       "description description"
-       "-- start-button";
       padding: 1rem;
       &__title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        font-size: 1.2rem;
         grid-area: title;
       }
       &__description {
-        margin-bottom: 1rem;
         grid-area: description;
       }
       &__start-button {
@@ -100,13 +90,42 @@ const cardClass = computed(() => {
     aspect-ratio: 1/1;
     margin: auto;
     //grid layout
+    .mission-card {
+      &__image {
+        grid-area: 1 / -1;
+      }
+      &__info {
+        grid-area: 1 / -1;
+        grid-template-rows: repeat(2, 2fr) 1fr;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas: "title title"
+       "description description" 
+       "-- start-button";
+      }
+    }
   }
 
   //long card
   .mission-card--long {
     //size
     max-width: 800px;
-    aspect-ratio: 2/1;
-    margin: auto;
+    grid-template-columns: 1fr repeat(2, 1fr); //thumbnail size / text info
+    grid-template-rows: 1fr;
+    .mission-card {
+      &__image {
+        grid-area: 1 / 1;
+      }
+      &__info {
+        grid-area: 1 / 2 / 1 / 4;
+        gap: 0.2rem;
+        padding: .5rem;
+        //grid teamplate size to be calculated
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas: "title blank"
+       "time time" 
+       "description description"
+       "-- --";
+      }
+    }
   }
 </style>
