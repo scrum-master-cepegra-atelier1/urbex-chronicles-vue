@@ -11,12 +11,20 @@ import Icon from '@/components/ui/_Icon/Icon.vue'
   <nav class="navigation-container">
     <ul class="navigation-list">
       <li class="navigation-list__item"> <a href="" class="navigation-label" id="">
-        <Icon name="map" size="xl" dir="icon" />
+        <Icon name="settings_accessibility" size="2xl" dir="icon" />
         Profil</a></li>
-      <li class="navigation-list__item"> <a href="" class="navigation-label" id=""> Mission</a></li>
-      <li class="navigation-list__item"> <a href="" class="navigation-label" id=""> Settings</a></li>
-      <li class="navigation-list__item"> <a href="" class="navigation-label" id=""> Maps</a></li>
-      <li class="navigation-list__item"> <a href="" class="navigation-label" id=""> Succes</a></li>
+      <li class="navigation-list__item"> <a href="" class="navigation-label" id="">
+        <Icon name="flag" size="2xl" dir="icon" />
+        Mission</a></li>
+      <li class="navigation-list__item"> <a href="" class="navigation-label" id="">
+        <Icon name="settings" size="2xl" dir="icon" />
+        Settings</a></li>
+      <li class="navigation-list__item"> <a href="" class="navigation-label" id="">
+        <Icon name="map" size="2xl" dir="icon" />
+        Maps</a></li>
+      <li class="navigation-list__item"> <a href="" class="navigation-label" id="">
+        <Icon name="trophy" size="2xl" dir="icon" />
+        Succes</a></li>
     </ul>
   </nav>
 </template>
