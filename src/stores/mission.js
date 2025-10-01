@@ -25,6 +25,8 @@ export const useMissionStore = defineStore("mission", {
     missions: [],
     /** @type {string|null} JWT authentication token from auth store */
     jwtToken: authStore.token,
+    /** @type {Array|null} Filtered missions */
+    filteredMissions: [],
  }),
 /*
   Store getters
@@ -50,6 +52,21 @@ export const useMissionStore = defineStore("mission", {
       } catch (error) {
         console.error('Error fetching missions:', error);
       }
+    },
+    async getMission(id) {
+      try {
+        return await apiService.get(`/missions/${id}?populate=*`, {
+          headers: {
+            Authorization: `Bearer ${this.jwtToken}`,
+          },
+        });
+      } catch (error) {
+        console.error('Error fetching mission:', error);
+      }
+    },
+    searchMissions(query) {
+      console.log(query);
+      this.filteredMissions = this.missions.filter(mission => mission.title.toLowerCase().includes(query.toLowerCase()));
     },
   },
 })
