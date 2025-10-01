@@ -13,7 +13,8 @@
         </div>
         <UserCard :user="authStore.user" />
         <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
-        <MissionCard v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <MissionCard v-if="missionStore.filteredMissions.length" v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <MissionCard v-else v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
