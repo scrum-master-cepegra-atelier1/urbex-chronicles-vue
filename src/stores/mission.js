@@ -27,6 +27,8 @@ export const useMissionStore = defineStore("mission", {
     jwtToken: authStore.token,
     /** @type {Array|null} Filtered missions */
     filteredMissions: [],
+    /** @type {string|null} Type of search */
+    searchBy: null,
  }),
 /*
   Store getters

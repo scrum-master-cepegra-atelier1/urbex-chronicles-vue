@@ -1,7 +1,12 @@
 <template>
   <section class="search-bar">
     <input type="text" class="search-bar__input" placeholder="Rechercher..." v-model.trim.lazy="searchTerm"/>
-    <button class="search-bar__button" @click="handleSearch">🔍</button>
+    <button class="search-bar__button" @click="handleSearch">🔍 Search</button>
+    <select class="search-bar__select" name="search-by" id="search-by" v-model="missionStore.searchBy">
+      <option value="title" selected>Titre</option>
+      <option value="description">Description</option>
+      <option value="author">Difficulté</option>
+    </select>
   </section>
 </template>
 
