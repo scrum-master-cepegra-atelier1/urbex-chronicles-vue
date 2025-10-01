@@ -29,7 +29,7 @@ const missionStore = useMissionStore();
 //HANDLE SEARCH
 const handleSearch = () => {
   console.log(searchTerm.value);
-  missionStore.searchMissions(searchTerm.value);//other methods to add to store and emit
+  missionStore.searchMissions(searchTerm.value, missionStore.searchBy);//other methods to add to store and emit
   console.log(missionStore.filteredMissions);
 }
 </script>

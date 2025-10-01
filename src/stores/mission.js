@@ -66,9 +66,9 @@ export const useMissionStore = defineStore("mission", {
         console.error('Error fetching mission:', error);
       }
     },
-    searchMissions(query) {
+    searchMissions(query, filter) {
       console.log(query);
-      this.filteredMissions = this.missions.filter(mission => mission.title.toLowerCase().includes(query.toLowerCase()));
+      this.filteredMissions = this.missions.filter(mission => mission[filter].toLowerCase().includes(query.toLowerCase()));
     },
   },
 })
