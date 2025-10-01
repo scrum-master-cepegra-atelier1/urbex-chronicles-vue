@@ -1,12 +1,12 @@
 <template>
-<section class="mission-card">
+<section class="mission-card" :class="'mission-card--'+displayMode">
   <figure class="mission-card__image">
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ missionStore.missions[0].title }}</h2>
-    <p class="mission-card__info__description">This is a brief description of the mission. It provides an overview of what the mission entails and its objectives.</p>
-    <button class="mission-card__info__start-button">Start Mission</button>
+    <h2 class="mission-card__info__title">{{ mission.title}}</h2>
+    <p class="mission-card__info__description">This is a brief description of the mission.</p>
+    <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start Mission</button>
   </aside>
 </section>
 </template>
@@ -14,7 +14,7 @@
 <script setup>
 //import api
 import { useMissionStore } from '@/stores/mission';
-import { onBeforeMount } from 'vue';
+import { onBeforeMount, computed } from 'vue';
 
 const missionStore = useMissionStore();
 
@@ -22,48 +22,53 @@ onBeforeMount(async () => {
   await missionStore.getMissions();
   console.log(missionStore.missions);
 })
+
+//define props for display mode
+defineProps({
+  displayMode: {
+    type: String,
+    default: 'squared',
+    validator(value) {
+      return ['squared', 'long'].includes(value) //only allow these two values
+    }
+  },
+  mission: {
+    type: Object,
+    default: () => ({ title: 'Default Mission' }),
+  },
+})
+//computed class for mode
+const cardClass = computed(() => {
+  return displayMode === 'squared' ? 'mission-card--squared' : 'mission-card--long';
+});
 </script>
 
 <style lang='scss' scoped>
-//squared card version
+//general properties
 .mission-card {
-  //size
-  max-width: 400px;
-  aspect-ratio: 1/1;
-  margin: auto;
   //container styles
   border: 1px solid #ccc;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
   overflow: hidden;
   display: grid;
+  margin-block: 1rem;
     &__image {
-      grid-area: 1 / -1;
       overflow: hidden;
       &__img {
-        width: 100%;
         height: 100%;
         object-fit: cover;
       }
     }
     &__info {
-      grid-area: 1 / -1;
       display: grid;
-      grid-template-rows: repeat(4, 1fr);
-      grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
-      grid-template-areas: "title title"
-       "description description" 
-       "description description"
-       "-- start-button";
       padding: 1rem;
       &__title {
-        font-size: 1.5rem;
-        margin-bottom: 1rem;
+        font-size: 1.2rem;
         grid-area: title;
       }
       &__description {
-        margin-bottom: 1rem;
         grid-area: description;
       }
       &__start-button {
@@ -77,4 +82,50 @@ onBeforeMount(async () => {
       }
     }
 }
+//squared card
+  .mission-card--squared {
+    //squared card version
+    //size
+    max-width: 400px;
+    aspect-ratio: 1/1;
+    margin: auto;
+    //grid layout
+    .mission-card {
+      &__image {
+        grid-area: 1 / -1;
+      }
+      &__info {
+        grid-area: 1 / -1;
+        grid-template-rows: repeat(2, 2fr) 1fr;
+        grid-template-columns: 2fr 1fr;
+        grid-template-areas: "title title"
+       "description description" 
+       "-- start-button";
+      }
+    }
+  }
+
+  //long card
+  .mission-card--long {
+    //size
+    max-width: 800px;
+    grid-template-columns: 1fr repeat(2, 1fr); //thumbnail size / text info
+    grid-template-rows: 1fr;
+    .mission-card {
+      &__image {
+        grid-area: 1 / 1;
+      }
+      &__info {
+        grid-area: 1 / 2 / 1 / 4;
+        gap: 0.2rem;
+        padding: .5rem;
+        //grid teamplate size to be calculated
+        grid-template-columns: 3fr 1fr;
+        grid-template-areas: "title blank"
+       "time time" 
+       "description description"
+       "-- --";
+      }
+    }
+  }
 </style>

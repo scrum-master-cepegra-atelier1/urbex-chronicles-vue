@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <main class="home">
     <div class="home__container">
       <h1 class="home__title">URBEX Chronicles</h1>
 
@@ -11,6 +11,10 @@
           <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
           <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
         </div>
+        <UserCard :user="authStore.user" />
+        <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
+        <MissionCard v-if="missionStore.filteredMissions.length" v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <MissionCard v-else v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
@@ -28,14 +32,25 @@
         </div>
       </div>
     </div>
-  </div>
+  </main>
 </template>
 
 <script setup>
-import { onMounted } from 'vue'
+import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
+import { useMissionStore } from '@/stores/mission.js'
+//components
+import MissionCard from '@/components/MissionCard.vue'
+import UserCard from '@/components/UserCard.vue'
+import SearchBar from '@/components/SearchBar.vue'
 
+//stores
 const authStore = useAuthStore()
+const missionStore = useMissionStore()
+
+onBeforeMount(async () => {
+  await missionStore.getMissions();
+})
 
 const handleLogout = () => {
   authStore.logout()
