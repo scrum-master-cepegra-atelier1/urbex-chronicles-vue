@@ -29,6 +29,8 @@ export const useMissionStore = defineStore("mission", {
     filteredMissions: [],
     /** @type {string|null} Type of search */
     searchBy: null,
+    /** @type {Object|null} Looked up circuit object */
+    currentCircuit: null,
  }),
 /*
   Store getters
@@ -57,11 +59,16 @@ export const useMissionStore = defineStore("mission", {
     },
     async getMission(id) {
       try {
-        return await apiService.get(`/circuits/${id}?populate=*`, {
+         const response = await apiService.get(`/circuits/${id}?populate=*`, {
           headers: {
             Authorization: `Bearer ${this.jwtToken}`,
           },
         });
+        this.currentCircuit = response.data;
+        console.log("Fetched mission with ID:", id);
+        console.log(this.currentCircuit.Missions);
+        // Optionally, you can store the fetched mission in the store if needed
+        // this.currentMission = response.data;
       } catch (error) {
         console.error('Error fetching mission:', error);
       }
