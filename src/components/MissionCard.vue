@@ -4,8 +4,8 @@
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ mission.title}}</h2>
-    <p class="mission-card__info__description">This is a brief description of the mission.</p>
+    <h2 class="mission-card__info__title">{{ mission.name}}</h2>
+    <p class="mission-card__info__description">{{ mission.description }}</p>
     <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start Mission</button>
   </aside>
 </section>

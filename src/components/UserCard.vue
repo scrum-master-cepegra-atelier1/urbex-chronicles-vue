@@ -45,6 +45,7 @@ import { ref, computed } from 'vue'
 //stores
 const AuthStore = useAuthStore()
 const user = computed(() => AuthStore.user)
+console.log("user stocked" + user.value)
 </script>
 
 <style lang='scss' scoped>

@@ -43,7 +43,7 @@ export const useMissionStore = defineStore("mission", {
  actions: {
     async getMissions() {
       try {
-        this.missions = await apiService.get('/missions?populate=*', {
+        this.missions = await apiService.get('/circuits?populate=*', {
           headers: {
             Authorization: `Bearer ${this.jwtToken}`,
           },
@@ -57,7 +57,7 @@ export const useMissionStore = defineStore("mission", {
     },
     async getMission(id) {
       try {
-        return await apiService.get(`/missions/${id}?populate=*`, {
+        return await apiService.get(`/circuits/${id}?populate=*`, {
           headers: {
             Authorization: `Bearer ${this.jwtToken}`,
           },
@@ -66,9 +66,12 @@ export const useMissionStore = defineStore("mission", {
         console.error('Error fetching mission:', error);
       }
     },
-    searchMissions(query, filter) {
-      console.log(query);
-      this.filteredMissions = this.missions.filter(mission => mission[filter].toLowerCase().includes(query.toLowerCase()));
-    },
+searchMissions(query, filter) {
+  console.log(query);
+  this.filteredMissions = this.missions.filter(mission => {
+    const value = mission[filter];
+    return typeof value === 'string' && value.toLowerCase().includes(query.toLowerCase());
+  });
+},
   },
 })
