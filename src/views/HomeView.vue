@@ -13,8 +13,8 @@
         </div>
         <UserCard :user="authStore.user" />
         <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
-        <MissionCard v-if="missionStore.filteredMissions.length" v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
-        <MissionCard v-else v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <MissionCard @click="handleMissionClick(mission)" v-if="missionStore.filteredMissions.length" v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <MissionCard @click="handleMissionClick(mission)" v-else v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
@@ -57,6 +57,13 @@ const handleLogout = () => {
   console.log('Déconnexion réussie')
 }
 
+const handleMissionClick = (mission) => {
+  console.log('Mission cliquée :', mission);
+  // on click send to circuit detail view
+  console.log("Current Circuit ID set to:", mission.documentId);
+  //navigate to circuit view
+  window.location.href = `/circuits/${mission.documentId}`;
+}
 
 onMounted(() => {
   // Initialiser l'état d'authentification au chargement
