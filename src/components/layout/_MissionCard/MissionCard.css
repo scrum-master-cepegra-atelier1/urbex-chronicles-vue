@@ -1,0 +1,85 @@
+@import '@/assets/css/style.css';
+
+
+.mission-card {
+  @apply grid overflow-hidden my-4 bg-main rounded-2xl;
+}
+
+.mission-card__image {
+  @apply overflow-hidden;
+}
+
+.mission-card__image__img {
+  @apply h-full object-cover;
+}
+
+.mission-card__info {
+  @apply grid gap-4 p-4;
+}
+
+.mission-card__info__title {
+  @apply text-xl font-bold text-white;
+}
+
+.mission-card__info__description {
+  @apply text-white text-sm;
+}
+
+.mission-card__info__start-button {
+  @apply bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition-colors;
+}
+
+/* Mode Squared */
+.mission-card--squared {
+  @apply max-w-sm aspect-square mx-auto bg-main;
+}
+
+.mission-card--squared .mission-card__image {
+  @apply col-span-full row-span-full;
+}
+
+.mission-card--squared .mission-card__info {
+  @apply col-span-full row-span-full grid-rows-[2fr_2fr_1fr] grid-cols-[2fr_1fr];
+  grid-template-areas: 
+    "title title"
+    "description description" 
+    "blank start-button";
+}
+
+.mission-card--squared .mission-card__info__title {
+  grid-area: title;
+}
+
+.mission-card--squared .mission-card__info__description {
+  grid-area: description;
+}
+
+.mission-card--squared .mission-card__info__start-button {
+  grid-area: start-button;
+}
+
+/* Mode Long */
+.mission-card--long {
+  @apply max-w-4xl grid-cols-[1fr_2fr];
+}
+
+.mission-card--long .mission-card__image {
+  @apply col-start-1;
+}
+
+.mission-card--long .mission-card__info {
+  @apply col-start-2 gap-1 p-2 grid-cols-[3fr_1fr];
+  grid-template-areas: 
+    "title blank"
+    "time time" 
+    "description description"
+    "blank blank";
+}
+
+.mission-card--long .mission-card__info__title {
+  grid-area: title;
+}
+
+.mission-card--long .mission-card__info__description {
+  grid-area: description;
+}

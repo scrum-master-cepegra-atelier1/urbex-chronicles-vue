@@ -2,7 +2,9 @@
 
 defineOptions({ name: 'AppNavbar' })
 
-import Icon from '@/components/ui/_Icon/Icon.vue'
+import Icon from '@/components/ui/_IconAsset/Icon.vue'
+
+  const IconSize= "2xl"
 
 
 </script>
@@ -11,30 +13,34 @@ import Icon from '@/components/ui/_Icon/Icon.vue'
   <nav class="navigation-container">
     <ul class="navigation-list">
       <li class="navigation-list__item"> 
-        <router-link to="" class="navigation-label" id="">
-          <Icon name="settings_accessibility" size="2xl" dir="icon" />
+  
+        <router-link to="/profile" class="navigation-label" id="">
+          <Icon name="settings_accessibility" :size="IconSize" dir="icon" />
           Profil
-        </router-link></li>
+        </router-link>
+        
+      </li>
       <li class="navigation-list__item"> 
-        <router-link to="" class="navigation-label" id="">
-          <Icon name="flag" size="2xl" dir="icon" />
+
+        <router-link to="/missions" class="navigation-label" id="">
+          <Icon name="flag" :size="IconSize" dir="icon" />
           Mission
-        </router-link></li>
+        </router-link>
+      </li>
       <li class="navigation-list__item"> 
+
         <router-link to="" class="navigation-label" id="">
-          <Icon name="settings" size="2xl" dir="icon" />
-          Settings
-        </router-link></li>
-      <li class="navigation-list__item"> 
-        <router-link to="" class="navigation-label" id="">
-          <Icon name="map" size="2xl" dir="icon" />
+          <Icon name="map" :size="IconSize" dir="icon" />
           Maps
-        </router-link></li>
+        </router-link>
+      </li>
       <li class="navigation-list__item"> 
+
         <router-link to="" class="navigation-label" id="">
-          <Icon name="trophy" size="2xl" dir="icon" />
+          <Icon name="trophy" :size="IconSize" dir="icon" />
           Succes
-        </router-link></li>
+        </router-link>
+      </li>
     </ul>
   </nav>
 </template>

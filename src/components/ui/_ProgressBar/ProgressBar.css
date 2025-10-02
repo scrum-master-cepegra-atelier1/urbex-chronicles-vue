@@ -1,0 +1,21 @@
+@import '@/assets/css/style.css';
+
+.progress-bar {
+  @apply w-full;
+}
+
+.progress-bar__label {
+  @apply text-sm text-gray-600 mb-2;
+}
+
+.progress-bar__container {
+  @apply w-full h-5 bg-gray-200 rounded-lg overflow-hidden relative;
+}
+
+.progress-bar__fill {
+  @apply h-full bg-blue-500 rounded-lg transition-all duration-300 ease-in-out;
+}
+
+.progress-bar__text {
+  @apply text-xs text-gray-600 mt-1 text-center;
+}

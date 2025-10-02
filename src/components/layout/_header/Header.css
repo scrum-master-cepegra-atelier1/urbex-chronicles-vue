@@ -1,0 +1,22 @@
+@import '@/assets/css/style.css';
+
+.header-container {
+  @apply w-full;
+}
+
+.header-content {
+  @apply w-full ;
+}
+
+/* Responsive design */
+@media (min-width: 640px) {
+  .header-content {
+    @apply px-4 py-3;
+  }
+}
+
+@media (min-width: 1024px) {
+  .header-content {
+    @apply px-6 py-4;
+  }
+}

@@ -1,0 +1,9 @@
+@import '@/assets/css/style.css';
+
+.footer-container {
+  @apply w-full mt-auto;
+}
+
+.footer-content {
+  @apply w-full;
+}

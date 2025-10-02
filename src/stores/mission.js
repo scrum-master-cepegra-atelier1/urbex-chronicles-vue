@@ -41,7 +41,7 @@ export const useMissionStore = defineStore("mission", {
   Store actions
   */
  actions: {
-    async getMissions() {
+    async getMissions() {      
       try {
         this.missions = await apiService.get('/circuits?populate=*', {
           headers: {

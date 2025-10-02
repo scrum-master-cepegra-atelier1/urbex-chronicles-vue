@@ -1,13 +1,16 @@
 <script setup>
-import AppNavbar from "@/components/layout/_navbar/Navbar.vue"
+import AppFooter from "@/components/layout/_footer/Footer.vue"
 </script>
 
 <template>
   <div id="app">
-    <router-view />
+    <!-- Contenu principal -->
+    <main class="main-content">
+      <router-view />
+    </main>
 
-    <AppNavbar />
-
+    <!-- Footer avec NavBar intégrée -->
+    <AppFooter />
   </div>
 </template>
 
@@ -29,5 +32,12 @@ body {
 
 #app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
+  padding-bottom: 120px; /* Espace pour la navbar fixe en bas */
 }
 </style>

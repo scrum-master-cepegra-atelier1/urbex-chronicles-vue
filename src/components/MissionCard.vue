@@ -1,7 +1,7 @@
 <template>
 <section class="mission-card" :class="'mission-card--'+displayMode">
   <figure class="mission-card__image">
-    <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
+    <img src="/data/urbex.jpg" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
     <h2 class="mission-card__info__title">{{ mission.name}}</h2>

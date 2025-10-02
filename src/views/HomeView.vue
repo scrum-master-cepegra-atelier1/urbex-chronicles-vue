@@ -1,20 +1,20 @@
 <template>
-  <main class="home">
-    <div class="home__container">
-      <h1 class="home__title">URBEX Chronicles</h1>
+  <div>
+    <!-- Header avec UserCard (si authentifié) -->
+    <AppHeader v-if="authStore.isAuthenticated" />
+    
+    <main class="home">
+      <div class="home__container">
+        <h1 class="home__title">URBEX Chronicles</h1>
 
-      <div v-if="authStore.isAuthenticated" class="home__authenticated">
-        <h2 class="home__welcome">Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !</h2>
-        <p class="home__status">Vous êtes connecté(e)</p>
-
-        <div class="home__user-info">
-          <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
-          <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
-        </div>
-        <UserCard :user="authStore.user" />
-        <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
-        <MissionCard v-if="missionStore.filteredMissions.length" v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
-        <MissionCard v-else v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <div v-if="authStore.isAuthenticated" class="home__authenticated">
+          <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
+        <template v-if="missionStore.filteredMissions.length">
+          <MissionCard v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
+        </template>
+        <template v-else>
+          <MissionCard v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
+        </template>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
@@ -30,9 +30,10 @@
             S'inscrire
           </router-link>
         </div>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+  </div>
 </template>
 
 <script setup>
@@ -41,8 +42,8 @@ import { useAuthStore } from '@/stores/auth.js'
 import { useMissionStore } from '@/stores/mission.js'
 //components
 import MissionCard from '@/components/MissionCard.vue'
-import UserCard from '@/components/UserCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import AppHeader from '@/components/layout/_header/Header.vue'
 
 //stores
 const authStore = useAuthStore()
@@ -96,31 +97,6 @@ onMounted(() => {
 }
 
 .home__authenticated {
-  .home__welcome {
-    font-size: 1.5rem;
-    color: #28a745;
-    margin-bottom: 1rem;
-  }
-
-  .home__status {
-    color: #666;
-    margin-bottom: 2rem;
-    font-style: italic;
-  }
-
-  .home__user-info {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    text-align: left;
-
-    p {
-      margin: 0.5rem 0;
-      color: #555;
-    }
-  }
-
   .home__logout-button {
     padding: 0.75rem 2rem;
     background-color: #dc3545;
@@ -130,6 +106,7 @@ onMounted(() => {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin-top: 2rem;
 
     &:hover {
       background-color: #c82333;

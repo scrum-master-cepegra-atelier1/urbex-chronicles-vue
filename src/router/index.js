@@ -25,6 +25,12 @@ const routes = [
     component: () => import('@/views/ProfileView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    path: '/missions',
+    name: 'Missions',
+    component: () => import('@/views/MissionsView.vue'),
+    meta: { requiresAuth: true },
+  },
 ]
 
 const router = createRouter({

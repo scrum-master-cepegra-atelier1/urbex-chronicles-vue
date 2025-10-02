@@ -1,11 +1,11 @@
-@import '@/assets/css/tailwindcss.css';
+@import '@/assets/css/style.css';
 
 .navigation-container{
-  @apply fixed bottom-0 w-full  p-4 rounded-t-2xl pb-8 bg-main;
+  @apply fixed bottom-0 w-full p-4 rounded-t-2xl pb-2 bg-main;
 }
 
 .navigation-list{
-  @apply flex flex-row justify-center ;
+  @apply flex flex-row justify-center gap-4 ;
 }
 
 .navigation-list__item{
@@ -13,6 +13,7 @@
 }
 
 .navigation-label{
-  @apply relative flex flex-col items-center justify-center text-white/25 gap-1;
+  @apply relative flex flex-col items-center justify-center gap-1 text-white;
+  
 }
 
