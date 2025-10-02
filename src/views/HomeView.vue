@@ -40,7 +40,7 @@ import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
-import MissionCard from '@/components/MissionCard.vue'
+import MissionCard from '@/components/CircuitCard.vue'
 import UserCard from '@/components/UserCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
