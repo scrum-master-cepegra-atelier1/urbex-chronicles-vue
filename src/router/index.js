@@ -25,6 +25,14 @@ const routes = [
     component: () => import('@/views/ProfileView.vue'),
     meta: { requiresAuth: true },
   },
+  {
+    //need to add circuit id
+    path: '/Circuits/:circuit_id',
+    name: 'CircuitDetails',
+    component: () => import('@/views/CircuitView.vue'),
+    props: true,
+    meta: { requiresAuth: true },
+  }
 ]
 
 const router = createRouter({

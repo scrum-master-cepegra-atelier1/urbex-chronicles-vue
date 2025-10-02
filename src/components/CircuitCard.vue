@@ -1,26 +1,26 @@
 <template>
-<section class="mission-card" :class="'mission-card--'+displayMode">
-  <figure class="mission-card__image">
-    <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
+<section class="circuit-card" :class="'circuit-card--'+displayMode">
+  <figure class="circuit-card__image">
+    <img src="https://placehold.co/400x200?text=circuit+Image" alt="circuit Image" class="circuit-card__image__img"/>
   </figure>
-  <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ mission.name}}</h2>
-    <p class="mission-card__info__description">{{ mission.description }}</p>
-    <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start Mission</button>
+  <aside class="circuit-card__info">
+    <h2 class="circuit-card__info__title">{{ circuit.name}}</h2>
+    <p class="circuit-card__info__description">{{ circuit.description }}</p>
+    <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">Start circuit</button>
   </aside>
 </section>
 </template>
 
 <script setup>
 //import api
-import { useMissionStore } from '@/stores/mission';
+import { useCircuitStore } from '@/stores/circuit';
 import { onBeforeMount, computed } from 'vue';
 
-const missionStore = useMissionStore();
+const circuitStore = useCircuitStore();
 
 onBeforeMount(async () => {
-  await missionStore.getMissions();
-  console.log(missionStore.missions);
+  await circuitStore.getCircuits();
+  console.log(circuitStore.circuits);
 })
 
 //define props for display mode
@@ -32,20 +32,20 @@ defineProps({
       return ['squared', 'long'].includes(value) //only allow these two values
     }
   },
-  mission: {
+  circuit: {
     type: Object,
-    default: () => ({ title: 'Default Mission' }),
+    default: () => ({ title: 'Default circuit' }),
   },
 })
 //computed class for mode
 const cardClass = computed(() => {
-  return displayMode === 'squared' ? 'mission-card--squared' : 'mission-card--long';
+  return displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long';
 });
 </script>
 
 <style lang='scss' scoped>
 //general properties
-.mission-card {
+.circuit-card {
   //container styles
   border: 1px solid #ccc;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -83,14 +83,14 @@ const cardClass = computed(() => {
     }
 }
 //squared card
-  .mission-card--squared {
+  .circuit-card--squared {
     //squared card version
     //size
     max-width: 400px;
     aspect-ratio: 1/1;
     margin: auto;
     //grid layout
-    .mission-card {
+    .circuit-card {
       &__image {
         grid-area: 1 / -1;
       }
@@ -106,12 +106,12 @@ const cardClass = computed(() => {
   }
 
   //long card
-  .mission-card--long {
+  .circuit-card--long {
     //size
     max-width: 800px;
     grid-template-columns: 1fr repeat(2, 1fr); //thumbnail size / text info
     grid-template-rows: 1fr;
-    .mission-card {
+    .circuit-card {
       &__image {
         grid-area: 1 / 1;
       }
