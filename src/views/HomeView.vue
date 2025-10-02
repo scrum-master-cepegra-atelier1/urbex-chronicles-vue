@@ -12,9 +12,9 @@
           <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
         </div>
         <UserCard :user="authStore.user" />
-        <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
-        <MissionCard @click="handleMissionClick(mission)" v-if="missionStore.filteredMissions.length" v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
-        <MissionCard @click="handleMissionClick(mission)" v-else v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
+        <SearchBar v-if="circuitStore.circuits.length" class="home__mission-search" :missions="circuitStore.missions" />
+        <MissionCard @click="handleCircuitClick(circuit)" v-if="circuitStore.filteredCircuits.length" v-for="circuit in circuitStore.filteredCircuits" :key="circuit.id" :circuit="circuit" display-mode="long"/>
+        <MissionCard @click="handleCircuitClick(circuit)" v-else v-for="circuit in circuitStore.circuits" :key="circuit.documentId" :circuit="circuit" display-mode="long"/>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
@@ -38,7 +38,7 @@
 <script setup>
 import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
-import { useMissionStore } from '@/stores/mission.js'
+import { useCircuitStore } from '@/stores/circuit.js'
 //components
 import MissionCard from '@/components/MissionCard.vue'
 import UserCard from '@/components/UserCard.vue'
@@ -46,10 +46,10 @@ import SearchBar from '@/components/SearchBar.vue'
 
 //stores
 const authStore = useAuthStore()
-const missionStore = useMissionStore()
+const circuitStore = useCircuitStore()
 
 onBeforeMount(async () => {
-  await missionStore.getMissions();
+  await circuitStore.getCircuits();
 })
 
 const handleLogout = () => {
@@ -57,12 +57,12 @@ const handleLogout = () => {
   console.log('Déconnexion réussie')
 }
 
-const handleMissionClick = (mission) => {
-  console.log('Mission cliquée :', mission);
+const handleCircuitClick = (circuit) => {
+  console.log('circuit cliquée :', circuit);
   // on click send to circuit detail view
-  console.log("Current Circuit ID set to:", mission.documentId);
+  console.log("Current Circuit ID set to:", circuit.documentId);
   //navigate to circuit view
-  window.location.href = `/circuits/${mission.documentId}`;
+  window.location.href = `/circuits/${circuit.documentId}`;
 }
 
 onMounted(() => {

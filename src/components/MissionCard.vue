@@ -4,8 +4,8 @@
     <img src="https://placehold.co/400x200?text=Mission+Image" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ mission.name}}</h2>
-    <p class="mission-card__info__description">{{ mission.description }}</p>
+    <h2 class="mission-card__info__title">{{ circuit.name}}</h2>
+    <p class="mission-card__info__description">{{ circuit.description }}</p>
     <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start Mission</button>
   </aside>
 </section>
@@ -13,14 +13,14 @@
 
 <script setup>
 //import api
-import { useMissionStore } from '@/stores/mission';
+import { useCircuitStore } from '@/stores/circuit';
 import { onBeforeMount, computed } from 'vue';
 
-const missionStore = useMissionStore();
+const circuitStore = useCircuitStore();
 
 onBeforeMount(async () => {
-  await missionStore.getMissions();
-  console.log(missionStore.missions);
+  await circuitStore.getCircuits();
+  console.log(circuitStore.circuits);
 })
 
 //define props for display mode
@@ -32,9 +32,9 @@ defineProps({
       return ['squared', 'long'].includes(value) //only allow these two values
     }
   },
-  mission: {
+  circuit: {
     type: Object,
-    default: () => ({ title: 'Default Mission' }),
+    default: () => ({ title: 'Default circuit' }),
   },
 })
 //computed class for mode

@@ -16,17 +16,17 @@ const authStore = useAuthStore();
  * const missionStore = useMissionStore()
  */
 
-export const useMissionStore = defineStore("mission", {
+export const useCircuitStore = defineStore("circuit", {
   /*
   Store state
   */
  state: () => ({
     /** @type {Array|null} all missions object array */
-    missions: [],
+    circuits: [],
     /** @type {string|null} JWT authentication token from auth store */
     jwtToken: authStore.token,
     /** @type {Array|null} Filtered missions */
-    filteredMissions: [],
+    filteredCircuits: [],
     /** @type {string|null} Type of search */
     searchBy: null,
     /** @type {Object|null} Looked up circuit object */
@@ -37,27 +37,27 @@ export const useMissionStore = defineStore("mission", {
   */
 
   getters: {
-    currentMission: (state) => {authStore.user.mission ? authStore.user.mission : null},
+    userCircuit: (state) => {authStore.user.mission ? authStore.user.mission : null},
   },
   /*
   Store actions
   */
  actions: {
-    async getMissions() {
+    async getCircuits() {
       try {
-        this.missions = await apiService.get('/circuits?populate=*', {
+        this.circuits = await apiService.get('/circuits?populate=*', {
           headers: {
             Authorization: `Bearer ${this.jwtToken}`,
           },
         });
         // Store missions in localStorage & in store
-        localStorage.setItem('missions', JSON.stringify(this.missions.data));
-        this.missions = JSON.parse(localStorage.getItem('missions'));
-      } catch (error) {
-        console.error('Error fetching missions:', error);
+        localStorage.setItem('circuits', JSON.stringify(this.circuits.data));
+        this.circuits = JSON.parse(localStorage.getItem('circuits'));
+      } catch (error) { 
+        console.error('Error fetching circuits:', error);
       }
     },
-    async getMission(id) {
+    async getCircuit(id) {
       try {
          const response = await apiService.get(`/circuits/${id}?populate=*`, {
           headers: {
@@ -65,18 +65,18 @@ export const useMissionStore = defineStore("mission", {
           },
         });
         this.currentCircuit = response.data;
-        console.log("Fetched mission with ID:", id);
+        console.log("Fetched circuit with ID:", id);
         console.log(this.currentCircuit.Missions);
         // Optionally, you can store the fetched mission in the store if needed
         // this.currentMission = response.data;
       } catch (error) {
-        console.error('Error fetching mission:', error);
+        console.error('Error fetching circuit:', error);
       }
     },
-searchMissions(query, filter) {
+searchCircuit(query, filter) {
   console.log(query);
-  this.filteredMissions = this.missions.filter(mission => {
-    const value = mission[filter];
+  this.filteredCircuits = this.circuits.filter(circuit => {
+    const value = circuit[filter];
     return typeof value === 'string' && value.toLowerCase().includes(query.toLowerCase());
   });
 },
