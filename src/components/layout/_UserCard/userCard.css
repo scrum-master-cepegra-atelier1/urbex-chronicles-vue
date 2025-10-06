@@ -31,7 +31,7 @@
 }
 
 .user-card__avatar__name {
-  @apply text-sm sm:text-base text-white font-bold font-title leading-none;
+  @apply text-sm sm:text-base text-white font-bold leading-none;
 }
 
 /* Contenu déployable */
@@ -88,4 +88,40 @@
 
 .user-card__progress__level {
   @apply text-xs text-white mt-1 opacity-80;
+}
+
+.user-card-handle {
+  @apply w-full flex items-center justify-center py-1 sm:py-2 select-none cursor-pointer;
+}
+
+.user-card-handle__bar {
+  @apply w-10 h-1.5 rounded-full bg-white/60;
+}
+
+.user-card__details {
+  @apply w-full mt-2 grid grid-cols-2 sm:grid-cols-3 gap-2;
+}
+
+.user-card__details__item {
+  @apply flex items-center justify-between gap-2 bg-white/5 rounded-md px-2 py-1.5;
+}
+
+.user-card__details__item .label {
+  @apply text-[11px] sm:text-xs text-white/80;
+}
+
+.user-card__details__item .value {
+  @apply text-xs sm:text-sm text-white font-medium text-right truncate;
+}
+
+.user-card__details-all {
+  @apply w-full mt-3 sm:mt-4;
+}
+
+.user-card__details-all__title {
+  @apply text-xs sm:text-sm text-white/90 mb-2 font-semibold;
+}
+
+.user-card__details-all__grid {
+  @apply grid grid-cols-1 sm:grid-cols-2 gap-2;
 }

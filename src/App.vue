@@ -1,5 +1,5 @@
 <script setup>
-import AppFooter from "@/components/layout/_footer/Footer.vue"
+
 </script>
 
 <template>
@@ -9,8 +9,7 @@ import AppFooter from "@/components/layout/_footer/Footer.vue"
       <router-view />
     </main>
 
-    <!-- Footer avec NavBar intégrée -->
-    <AppFooter />
+
   </div>
 </template>
 
@@ -39,5 +38,6 @@ body {
 .main-content {
   flex: 1;
   padding-bottom: 120px; /* Espace pour la navbar fixe en bas */
+  padding-top: 72px; /* Make room for fixed header */
 }
 </style>

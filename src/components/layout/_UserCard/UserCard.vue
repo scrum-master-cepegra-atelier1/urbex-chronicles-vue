@@ -1,58 +1,121 @@
-<template> 
-<!--
-User-avatar
-User-name
-User-level will be computed in store by user xp
-User-experience
-
-additionnal data need to modify strapi
-User-title
-User-badges
-
-User-cogwheel (settings)
-
-if setup
-  User-current-mission
--->
-<section class="user-card" :class="{ 'user-card--expanded': isExpanded }">
-  <!-- Avatar et niveau toujours visibles -->
-  <figure class="user-card__avatar" @click="toggleExpanded">
+<template>
+<div class="user-card" :class="{ 'user-card--expanded': isExpanded }">
+  <!-- Avatar toujours visible -->
+  <div
+    class="user-card__avatar"
+    role="button"
+    tabindex="0"
+    :aria-expanded="isExpanded"
+    aria-controls="user-card-expandable"
+    @click="toggleExpand"
+    @keydown.enter="toggleExpand"
+    @keydown.space.prevent="toggleExpand"
+  >
     <img src="/data/doko.png" alt="User avatar" class="user-card__avatar__img"/>
     <div class="user-card__avatar__meta">
-      
-      <p class="user-card__avatar__name" v-if="!isExpanded">{{ currentUser?.username || 'Utilisateur' }}</p>
-      <p class="user-card__avatar__level"> Level: 21</p>
+      <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
+      <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 21 }}</p>
     </div>
-  </figure>
-  
-  <!-- Contenu déployable -->
-  <div class="user-card__expandable" :class="{ 'user-card__expandable--visible': isExpanded }">
-    <aside class="user-card__info">
+  </div>
+
+  <!-- Contenu étendu -->
+  <div
+    class="user-card__expandable"
+    :class="{ 'user-card__expandable--visible': isExpanded }"
+    id="user-card-expandable"
+    :aria-hidden="!isExpanded"
+  >
+    <div class="user-card__info">
       <h2 class="user-card__info__name">{{ currentUser?.username || 'Utilisateur' }}</h2>
-      <p class="user-card__info__title">Titre: {{ currentUser?.title ? currentUser.title : 'Sans souliers' }}</p>
-    </aside>
-    
+      <p class="user-card__info__title">{{ currentUser?.title || 'Explorateur urbain' }}</p>
+    </div>
+
     <div class="user-card__badges">
-      <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
-      <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
-      <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
+      <div class="user-card__badges__title">🏅 Badges</div>
+      <div class="user-card__badges__list">
+        <img src="https://placehold.co/50x50?text=🏆" alt="Badge 1" />
+        <img src="https://placehold.co/50x50?text=⭐" alt="Badge 2" />
+        <img src="https://placehold.co/50x50?text=🎖️" alt="Badge 3" />
+      </div>
     </div>
-    
-    <div class="user-card__cogwheel">
-      <Icon name="settings" size="xl" dir="icon" />
-    </div>
-    
+
     <div class="user-card__progress">
-      <ProgressBar 
-        :value="currentUser?.experience || 0" 
+      <p class="user-card__progress__title">📈 Progression</p>
+      <ProgressBar
+        :value="currentUser?.experience || 0"
         :max="100"
         :label="`${currentUser?.experience || 0} XP`"
         :show-text="false"
       />
-      <p class="user-card__progress__level">Next level: {{ currentUser?.level ? currentUser.level+1 : 1 }}</p>
+      <p class="user-card__progress__level">Prochain niveau: {{ currentUser?.level ? currentUser.level+1 : 1 }}</p>
+    </div>
+
+    <div class="user-card__details">
+      <div class="user-card__details__item">
+        <span class="label">Email</span>
+        <span class="value">{{ currentUser?.email || '—' }}</span>
+      </div>
+      <div class="user-card__details__item" v-if="currentUser?.provider">
+        <span class="label">Provider</span>
+        <span class="value">{{ currentUser?.provider }}</span>
+      </div>
+      <div class="user-card__details__item" v-if="'confirmed' in (currentUser || {})">
+        <span class="label">Confirmé</span>
+        <span class="value">{{ currentUser?.confirmed ? 'Oui' : 'Non' }}</span>
+      </div>
+      <div class="user-card__details__item" v-if="'blocked' in (currentUser || {})">
+        <span class="label">Bloqué</span>
+        <span class="value">{{ currentUser?.blocked ? 'Oui' : 'Non' }}</span>
+      </div>
+      <div class="user-card__details__item" v-if="currentUser?.createdAt">
+        <span class="label">Inscrit</span>
+        <span class="value">{{ formatDate(currentUser?.createdAt) }}</span>
+      </div>
+      <div class="user-card__details__item" v-if="currentUser?.updatedAt">
+        <span class="label">MAJ</span>
+        <span class="value">{{ formatDate(currentUser?.updatedAt) }}</span>
+      </div>
+      <div class="user-card__details__item" v-if="Array.isArray(currentUser?.roles)">
+        <span class="label">Rôles</span>
+        <span class="value">{{ roleNames(currentUser?.roles) }}</span>
+      </div>
+    </div>
+
+    <div class="user-card__cogwheel" @click="handleSettings">
+      <Icon name="settings" size="xl" dir="icon" />
+      <span>Paramètres</span>
+    </div>
+
+    <div class="user-card__details-all" v-if="currentUser">
+      <div class="user-card__details-all__title">Toutes les informations</div>
+      <div class="user-card__details-all__grid">
+        <div
+          class="user-card__details__item"
+          v-for="(val, key) in currentUser"
+          :key="key"
+        >
+          <span class="label">{{ key }}</span>
+          <span class="value">{{ formatAny(val) }}</span>
+        </div>
+      </div>
     </div>
   </div>
-</section>
+
+  <!-- Barre de slide TOUJOURS en bas -->
+  <div
+    class="user-card-handle"
+    @pointerdown="startDrag"
+    @touchstart="startDrag"
+    role="button"
+    tabindex="0"
+    :aria-expanded="isExpanded"
+    aria-controls="user-card-expandable"
+    @click.prevent="onHandleClick"
+    @keydown.enter="toggleExpand"
+  >
+    <div class="user-card-handle__bar"></div>
+  </div>
+</div>
 </template>
 
 <script setup>
@@ -66,30 +129,117 @@ import { computed, ref } from 'vue'
 
 defineOptions({ name: 'UserCard' })
 
+// define props (allow parent to force expanded state)
+const props = defineProps({
+  user: {
+    type: Object,
+    default: () => ({})
+  },
+  initiallyExpanded: {
+    type: Boolean,
+    default: false
+  },
+  // when placed in header we run in overlayMode (absolute overlay)
+  overlayMode: {
+    type: Boolean,
+    default: false
+  }
+})
+
 // Utiliser le store d'authentification
 const authStore = useAuthStore()
 
 // Computed property pour obtenir l'utilisateur actuel
 const currentUser = computed(() => authStore.user)
 
-// État du déploiement
-const isExpanded = ref(false)
+// État du déploiement, initialisé depuis le prop
+const isExpanded = ref(props.initiallyExpanded)
 
-// Fonction pour basculer l'état déployé/rangé
-const toggleExpanded = () => {
+const dragging = ref(false)
+const startY = ref(0)
+const dragY = ref(0)
+const threshold = 80
+const lastDragDelta = ref(0)
+
+function startDrag(e) {
+  if (e && typeof e.preventDefault === 'function') e.preventDefault()
+  dragging.value = true
+  startY.value = e.clientY || (e.touches && e.touches[0]?.clientY) || 0
+  dragY.value = 0
+
+  window.addEventListener('pointermove', onPointerMove, { passive: false })
+  window.addEventListener('pointerup', onPointerUp)
+  window.addEventListener('touchmove', onPointerMove, { passive: false })
+  window.addEventListener('touchend', onPointerUp)
+}
+
+function onPointerMove(e) {
+  if (!dragging.value) return
+  const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0
+  dragY.value = clientY - startY.value
+}
+
+function onPointerUp() {
+  dragging.value = false
+  window.removeEventListener('pointermove', onPointerMove)
+  window.removeEventListener('pointerup', onPointerUp)
+  window.removeEventListener('touchmove', onPointerMove)
+  window.removeEventListener('touchend', onPointerUp)
+
+  // Toggle expand/collapse based on drag direction
+  if (dragY.value > threshold) {
+    isExpanded.value = true
+  } else if (dragY.value < -threshold) {
+    isExpanded.value = false
+  }
+
+  lastDragDelta.value = Math.abs(dragY.value)
+  dragY.value = 0
+}
+
+function handleSettings() {
+  console.log('Ouvrir les paramètres')
+}
+
+// cleaned logs
+
+function toggleExpand() {
   isExpanded.value = !isExpanded.value
 }
 
-//define props (gardé pour compatibilité si nécessaire)
-const props = defineProps({
-  user: {
-    type: Object,
-    default: () => ({})
+function onHandleClick() {
+  // avoid double toggle when a drag just happened
+  if (lastDragDelta.value < 5) {
+    toggleExpand()
   }
-})
+  lastDragDelta.value = 0
+}
 
-console.log("user stocked", props.user)
-console.log("current user from store", currentUser.value)
+function roleNames(userRoles) {
+  if (!Array.isArray(userRoles)) return ''
+  return userRoles.map((role) => role?.name ?? role).join(', ')
+}
+
+function formatDate(isoString) {
+  if (!isoString) return ''
+  try {
+    return new Date(isoString).toLocaleDateString()
+  } catch {
+    return isoString
+  }
+}
+
+function formatAny(value) {
+  if (value == null) return '—'
+  if (typeof value === 'object') {
+    try {
+      return JSON.stringify(value)
+    } catch {
+      return String(value)
+    }
+  }
+  return String(value)
+}
 </script>
 
 <style>

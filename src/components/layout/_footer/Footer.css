@@ -1,7 +1,7 @@
 @import '@/assets/css/style.css';
 
 .footer-container {
-  @apply w-full mt-auto;
+  @apply fixed w-full bottom-0 z-50;
 }
 
 .footer-content {

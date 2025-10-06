@@ -1,11 +1,11 @@
 @import '@/assets/css/style.css';
 
 .navigation-container{
-  @apply fixed bottom-0 w-full p-4 rounded-t-2xl pb-2 bg-main;
+  @apply m-2 p-3 rounded-full  bg-main bg-gradient-to-b from-main to-complement;
 }
 
 .navigation-list{
-  @apply flex flex-row justify-center gap-4 ;
+  @apply flex flex-row justify-center gap-6 ;
 }
 
 .navigation-list__item{
@@ -13,7 +13,10 @@
 }
 
 .navigation-label{
-  @apply relative flex flex-col items-center justify-center gap-1 text-white;
-  
+  @apply relative flex flex-col items-center justify-center gap-0 text-white/25;
+}
+
+.navigation-label__name{
+  @apply hidden;
 }
 
