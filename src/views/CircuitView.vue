@@ -14,32 +14,32 @@
     <section class="circuit__infos">
       <nav class="circuit__infos__tabs">
         <ul class="circuit__infos__tabs__list">
-          <li class="circuit__infos__tabs__list__el circuit__infos__tabs__list__el--active">Présentation</li>
-          <li class="circuit__infos__tabs__list__el">Feedback</li>
-          <li class="circuit__infos__tabs__list__el">Accès</li>
+          <li class="circuit__infos__tabs__list__el circuit__infos__tabs__list__el--active" data-tab="presentation">Présentation</li>
+          <li class="circuit__infos__tabs__list__el" data-tab="feedback">Feedback</li>
+          <li class="circuit__infos__tabs__list__el" data-tab="accessibilities">Accès</li>
         </ul> 
       </nav>
-      <section class="circuit__infos__presentation">
-        <h2>Présentation</h2>
+      <section class="circuit__infos__presentation" >
+        <h2>Description</h2>
         <p>{{ circuitStore.currentCircuit.description }}</p>
+        <section class="circuit__missions">
+          <h2>Missions</h2>
+          <ul>
+            <li v-for="mission in circuitStore.currentCircuit.Missions" :key="mission.id">
+              <h3>{{ mission.title }}</h3>
+              <p>{{ mission.description }}</p>
+            </li>
+          </ul>
+        </section>
       </section>
-      <section class="circuit__infos__feedback disabled">
-        <h2>Feedback</h2>
+      <section class="circuit__infos__feedback disabled" >
+        <h2>Avis</h2>
         <p>{{ circuitStore.currentCircuit.feedback ? circuitStore.currentCircuit.feedback : 'Aucun feedback disponible' }}</p>
       </section>
-      <section class="circuit__infos__accessibilities disabled">
-        <h2>Accès</h2>
+      <section class="circuit__infos__accessibilities disabled" >
+        <h2>Malvoyant etc</h2>
         <p>{{ circuitStore.currentCircuit.accessibilities ? circuitStore.currentCircuit.accessibilities : 'Aucun accès disponible' }}</p>
       </section>
-    </section>
-    <section class="circuit__missions">
-      <h2>Missions</h2>
-      <ul>
-        <li v-for="mission in circuitStore.currentCircuit.Missions" :key="mission.id">
-          <h3>{{ mission.title }}</h3>
-          <p>{{ mission.description }}</p>
-        </li>
-      </ul>
     </section>
     <button @click="handlingClick(circuit_id)" class="circuit__start-button">Lancer la mission</button>
     <aside class="circuit__popping">
@@ -97,35 +97,39 @@ const starting = (mode) => {
 // Tabs content on click
 onMounted(() => {
   const tabManager = document.querySelector('.circuit__infos__tabs__list');
-
   if (tabManager) {
+    const presentation = document.querySelector('.circuit__infos__presentation');
+    const feedback = document.querySelector('.circuit__infos__feedback');
+    const accessibilities = document.querySelector('.circuit__infos__accessibilities');
+    const resetSections = () => {
+      presentation.style.display = 'none';
+      feedback.style.display = 'none';
+      accessibilities.style.display = 'none';
+    }
     tabManager.addEventListener('click', (e) => {
       const activeTab = document.querySelector('.circuit__infos__tabs__list__el--active');
       if (activeTab) {
         activeTab.classList.remove('circuit__infos__tabs__list__el--active');
       }
       e.target.classList.add('circuit__infos__tabs__list__el--active');
-
-      const presentation = document.querySelector('.circuit__infos__presentation');
-      const feedback = document.querySelector('.circuit__infos__feedback');
-      const accessibilities = document.querySelector('.circuit__infos__accessibilities');
-
+      resetSections();
       // Display the content based on the clicked tab 
-      // Need improvement using a switch and case statements for scalability
-      if (e.target.textContent === 'Présentation') {
-        presentation.style.display = 'block';
-        feedback.style.display = 'none';
-        accessibilities.style.display = 'none';
-      } else if (e.target.textContent === 'Feedback') {
-        presentation.style.display = 'none';
-        feedback.style.display = 'block';
-        accessibilities.style.display = 'none';
-      } else if (e.target.textContent === 'Accès') {
-        presentation.style.display = 'none';
-        feedback.style.display = 'none';
-        accessibilities.style.display = 'block';
+      switch (e.target.dataset.tab) {
+        case 'presentation':
+          presentation.style.display = 'block';
+          break;
+        case 'feedback':
+          feedback.style.display = 'block';
+          console.log("Tab clicked by switch: ", e.target.textContent);
+          break;
+        case 'accessibilities':
+          accessibilities.style.display = 'block';
+          break;
+        default:
+          presentation.style.display = 'block';
       }
-      console.log("Tab clicked: ", e.target.textContent);
+      // Need improvement using a switch and case statements for scalability
+      console.log("Tab clicked: ", e.target.dataset.tab);
     });
   } else {
     console.error("Tab manager element not found in the DOM.");
@@ -190,6 +194,7 @@ onMounted(() => {
   &__start-button {
     position: fixed;
     bottom: 1rem;
+    right: 1rem;
     margin-block: 1rem;
     padding: 0.75rem 2rem;
     border-radius: 6px;
