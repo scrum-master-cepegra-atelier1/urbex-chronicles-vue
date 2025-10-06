@@ -5,8 +5,6 @@
   <MissionCard display-mode="squared" />
   <!--Logout-->
 
-  <!--test map-->
-  <MapCircuit />
 </template>
 
 <script setup>
