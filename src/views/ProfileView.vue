@@ -19,7 +19,6 @@ import MapCircuit from '@/components/MapCircuit.vue'
 //stores
 import { useAuthStore } from '@/stores/auth.js'
 const authStore = useAuthStore()
-
 </script>
 
 <style lang="scss" scoped></style>

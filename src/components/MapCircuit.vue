@@ -1,3 +1,7 @@
+/** * MapCircuit component * Displays a Leaflet map centered on the player's position. * Shows the
+current mission (marker + radius) only when the player enters the mission's action area (treshold).
+* Accepts a mission prop matching the Strapi schema (latitude, longitude, treshold, title,
+description). */
 <template>
   <div class="map-circuit__container">
     <div ref="mapContainer" class="map-circuit__leaflet"></div>
