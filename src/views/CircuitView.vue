@@ -23,11 +23,11 @@
         <h2>Présentation</h2>
         <p>{{ circuitStore.currentCircuit.description }}</p>
       </section>
-      <section class="circuit__infos__feedback">
+      <section class="circuit__infos__feedback disabled">
         <h2>Feedback</h2>
         <p>{{ circuitStore.currentCircuit.feedback ? circuitStore.currentCircuit.feedback : 'Aucun feedback disponible' }}</p>
       </section>
-      <section class="circuit__infos__accessibilities">
+      <section class="circuit__infos__accessibilities disabled">
         <h2>Accès</h2>
         <p>{{ circuitStore.currentCircuit.accessibilities ? circuitStore.currentCircuit.accessibilities : 'Aucun accès disponible' }}</p>
       </section>
@@ -41,11 +41,11 @@
         </li>
       </ul>
     </section>
-    <button @click="handlingClick(circuit_id)">Lancer la mission</button>
+    <button @click="handlingClick(circuit_id)" class="circuit__start-button">Lancer la mission</button>
     <aside class="circuit__popping">
-      <button>En solo</button>
+      <button @click="starting('solo')">En solo</button>
       <div class="circuit__popping__separator">
-        <button>En groupe</button>
+        <button @click="starting('group')">En groupe</button>
       </div>
     </aside>
   </main>
@@ -54,11 +54,13 @@
 <script setup>
 import { onBeforeMount, onMounted, ref } from 'vue'
 import { useCircuitStore } from '@/stores/circuit.js'
+import { useAuthStore } from '@/stores/auth.js'
 import { useRoute } from 'vue-router'
 
 const $route = useRoute()
 
 const circuitStore = useCircuitStore()
+const authStore = useAuthStore()
 
 const circuit_id = ref(null)
 //get circuit id from route paramss
@@ -73,6 +75,23 @@ const handlingClick = (circuit_id) => {
   console.log("Trying to launch circuit ", circuit_id)
   const popping = document.querySelector('.circuit__popping');
   popping.classList.toggle('circuit__popping--active');
+}
+
+const starting = (mode) => {
+  const party=[];
+  switch (mode) {
+    case 'solo':
+      //launch mission solo
+      party.push(authStore.user.username);
+      break;
+      case 'group':
+        //open group creation form
+        //add user to party
+        break;
+      }
+  console.log("Starting circuit in ", mode);
+  console.log("Party members: ", party);
+  //redirect to map view with circuit_id and party info
 }
 
 // Tabs content on click
@@ -91,6 +110,8 @@ onMounted(() => {
       const feedback = document.querySelector('.circuit__infos__feedback');
       const accessibilities = document.querySelector('.circuit__infos__accessibilities');
 
+      // Display the content based on the clicked tab 
+      // Need improvement using a switch and case statements for scalability
       if (e.target.textContent === 'Présentation') {
         presentation.style.display = 'block';
         feedback.style.display = 'none';
@@ -114,7 +135,25 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .circuit {
+  overflow: hidden;
+  &__header {
+    //placheholder img
+    background-image: url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    height: 400px;
+    h1 {
+      margin-bottom: 0.5rem;
+    }
+  }
   &__infos {
+    .disabled {
+      display: none;
+    }
     //tabs 
     &__tabs {
       &__list {
@@ -148,19 +187,39 @@ onMounted(() => {
   }
 
   //popping menu styles
+  &__start-button {
+    position: fixed;
+    bottom: 1rem;
+    margin-block: 1rem;
+    padding: 0.75rem 2rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all 0.2s;
+    min-width: 120px;
+    background: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    &:hover {
+      background: #0056b3;
+    }
+  }
   &__popping {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 1rem;
-    position: relative;
+    position: fixed;
     left: 100%;
+    top : 75%;
     transition: left 0.3s ease-in-out;
     width: 50%;
     background: #777;
     &--active {
-      left: 0;
+      left: 50%;
     }
   }
 }
