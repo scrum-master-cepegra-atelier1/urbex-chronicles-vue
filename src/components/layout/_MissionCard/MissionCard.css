@@ -2,7 +2,7 @@
 
 
 .mission-card {
-  @apply grid overflow-hidden my-4 bg-main rounded-2xl;
+  @apply grid overflow-hidden my-4 rounded-2xl;
 }
 
 .mission-card__image {
