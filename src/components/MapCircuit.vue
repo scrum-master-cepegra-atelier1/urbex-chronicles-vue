@@ -1,54 +1,57 @@
-/** * MapCircuit component * Displays a Leaflet map centered on the player's position. * Shows the
-current mission (marker + radius) only when the player enters the mission's action area (treshold).
-* Accepts a mission prop matching the Strapi schema (latitude, longitude, treshold, title,
-description). */
+<!--
+  MapCircuit component
+  Affiche une carte Leaflet centrée sur la position du joueur.
+  Affiche la mission (marqueur + rayon) uniquement si le joueur est dans la zone d'action.
+  Props :
+    - mission: { latitude, longitude, treshold, title, description }
+    - visible: Boolean
+-->
 <template>
-  <div class="map-circuit__container">
+  <div
+    class="map-circuit__container map-circuit__fade"
+    :class="{ 'map-circuit__fade--hidden': !localVisible }"
+  >
     <div ref="mapContainer" class="map-circuit__leaflet"></div>
   </div>
 </template>
 
 <script setup>
-// Props : mission = objet Strapi (voir schéma)
-const props = defineProps({
-  mission: {
-    type: Object,
-    required: false,
-    default: null,
-  },
-})
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
-const mapContainer = ref(null)
-let map = null
-let playerMarker = null
+const props = defineProps({
+  mission: Object,
+  visible: { type: Boolean, default: true },
+})
+const emit = defineEmits(['update:visible'])
 
-let missionMarker = null
-let missionCircle = null
+const mapContainer = ref(null)
+const localVisible = ref(props.visible)
+let map, playerMarker, missionMarker, missionCircle
 let missionVisible = false
 
-let lastPlayerPos = null
+// Utilitaire : mission valide ?
+function isMissionValid(m) {
+  return m && m.latitude && m.longitude && m.treshold
+}
 
-function checkPlayerInMissionRadius(playerLat, playerLng, mission) {
-  if (!mission || !mission.latitude || !mission.longitude || !mission.treshold) return false
+// Calcul distance Haversine (en mètres)
+function isPlayerInMission(playerLat, playerLng, mission) {
+  if (!isMissionValid(mission)) return false
   const lat = parseFloat(mission.latitude)
   const lng = parseFloat(mission.longitude)
   const radius = parseInt(mission.treshold)
-  // Distance en mètres (Haversine)
   const R = 6371000
   const dLat = ((playerLat - lat) * Math.PI) / 180
   const dLng = ((playerLng - lng) * Math.PI) / 180
   const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLat / 2) ** 2 +
     Math.cos((lat * Math.PI) / 180) *
       Math.cos((playerLat * Math.PI) / 180) *
-      Math.sin(dLng / 2) *
-      Math.sin(dLng / 2)
+      Math.sin(dLng / 2) ** 2
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-  const d = R * c
-  return d <= radius
+  return R * c <= radius
 }
 
 function setPlayerMarker(lat, lng) {
@@ -71,11 +74,11 @@ function setPlayerMarker(lat, lng) {
 }
 
 function setMissionMarkerAndCircle(mission) {
-  if (!map || !mission || !mission.latitude || !mission.longitude || !mission.treshold) return
+  if (!map || !isMissionValid(mission)) return
   const lat = parseFloat(mission.latitude)
   const lng = parseFloat(mission.longitude)
   const radius = parseInt(mission.treshold)
-  // Marqueur mission
+  // Marqueur
   if (missionMarker) {
     missionMarker.setLatLng([lat, lng])
     missionMarker.setPopupContent(
@@ -97,7 +100,7 @@ function setMissionMarkerAndCircle(mission) {
       `<b>${mission.title || 'Mission en cours'}</b><br>${mission.description || ''}`,
     )
   }
-  // Cercle mission
+  // Cercle
   if (missionCircle) {
     missionCircle.setLatLng([lat, lng])
     missionCircle.setRadius(radius)
@@ -107,19 +110,24 @@ function setMissionMarkerAndCircle(mission) {
       color: '#ff5555',
       fillColor: '#ff5555',
       fillOpacity: 0.2,
-      radius: radius,
+      radius,
     }).addTo(map)
   }
 }
 
 function removeMissionMarkerAndCircle() {
-  if (missionMarker) {
-    map.removeLayer(missionMarker)
-  }
-  if (missionCircle) {
-    map.removeLayer(missionCircle)
-  }
+  if (missionMarker) map.removeLayer(missionMarker)
+  if (missionCircle) map.removeLayer(missionCircle)
 }
+
+// Synchronisation visibilité locale <-> prop
+watch(
+  () => props.visible,
+  (v) => (localVisible.value = v),
+)
+watch(localVisible, (v) => {
+  if (v !== props.visible) emit('update:visible', v)
+})
 
 onMounted(() => {
   map = L.map(mapContainer.value).setView([50.8503, 4.3517], 14)
@@ -128,68 +136,44 @@ onMounted(() => {
     maxZoom: 19,
   }).addTo(map)
 
-  // Affichage mission si présente (uniquement si visible)
-  if (
-    props.mission &&
-    props.mission.latitude &&
-    props.mission.longitude &&
-    props.mission.treshold &&
-    missionVisible
-  ) {
+  // Initialisation mission
+  if (isMissionValid(props.mission) && missionVisible) {
     setMissionMarkerAndCircle(props.mission)
   } else {
     removeMissionMarkerAndCircle()
   }
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords
-        map.setView([latitude, longitude], 16)
-        setPlayerMarker(latitude, longitude)
-        lastPlayerPos = { latitude, longitude }
-        // Vérifier si le joueur est dans le rayon de la mission
-        if (
-          props.mission &&
-          props.mission.latitude &&
-          props.mission.longitude &&
-          props.mission.treshold
-        ) {
-          missionVisible = checkPlayerInMissionRadius(latitude, longitude, props.mission)
-          if (missionVisible) {
-            setMissionMarkerAndCircle(props.mission)
-          } else {
-            removeMissionMarkerAndCircle()
-          }
-        }
-      },
-      (error) => {
-        // Optionally handle error
-        // Keep default view
-      },
-    )
 
-    // Watch position for updates
-    navigator.geolocation.watchPosition((position) => {
-      const { latitude, longitude } = position.coords
+  if (!navigator.geolocation) return
+
+  navigator.geolocation.getCurrentPosition(
+    ({ coords: { latitude, longitude } }) => {
+      map.setView([latitude, longitude], 16)
       setPlayerMarker(latitude, longitude)
-      lastPlayerPos = { latitude, longitude }
-      // Vérifier si le joueur est dans le rayon de la mission
-      if (
-        props.mission &&
-        props.mission.latitude &&
-        props.mission.longitude &&
-        props.mission.treshold
-      ) {
-        const wasVisible = missionVisible
-        missionVisible = checkPlayerInMissionRadius(latitude, longitude, props.mission)
-        if (missionVisible && !wasVisible) {
-          setMissionMarkerAndCircle(props.mission)
-        } else if (!missionVisible && wasVisible) {
-          removeMissionMarkerAndCircle()
-        }
+      // Affichage mission si joueur dans la zone
+      if (isMissionValid(props.mission)) {
+        missionVisible = isPlayerInMission(latitude, longitude, props.mission)
+        missionVisible ? setMissionMarkerAndCircle(props.mission) : removeMissionMarkerAndCircle()
       }
-    })
-  }
+    },
+    () => {
+      /* erreur : vue par défaut */
+    },
+  )
+
+  navigator.geolocation.watchPosition(({ coords: { latitude, longitude } }) => {
+    setPlayerMarker(latitude, longitude)
+    if (isMissionValid(props.mission)) {
+      const wasVisible = missionVisible
+      missionVisible = isPlayerInMission(latitude, longitude, props.mission)
+      if (missionVisible && !wasVisible) {
+        setMissionMarkerAndCircle(props.mission)
+        if (!props.visible) emit('update:visible', true)
+      } else if (!missionVisible && wasVisible) {
+        removeMissionMarkerAndCircle()
+        if (props.visible) emit('update:visible', false)
+      }
+    }
+  })
 })
 </script>
 
@@ -201,6 +185,20 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.map-circuit__fade {
+  transition:
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 1;
+  visibility: visible;
+}
+.map-circuit__fade--hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  display: none;
 }
 
 .map-circuit__leaflet {
