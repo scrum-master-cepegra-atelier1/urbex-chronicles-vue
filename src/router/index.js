@@ -20,7 +20,7 @@ const routes = [
     meta: { requiresGuest: true },
   },
   {
-    path: '/profile',//need to add user id
+    path: '/profile', //need to add user id
     name: 'Profile',
     component: () => import('@/views/ProfileView.vue'),
     meta: { requiresAuth: true },
@@ -32,7 +32,13 @@ const routes = [
     component: () => import('@/views/CircuitView.vue'),
     props: true,
     meta: { requiresAuth: true },
-  }
+  },
+  // Route catch-all pour la page 404
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import('@/views/NotFound.vue'),
+  },
 ]
 
 const router = createRouter({
