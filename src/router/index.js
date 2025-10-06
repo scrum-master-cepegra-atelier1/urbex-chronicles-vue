@@ -26,7 +26,6 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
-    //need to add circuit id
     path: '/Circuits/:circuit_id',
     name: 'CircuitDetails',
     component: () => import('@/views/CircuitView.vue'),
