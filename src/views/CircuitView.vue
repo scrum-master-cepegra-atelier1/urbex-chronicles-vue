@@ -2,7 +2,6 @@
   <main class="circuit">
     <header class="circuit__header">
       <h1>Circuit</h1>
-      <p>Circuit ID: {{ circuitStore.currentCircuit.documentId }}</p>
       <p>Circuit Name: {{ circuitStore.currentCircuit.name }}</p>
     </header>
     <!--
@@ -28,6 +27,7 @@
             <li v-for="mission in circuitStore.currentCircuit.Missions" :key="mission.id">
               <h3>{{ mission.title }}</h3>
               <p>{{ mission.description }}</p>
+              <MissionCard :mission="mission" display-mode="long"/>
             </li>
           </ul>
         </section>
@@ -56,6 +56,8 @@ import { onBeforeMount, onMounted, ref } from 'vue'
 import { useCircuitStore } from '@/stores/circuit.js'
 import { useAuthStore } from '@/stores/auth.js'
 import { useRoute } from 'vue-router'
+
+import MissionCard from '@/components/MissionCard.vue'
 
 const $route = useRoute()
 
