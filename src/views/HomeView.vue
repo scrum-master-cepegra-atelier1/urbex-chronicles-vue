@@ -12,9 +12,27 @@
           <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
         </div>
         <UserCard :user="authStore.user" />
-        <SearchBar v-if="circuitStore.circuits.length" class="home__mission-search" :missions="circuitStore.missions" />
-        <MissionCard @click="handleCircuitClick(circuit)" v-if="circuitStore.filteredCircuits.length" v-for="circuit in circuitStore.filteredCircuits" :key="circuit.id" :circuit="circuit" display-mode="long"/>
-        <MissionCard @click="handleCircuitClick(circuit)" v-else v-for="circuit in circuitStore.circuits" :key="circuit.documentId" :circuit="circuit" display-mode="long"/>
+        <SearchBar
+          v-if="circuitStore.circuits.length"
+          class="home__mission-search"
+          :missions="circuitStore.missions"
+        />
+        <MissionCard
+          @click="handleCircuitClick(circuit)"
+          v-if="circuitStore.filteredCircuits.length"
+          v-for="circuit in circuitStore.filteredCircuits"
+          :key="circuit.id"
+          :circuit="circuit"
+          display-mode="long"
+        />
+        <MissionCard
+          @click="handleCircuitClick(circuit)"
+          v-else
+          v-for="circuit in circuitStore.circuits"
+          :key="circuit.documentId"
+          :circuit="circuit"
+          display-mode="long"
+        />
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
       </div>
@@ -49,7 +67,9 @@ const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
 
 onBeforeMount(async () => {
-  await circuitStore.getCircuits();
+  if (authStore.isAuthenticated && authStore.token) {
+    await circuitStore.getCircuits(authStore.token)
+  }
 })
 
 const handleLogout = () => {
@@ -58,11 +78,11 @@ const handleLogout = () => {
 }
 
 const handleCircuitClick = (circuit) => {
-  console.log('circuit cliquée :', circuit);
+  console.log('circuit cliquée :', circuit)
   // on click send to circuit detail view
-  console.log("Current Circuit ID set to:", circuit.documentId);
+  console.log('Current Circuit ID set to:', circuit.documentId)
   //navigate to circuit view
-  window.location.href = `/circuits/${circuit.documentId}`;
+  window.location.href = `/circuits/${circuit.documentId}`
 }
 
 onMounted(() => {
