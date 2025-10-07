@@ -16,12 +16,12 @@ if setup
 -->
 <section class="user-card">
   <figure class="user-card__avatar">
-    <img src="https://placehold.co/200x200?text=Avatar" alt="User avatar" class="user-card__avatar__img"/>
-    <p class="user-card__avatar__level"> Level: 21</p>
+    <img :src="`http://localhost:1337${user.avatar?.url}` || 'https://placehold.co/200x200?text=User+Avatar'" alt="User avatar" class="user-card__avatar__img"/>
+    <p class="user-card__avatar__level"> Niveau {{ user.level ? user.level : 1 }}</p>
   </figure>
   <aside class="user-card__info">
     <h2 class="user-card__info__name">{{ user.username }}</h2>
-    <p class="user-card__info__title">Titre: {{ user.title ? user.title : 'Sans souliers' }}</p>
+    <p class="user-card__info__title">Titre: {{ user.title ? user.title : 'Novice' }}</p>
   </aside>
   <div class="user-card__badges">
     <img src="https://placehold.co/50x50?text=Badge" alt="Badge" />
