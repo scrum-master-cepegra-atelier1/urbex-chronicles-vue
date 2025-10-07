@@ -105,7 +105,6 @@
   <div
     class="user-card-handle"
     @pointerdown="startDrag"
-    @touchstart="startDrag"
     role="button"
     tabindex="0"
     :aria-expanded="isExpanded"
@@ -138,11 +137,6 @@ const props = defineProps({
   initiallyExpanded: {
     type: Boolean,
     default: false
-  },
-  // when placed in header we run in overlayMode (absolute overlay)
-  overlayMode: {
-    type: Boolean,
-    default: false
   }
 })
 
@@ -164,18 +158,16 @@ const lastDragDelta = ref(0)
 function startDrag(e) {
   if (e && typeof e.preventDefault === 'function') e.preventDefault()
   dragging.value = true
-  startY.value = e.clientY || (e.touches && e.touches[0]?.clientY) || 0
+  startY.value = e.clientY || 0
   dragY.value = 0
 
   window.addEventListener('pointermove', onPointerMove, { passive: false })
   window.addEventListener('pointerup', onPointerUp)
-  window.addEventListener('touchmove', onPointerMove, { passive: false })
-  window.addEventListener('touchend', onPointerUp)
 }
 
 function onPointerMove(e) {
   if (!dragging.value) return
-  const clientY = e.clientY || (e.touches && e.touches[0]?.clientY) || 0
+  const clientY = e.clientY || 0
   dragY.value = clientY - startY.value
 }
 
@@ -183,8 +175,6 @@ function onPointerUp() {
   dragging.value = false
   window.removeEventListener('pointermove', onPointerMove)
   window.removeEventListener('pointerup', onPointerUp)
-  window.removeEventListener('touchmove', onPointerMove)
-  window.removeEventListener('touchend', onPointerUp)
 
   // Toggle expand/collapse based on drag direction
   if (dragY.value > threshold) {

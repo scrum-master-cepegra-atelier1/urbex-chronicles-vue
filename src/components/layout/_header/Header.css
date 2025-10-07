@@ -26,34 +26,3 @@
   position: relative; /* establish stacking context for overlay */
   overflow: visible; /* allow overlay to extend outside header */
 }
-/* Overlay dropdown that will contain the expanded UserCard */
-.header-overlay {
-  @apply absolute right-0 top-full w-full sm:w-auto bg-main rounded-b-2xl shadow-lg overflow-hidden;
-  transform-origin: top right;
-  max-height: 0;
-  opacity: 0;
-  transition: max-height 300ms ease, opacity 300ms ease, transform 200ms ease;
-  z-index: 60; /* higher than header-content but below global modals */
-}
-
-.header-overlay--visible {
-  max-height: 600px; /* allow expandable content without pushing page */
-  opacity: 1;
-}
-
-.header-overlay__inner {
-  @apply w-full p-2;
-}
-
-/* When user is dragging we will apply inline transform to move the overlay downwards. */
-.header-overlay.dragging {
-  transition: none !important;
-}
-
-/* Small iOS-like handle */
-.header-handle {
-  @apply h-1.5 w-12 bg-white/40 rounded-full mx-auto mt-2 cursor-grab;
-}
-.header-handle:active { @apply cursor-grabbing }
-
-
