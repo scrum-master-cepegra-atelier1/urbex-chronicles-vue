@@ -37,11 +37,20 @@
         <p>{{ circuitStore.currentCircuit.accessibilities ? circuitStore.currentCircuit.accessibilities : 'Aucun accès disponible' }}</p>
       </section>
     </section>
-    <button @click="handlingClick(circuit_id)" class="circuit__start-button">Lancer la mission</button>
+    <button @click="handlingClick(circuit_id)" class="circuit__start-button circuit__start-button--start active">Lancer la mission</button>
+    <button @click="handlingClick(circuit_id)" class="circuit__start-button circuit__start-button--cancel">Annuler la mission</button>
     <aside class="circuit__popping">
       <button @click="starting('solo')">En solo</button>
       <div class="circuit__popping__separator">
         <button @click="starting('group')">En groupe</button>
+        <input type="text"> <!-- input for group code or name -->
+        <fieldset>
+          <legend>Inviter des amis</legend>
+          <label for="friend">Invité 1</label> <input type="text" id="friend">
+          <label for="friend2">Invité 2</label> <input type="text" id="friend2">
+          <label for="friend3">Invité 3</label> <input type="text" id="friend3">
+        </fieldset>
+        <button>Annuler</button>
       </div>
     </aside>
   </main>
@@ -73,6 +82,11 @@ const handlingClick = (circuit_id) => {
   console.log("Trying to launch circuit ", circuit_id)
   const popping = document.querySelector('.circuit__popping');
   popping.classList.toggle('circuit__popping--active');
+  //toggle buttons
+  const startButton = document.querySelector('.circuit__start-button--start');
+  const cancelButton = document.querySelector('.circuit__start-button--cancel');
+  startButton.classList.toggle('active');
+  cancelButton.classList.toggle('active');
 }
 
 const starting = (mode) => {
@@ -84,6 +98,7 @@ const starting = (mode) => {
       break;
       case 'group':
         //open group creation form
+
         //add user to party
         break;
       }
@@ -191,6 +206,7 @@ onMounted(() => {
   //popping menu styles
   &__start-button {
     position: fixed;
+    display: none;
     bottom: 1rem;
     right: 1rem;
     margin-block: 1rem;
@@ -205,6 +221,15 @@ onMounted(() => {
     color: white;
     border: none;
     cursor: pointer;
+    z-index: 9999;
+    &--cancel {
+      background: #dc3545;
+      right: 1rem;
+      display: none;
+    }
+    &.active {
+      display: inline-block;
+    }
     &:hover {
       background: #0056b3;
     }
@@ -218,11 +243,15 @@ onMounted(() => {
     position: fixed;
     left: 100%;
     top : 75%;
-    transition: left 0.3s ease-in-out;
-    width: 50%;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    height: 50%;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     background: #777;
     &--active {
-      left: 50%;
+      top: 50%;
+      left: 0%;
     }
   }
 }
