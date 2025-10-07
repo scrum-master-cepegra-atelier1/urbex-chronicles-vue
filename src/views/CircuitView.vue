@@ -1,12 +1,16 @@
 <template>
-  <h1>Circuit</h1>
+  <div>
+    <AppHeader />
+    <main>
+      <h1>Circuit</h1>
+    </main>
+    <AppFooter />
+  </div>
 </template>
 
 <script setup>
-import { onBeforeMount, ref } from 'vue'
-import { useMissionStore } from '@/stores/mission.js'
-
-const missionStore = useMissionStore()
+import AppHeader from '@/components/layout/_header/Header.vue'
+import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 </script>
 

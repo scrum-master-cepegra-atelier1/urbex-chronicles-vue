@@ -37,7 +37,5 @@ body {
 
 .main-content {
   flex: 1;
-  padding-bottom: 120px; /* Espace pour la navbar fixe en bas */
-  padding-top: 72px; /* Make room for fixed header */
 }
 </style>

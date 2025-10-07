@@ -2,7 +2,7 @@
   <div>
     <!-- Header avec UserCard (si authentifié) -->
     <AppHeader v-if="authStore.isAuthenticated" />
-    
+
     <main class="home">
       <div class="home__container">
         <h1 class="home__title">URBEX Chronicles</h1>
@@ -33,6 +33,8 @@
         </div>
       </div>
     </main>
+    <!-- Footer added for all views (English comment) -->
+    <AppFooter />
   </div>
 </template>
 
@@ -44,6 +46,7 @@ import { useMissionStore } from '@/stores/mission.js'
 import MissionCard from '@/components/MissionCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
+import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 //stores
 const authStore = useAuthStore()
