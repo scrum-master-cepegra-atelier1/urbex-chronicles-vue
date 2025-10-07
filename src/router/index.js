@@ -6,12 +6,19 @@ import RegisterView from '@/views/RegisterView.vue'
 import ProfileView from '@/views/ProfileView.vue'
 import CircuitView from '@/views/CircuitView.vue'
 import NotFound from '@/views/NotFound.vue'
+import GameRunningView from '@/views/GameRunningView.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
     component: HomeView,
+  },
+  {
+    path: '/game-running',
+    name: 'GameRunning',
+    component: GameRunningView,
+    meta: { requiresAuth: true },
   },
   {
     path: '/login',
