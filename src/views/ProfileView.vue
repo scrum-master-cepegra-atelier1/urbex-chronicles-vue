@@ -18,3 +18,4 @@ const authStore = useAuthStore()
 </script>
 
 <style lang="scss" scoped></style>
+
