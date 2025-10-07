@@ -1,28 +1,23 @@
 <template>
-  <section class="mission-card" :class="'mission-card--'+displayMode">
-    <figure class="mission-card__image">
-      <img :src="mission.image || 'https://placehold.co/400x200?text=mission+Image'" alt="mission Image" class="mission-card__image__img"/>
-    </figure>
-    <aside class="mission-card__info">
-      <img src="http://localhost:1337/uploads/tiefling_priest_card_69f8235344.jpg"> </img>
-      <h2 class="mission-card__info__title">{{ mission.title}}</h2>
-      <p class="mission-card__info__description">{{ mission.description }}</p>
-      <pre>{{ mission }}</pre>
-      <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start mission</button>
-    </aside>
-  </section>
+  <li>
+    <section class="mission-card" :class="'mission-card--'+displayMode">
+      <figure class="mission-card__image">
+        <img :src="`http://localhost:1337${mission.media?.image?.url}` || 'https://placehold.co/400x200?text=mission+Image'" alt="mission Image" class="mission-card__image__img"/>
+      </figure>
+      <aside class="mission-card__info">
+        <h2 class="mission-card__info__title">{{ mission.title}}</h2>
+        <p class="mission-card__info__description">{{ mission.description }}</p>
+        <button class="mission-card__info__start-button" v-if="displayMode === 'squared'">Start mission</button>
+      </aside>
+    </section>
+  </li>
   </template>
   
   <script setup>
   //import api
   import { onBeforeMount, computed } from 'vue';
-  import ApiService from '@/services/ApiService';
-  import { useAuthStore } from '@/stores/auth';
 
 
-  const apiService = new ApiService();
-  const authStore = useAuthStore();
-  const jwtToken = authStore.jwtToken
 
   //define props for display mode
   const props = defineProps({
@@ -36,24 +31,9 @@
     mission: {
       type: Object,
       default: () => ({ title: 'Default mission' }),
-    },
+    }
   })
   
-  const media = computed(() => {
-  return {...props.mission.media}
-});
-
-
-  onBeforeMount( async() => {
-    const response = await apiService.get(`/upload/files/${props.mission.media.image.id}`, {
-      headers: {
-            Authorization: `Bearer ${jwtToken}`,
-          },
-    })
-    const img = JSON.parse(response.data)
-    console.log("fetching image " + img)
-  })
-
   //computed class for mode
   const cardClass = computed(() => {
     return displayMode === 'squared' ? 'mission-card--squared' : 'mission-card--long';

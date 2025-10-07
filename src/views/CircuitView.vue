@@ -23,12 +23,8 @@
         <p>{{ circuitStore.currentCircuit.description }}</p>
         <section class="circuit__missions">
           <h2>Missions</h2>
-          <p> {{ circuitStore.currentCircuit.Missions[0].media.image.url }}</p>
-          <img :src="`http://localhost:1337${circuitStore.currentCircuit.Missions[0].media.image.url}`" alt="mission Image" class="mission-card__image__img"/>
           <ul>
-            <li v-for="mission in circuitStore.currentCircuit.Missions" :key="mission.id">
-              <MissionCard :mission="mission" display-mode="long"/>
-            </li>
+              <MissionCard v-for="mission in circuitStore.currentCircuit.Missions" :key="mission.id" :mission="mission" display-mode="long" />
           </ul>
         </section>
       </section>
