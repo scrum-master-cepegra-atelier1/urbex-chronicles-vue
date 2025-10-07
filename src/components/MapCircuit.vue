@@ -153,6 +153,13 @@ onMounted(() => {
       if (isMissionValid(props.mission)) {
         missionVisible = isPlayerInMission(latitude, longitude, props.mission)
         missionVisible ? setMissionMarkerAndCircle(props.mission) : removeMissionMarkerAndCircle()
+      } else {
+        // Afficher un popup sur la position utilisateur si pas de mission valide
+        if (playerMarker) {
+          playerMarker
+            .bindPopup('Localisation de la mission en cours non trouvée. Essayez ultérieurement.')
+            .openPopup()
+        }
       }
     },
     () => {
