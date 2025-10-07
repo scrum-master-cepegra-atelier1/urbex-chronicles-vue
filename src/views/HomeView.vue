@@ -43,7 +43,7 @@ import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
-import MissionCard from '@/components/MissionCard.vue'
+import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
@@ -59,14 +59,6 @@ onBeforeMount(async () => {
 const handleLogout = () => {
   authStore.logout()
   console.log('Déconnexion réussie')
-}
-
-const handleCircuitClick = (circuit) => {
-  console.log('circuit cliquée :', circuit);
-  // on click send to circuit detail view
-  console.log("Current Circuit ID set to:", circuit.documentId);
-  //navigate to circuit view
-  window.location.href = `/circuits/${circuit.documentId}`;
 }
 
 onMounted(() => {
