@@ -6,11 +6,18 @@
         Ceci est un indice statique. (À remplacer par une donnée dynamique plus tard)
       </p>
     </header>
+    <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
 </template>
 <script setup>
-// Rien à ajouter pour l'instant, logique à venir
+import { computed, ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import MapCircuit from '@/components/MapCircuit.vue'
+
+const authStore = useAuthStore()
+const currentMission = computed(() => authStore.user?.current_mission || null)
+const mapVisible = ref(true)
 </script>
 <style scoped lang="scss">
 // Header indice styles respectant la convention SCSS
