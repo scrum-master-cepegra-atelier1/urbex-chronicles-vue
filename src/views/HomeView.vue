@@ -41,7 +41,7 @@
 <script setup>
 import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
-import { useMissionStore } from '@/stores/mission.js'
+import { useCircuitStore } from '@/stores/circuit.js'
 //components
 import MissionCard from '@/components/MissionCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
@@ -50,10 +50,10 @@ import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 //stores
 const authStore = useAuthStore()
-const missionStore = useMissionStore()
+const circuitStore = useCircuitStore()
 
 onBeforeMount(async () => {
-  await missionStore.getMissions();
+  await circuitStore.getCircuits();
 })
 
 const handleLogout = () => {
@@ -61,6 +61,13 @@ const handleLogout = () => {
   console.log('Déconnexion réussie')
 }
 
+const handleCircuitClick = (circuit) => {
+  console.log('circuit cliquée :', circuit);
+  // on click send to circuit detail view
+  console.log("Current Circuit ID set to:", circuit.documentId);
+  //navigate to circuit view
+  window.location.href = `/circuits/${circuit.documentId}`;
+}
 
 onMounted(() => {
   // Initialiser l'état d'authentification au chargement

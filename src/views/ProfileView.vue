@@ -15,6 +15,7 @@
   <AppFooter />
 </template>
 
+
 <script setup>
 import { computed } from 'vue'
 //components
@@ -32,6 +33,8 @@ const missionStore = useMissionStore()
 const missions = computed(() => missionStore.missions)
 
 </script>
+
+<style lang="scss" scoped></style>
 
 
 <style lang='scss' scoped>
