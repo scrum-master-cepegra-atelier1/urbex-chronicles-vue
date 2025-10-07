@@ -1,37 +1,49 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.js'
+import HomeView from '@/views/HomeView.vue'
+import LoginView from '@/views/LoginView.vue'
+import RegisterView from '@/views/RegisterView.vue'
+import ProfileView from '@/views/ProfileView.vue'
+import CircuitView from '@/views/CircuitView.vue'
+import NotFound from '@/views/NotFound.vue'
 
 const routes = [
   {
     path: '/',
     name: 'Home',
-    component: () => import('@/views/HomeView.vue'),
+    component: HomeView,
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('@/views/LoginView.vue'),
+    component: LoginView,
     meta: { requiresGuest: true },
   },
   {
     path: '/register',
     name: 'Register',
-    component: () => import('@/views/RegisterView.vue'),
+    component: RegisterView,
     meta: { requiresGuest: true },
   },
   {
-    path: '/profile',//need to add user id
+    path: '/profile', //need to add user id
     name: 'Profile',
-    component: () => import('@/views/ProfileView.vue'),
+    component: ProfileView,
     meta: { requiresAuth: true },
   },
   {
     path: '/Circuits/:circuit_id',
     name: 'CircuitDetails',
-    component: () => import('@/views/CircuitView.vue'),
+    component: CircuitView,
     props: true,
     meta: { requiresAuth: true },
-  }
+  },
+  // Route catch-all pour la page 404
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: NotFound,
+  },
 ]
 
 const router = createRouter({
