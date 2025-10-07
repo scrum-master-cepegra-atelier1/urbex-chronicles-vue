@@ -187,7 +187,6 @@ onMounted(() => {
 <style scoped lang="scss">
 .map-circuit__container {
   width: 100vw;
-  min-height: 50vh;
   height: 100%;
   display: flex;
   align-items: center;
@@ -210,7 +209,7 @@ onMounted(() => {
 
 .map-circuit__leaflet {
   width: 100vw;
-  min-height: 50vh;
+  min-height: 75vh;
   height: 100%;
   border-radius: 12px;
   box-shadow: 0 2px 12px #000a;
