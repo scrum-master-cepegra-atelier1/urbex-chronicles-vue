@@ -45,7 +45,7 @@
         <h2>Avis</h2>
         <p>
           {{
-            circuitStore.currentCircuit.comments
+            circuitStore.currentCircuit.comments && circuitStore.currentCircuit.comments.length>0
               ? circuitStore.currentCircuit.comments
               : 'Aucun feedback disponible'
           }}
@@ -55,7 +55,7 @@
         <h2>Malvoyant etc</h2>
         <p>
           {{
-            circuitStore.currentCircuit.accessibilities
+            circuitStore.currentCircuit.accessibilities && circuitStore.currentCircuit.accessibilities.length>0
               ? circuitStore.currentCircuit.accessibilities
               : 'Aucun accès disponible'
           }}
