@@ -1,7 +1,7 @@
 <template>
-<div class="user-card" :class="{ 'user-card--expanded': isExpanded }">
+<section class="user-card" :class="{ 'user-card--expanded': isExpanded }">
   <!-- Avatar toujours visible -->
-  <div
+  <figure
     class="user-card__avatar"
     role="button"
     tabindex="0"
@@ -11,15 +11,15 @@
     @keydown.enter="toggleExpand"
     @keydown.space.prevent="toggleExpand"
   >
-    <img src="/data/doko.png" alt="User avatar" class="user-card__avatar__img"/>
+  <img :src="`http://localhost:1337${currentUser?.avatar?.url || 'https://placehold.co/400x200?text=mission+Image'}`" alt="User avatar" class="user-card__avatar__img"/>
     <div class="user-card__avatar__meta">
       <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
-      <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 21 }}</p>
+      <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 1 }}</p>
     </div>
-  </div>
+  </figure>
 
   <!-- Contenu étendu -->
-  <div
+  <section
     class="user-card__expandable"
     :class="{ 'user-card__expandable--visible': isExpanded }"
     id="user-card-expandable"
@@ -86,7 +86,7 @@
       <span>Paramètres</span>
     </div>
 
-    <div class="user-card__details-all" v-if="currentUser">
+    <aside class="user-card__details-all" v-if="currentUser">
       <div class="user-card__details-all__title">Toutes les informations</div>
       <div class="user-card__details-all__grid">
         <div
@@ -98,8 +98,8 @@
           <span class="value">{{ formatAny(val) }}</span>
         </div>
       </div>
-    </div>
-  </div>
+    </aside>
+  </section>
 
   <!-- Barre de slide TOUJOURS en bas -->
   <div
@@ -114,37 +114,32 @@
   >
     <div class="user-card-handle__bar"></div>
   </div>
-</div>
+</section>
 </template>
 
 <script setup>
-
+//components imports
 import Icon from '@/components/ui/_IconAsset/Icon.vue'
 import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 
+//store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
 import { computed, ref } from 'vue'
-
+const authStore = useAuthStore()
+// Computed property pour obtenir l'utilisateur actuel
+const currentUser = computed(() => authStore.user)
+  console.log(currentUser.value)
 
 defineOptions({ name: 'UserCard' })
 
 // define props (allow parent to force expanded state)
 const props = defineProps({
-  user: {
-    type: Object,
-    default: () => ({})
-  },
   initiallyExpanded: {
     type: Boolean,
     default: false
   }
 })
 
-// Utiliser le store d'authentification
-const authStore = useAuthStore()
-
-// Computed property pour obtenir l'utilisateur actuel
-const currentUser = computed(() => authStore.user)
 
 // État du déploiement, initialisé depuis le prop
 const isExpanded = ref(props.initiallyExpanded)

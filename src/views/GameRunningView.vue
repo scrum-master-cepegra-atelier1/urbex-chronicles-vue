@@ -13,7 +13,7 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import MapCircuit from '@/components/MapCircuit.vue'
+import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 
 const authStore = useAuthStore()
 const currentMission = computed(() => authStore.user?.current_mission || null)

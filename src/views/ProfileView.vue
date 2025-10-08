@@ -4,10 +4,8 @@
 
   <!-- Page content -->
   <main class="profile-page">
-    <!--Search Bar-->
-    <SearchBar :missions="missions" />
     <!--Select mission-->
-    <MissionCard display-mode="squared"/>
+    <MissionCard :mission="missions" display-mode="squared"/>
     <!--Logout-->
   </main>
 
@@ -22,7 +20,7 @@ import { computed } from 'vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 
 //stores
 import { useCircuitStore } from '@/stores/circuit.js'

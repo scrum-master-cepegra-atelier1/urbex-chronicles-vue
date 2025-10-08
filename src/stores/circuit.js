@@ -25,7 +25,7 @@ export const useCircuitStore = defineStore('circuit', {
     /** @type {string|null} JWT authentication token from auth store */
     filteredCircuits: [],
     /** @type {string|null} Type of search */
-    searchBy: null,
+    searchBy: "name",
     /** @type {Object|null} Looked up circuit object */
     currentCircuit: null,
   }),
@@ -45,7 +45,7 @@ export const useCircuitStore = defineStore('circuit', {
   actions: {
     async getCircuits(token) {
       try {
-        this.circuits = await apiService.get('/circuits?populate=*', {
+        this.circuits = await apiService.get('/circuits?populate=all', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -60,7 +60,7 @@ export const useCircuitStore = defineStore('circuit', {
     async getCircuit(id, token) {
       try {
         const response = await apiService.get(
-          `/circuits/${id}?populate[missions][populate][media][populate]=*`,
+          `/circuits/${id}?populate=all`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -69,7 +69,7 @@ export const useCircuitStore = defineStore('circuit', {
         )
         this.currentCircuit = response.data
         console.log('Fetched circuit with ID:', id)
-        console.log(this.currentCircuit.Missions)
+        console.log(this.currentCircuit.missions)
         // Optionally, you can store the fetched mission in the store if needed
         // this.currentMission = response.data;
       } catch (error) {
