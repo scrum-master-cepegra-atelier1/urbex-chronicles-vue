@@ -4,7 +4,7 @@
     <img src="https://placehold.co/400x200?text=circuit+Image" alt="circuit Image" class="circuit-card__image__img"/>
   </figure>
   <aside class="circuit-card__info">
-    <h2 class="circuit-card__info__title">{{ circuit.name}}</h2>
+    <h2 class="circuit-card__info__title">{{ circuit.name }}</h2>
     <p class="circuit-card__info__description">{{ circuit.description }}</p>
     <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">Start circuit</button>
   </aside>
@@ -13,18 +13,10 @@
 
 <script setup>
 //import api
-import { useCircuitStore } from '@/stores/circuit';
-import { onBeforeMount, computed } from 'vue';
-
-const circuitStore = useCircuitStore();
-
-onBeforeMount(async () => {
-  await circuitStore.getCircuits();
-  console.log(circuitStore.circuits);
-})
+import {  computed } from 'vue';
 
 //define props for display mode
-defineProps({
+defineProps({ 
   displayMode: {
     type: String,
     default: 'squared',
@@ -37,10 +29,6 @@ defineProps({
     default: () => ({ title: 'Default circuit' }),
   },
 })
-//computed class for mode
-const cardClass = computed(() => {
-  return displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long';
-});
 </script>
 
 <style lang='scss' scoped>

@@ -24,7 +24,7 @@
         <section class="circuit__missions">
           <h2>Missions</h2>
           <ul>
-              <MissionCard v-for="mission in circuitStore.currentCircuit.Missions" :key="mission.id" :mission="mission" display-mode="long" />
+              <MissionCard v-for="mission in circuitStore.currentCircuit.missions" :key="mission.id" :mission="mission" display-mode="long" />
           </ul>
         </section>
       </section>

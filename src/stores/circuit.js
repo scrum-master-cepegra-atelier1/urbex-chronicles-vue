@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import ApiService from '@/services/ApiService'
 import { useAuthStore } from './auth'
 
+
 const apiService = new ApiService() //request manager
 
 /**
@@ -61,14 +62,14 @@ export const useCircuitStore = defineStore('circuit', {
     },
     async getCircuit(id) {
       try {
-         const response = await apiService.get(`/circuits/${id}?populate[Missions][populate][media][populate]=*`, {
+         const response = await apiService.get(`/circuits/${id}?populate=all`, {
           headers: {
             Authorization: `Bearer ${this.jwtToken}`,
           },
         })
         this.currentCircuit = response.data
         console.log('Fetched circuit with ID:', id)
-        console.log(this.currentCircuit.Missions)
+        console.log(this.currentCircuit.missions)
         // Optionally, you can store the fetched mission in the store if needed
         // this.currentMission = response.data;
       } catch (error) {
