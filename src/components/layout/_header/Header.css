@@ -17,10 +17,6 @@
 }
 
 .header-content {
-  /* Match padding from Navbar/Footer: m-2 p-3 rounded-full bg-main */
-  margin: 0.5rem; /* tailwind m-2 */
-  padding: 0.75rem; /* tailwind p-3 */
-  border-radius: 9999px; /* rounded-full */
   /*background-color: var(--color-main);*/
   /*background-image: linear-gradient(to bottom, var(--color-main), var(--color-complement));*/
   position: relative; /* establish stacking context for overlay */

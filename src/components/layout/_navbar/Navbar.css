@@ -1,7 +1,7 @@
 @import '@/assets/css/style.css';
 
 .navigation-container{
-  @apply m-2 p-3 rounded-full  bg-main bg-gradient-to-b from-main to-complement;
+  @apply m-2 p-3 rounded-4xl  bg-main bg-gradient-to-b from-main to-complement;
 }
 
 .navigation-list{

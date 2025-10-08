@@ -31,3 +31,5 @@ coverage
 
 .env
 .github/*
+
+vite.config.js

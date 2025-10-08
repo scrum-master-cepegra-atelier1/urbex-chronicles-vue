@@ -11,7 +11,7 @@
     @keydown.enter="toggleExpand"
     @keydown.space.prevent="toggleExpand"
   >
-    <img :src="`http://localhost:1337${currentUser?.avatar?.url || '/data/doko.png'}`" alt="User avatar" class="user-card__avatar__img"/>
+    <img :src=q alt="User avatar" class="user-card__avatar__img"/>
     <div class="user-card__avatar__meta">
       <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
       <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 1 }}</p>
@@ -128,6 +128,7 @@ import { computed, ref } from 'vue'
 const authStore = useAuthStore()
 // Computed property pour obtenir l'utilisateur actuel
 const currentUser = computed(() => authStore.user)
+  console.log(currentUser.value)
 
 defineOptions({ name: 'UserCard' })
 
