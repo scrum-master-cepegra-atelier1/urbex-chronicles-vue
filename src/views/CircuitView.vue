@@ -108,7 +108,7 @@ import { useCircuitStore } from '@/stores/circuit.js'
 import { useAuthStore } from '@/stores/auth.js'
 import { useRoute } from 'vue-router'
 
-import MissionCard from '@/components/MissionCard.vue'
+import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 
 const $route = useRoute()
 
