@@ -42,7 +42,7 @@
 import { onBeforeMount } from 'vue'
 import { useCircuitStore } from '@/stores/circuit.js'
 import MissionCard from '@/components/MissionCard.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 

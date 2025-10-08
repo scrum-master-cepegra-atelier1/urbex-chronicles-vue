@@ -16,11 +16,13 @@
 class ApiService {
   /**
    * Creates an instance of ApiService
+   * @param {string|null} hostUrl - Base URL for  . . . it's just to get the img
    * @param {string|null} baseUrl - Base URL for API calls (defaults to environment variable)
    * @param {string|null} apiKey - API key for authentication (defaults to environment variable)
    */
-  constructor(baseUrl = null, apiKey = null) {
+  constructor(baseUrl = null, apiKey = null, hostUrl = null) {
     // Use environment variables or provided parameters
+    this.hostUrl = hostUrl || import.meta.env.LOCALHOST_BASE_URL || null
     this.baseUrl = baseUrl || import.meta.env.VITE_API_BASE_URL || ''
     this.apiKey = apiKey || import.meta.env.VITE_API_KEY || null
     this.defaultHeaders = {
@@ -80,7 +82,7 @@ class ApiService {
   async get(endpoint, options = {}) {
     return this.request(endpoint, {
       method: 'GET',
-      ...options, 
+      ...options,
     })
   }
 

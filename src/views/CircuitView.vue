@@ -45,8 +45,8 @@
         <h2>Avis</h2>
         <p>
           {{
-            circuitStore.currentCircuit.feedback
-              ? circuitStore.currentCircuit.feedback
+            circuitStore.currentCircuit.comments && circuitStore.currentCircuit.comments.length>0
+              ? circuitStore.currentCircuit.comments
               : 'Aucun feedback disponible'
           }}
         </p>
@@ -55,7 +55,7 @@
         <h2>Malvoyant etc</h2>
         <p>
           {{
-            circuitStore.currentCircuit.accessibilities
+            circuitStore.currentCircuit.accessibilities && circuitStore.currentCircuit.accessibilities.length>0
               ? circuitStore.currentCircuit.accessibilities
               : 'Aucun accès disponible'
           }}
@@ -108,7 +108,7 @@ import { useCircuitStore } from '@/stores/circuit.js'
 import { useAuthStore } from '@/stores/auth.js'
 import { useRoute, useRouter } from 'vue-router'
 
-import MissionCard from '@/components/MissionCard.vue'
+import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 
 const $route = useRoute()
 const $router = useRouter()

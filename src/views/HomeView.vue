@@ -13,32 +13,32 @@
           </h2>
           <p class="home__status">Vous êtes connecté(e)</p>
 
-          <div class="home__user-info">
-            <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
-            <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
-          </div>
-          <UserCard :user="authStore.user" />
-          <SearchBar
-            v-if="circuitStore.circuits.length"
-            class="home__mission-search"
-            :missions="circuitStore.missions"
-          />
-          <MissionCard
-            @click="handleCircuitClick(circuit)"
-            v-if="circuitStore.filteredCircuits.length"
-            v-for="circuit in circuitStore.filteredCircuits"
-            :key="circuit.id"
-            :circuit="circuit"
-            display-mode="long"
-          />
-          <MissionCard
-            @click="handleCircuitClick(circuit)"
-            v-else
-            v-for="circuit in circuitStore.circuits"
-            :key="circuit.documentId"
-            :circuit="circuit"
-            display-mode="long"
-          />
+        <div class="home__user-info">
+          <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
+          <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
+        </div>
+        <UserCard />
+        <SearchBar
+          v-if="circuitStore.circuits.length"
+          class="home__circuit-search"
+          :circuits="circuitStore.circuits"
+        />
+        <CircuitCard
+          @click="handleCircuitClick(circuit)"
+          v-if="circuitStore.filteredCircuits.length"
+          v-for="circuit in circuitStore.filteredCircuits"
+          :key="circuit.id"
+          :circuit="circuit"
+          display-mode="long"
+        />
+        <CircuitCard
+          @click="handleCircuitClick(circuit)"
+          v-else
+          v-for="circuit in circuitStore.circuits"
+          :key="circuit.documentId"
+          :circuit="circuit"
+          display-mode="long"
+        />
 
           <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
         </div>
@@ -67,16 +67,14 @@ import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
-import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
+import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
-// Backwards-compatible alias for templates that still reference missionStore
-const missionStore = circuitStore
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
