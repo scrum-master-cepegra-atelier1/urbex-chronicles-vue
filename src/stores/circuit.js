@@ -5,14 +5,14 @@ import { useAuthStore } from './auth'
 const apiService = new ApiService() //request manager
 
 /**
- * Mission Store using Pinia
+ * Circuit Store using Pinia (replaces the older Mission store)
  *
- * @description Manages current mission state, global mission fetching and other mission operations
+ * @description Manages circuits state, global circuit fetching and other circuit operations
  * @example
  * // In a Vue component
- * import { useMissionStore } from '@/stores/mission'
+ * import { useCircuitStore } from '@/stores/circuit'
  *
- * const missionStore = useMissionStore()
+ * const circuitStore = useCircuitStore()
  */
 
 export const useCircuitStore = defineStore('circuit', {

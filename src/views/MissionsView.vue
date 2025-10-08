@@ -40,16 +40,19 @@
 
 <script setup>
 import { onBeforeMount } from 'vue'
-import { useMissionStore } from '@/stores/mission.js'
+import { useCircuitStore } from '@/stores/circuit.js'
 import MissionCard from '@/components/MissionCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
-const missionStore = useMissionStore()
+const missionStore = useCircuitStore()
 
 onBeforeMount(async () => {
-  await missionStore.getMissions()
+  // circuits store provides getCircuits
+  if (typeof missionStore.getCircuits === 'function') {
+    await missionStore.getCircuits()
+  }
 })
 </script>
 

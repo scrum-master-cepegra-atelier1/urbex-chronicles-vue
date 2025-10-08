@@ -13,14 +13,17 @@
 
 <script setup>
 //import api
-import { useMissionStore } from '@/stores/mission';
+import { useCircuitStore } from '@/stores/circuit';
 import { onBeforeMount } from 'vue';
 
-const missionStore = useMissionStore();
+const circuitStore = useCircuitStore();
 
 onBeforeMount(async () => {
-  await missionStore.getMissions();
-  console.log(missionStore.missions);
+  // switch to circuits store fetching if needed by this component
+  if (typeof circuitStore.getCircuits === 'function') {
+    await circuitStore.getCircuits();
+    console.log(circuitStore.circuits);
+  }
 })
 
 //define props for display mode
@@ -34,7 +37,7 @@ const props = defineProps({
   },
   mission: {
     type: Object,
-    default: () => ({ 
+    default: () => ({
       name: 'Default Mission',
       description: 'Default mission description'
     }),
@@ -46,5 +49,5 @@ const props = defineProps({
 
     /* Tailwind ne prend pas c'est @apply directement dans le style !*/
     @import './MissionCard.css';
-    
+
 </style>

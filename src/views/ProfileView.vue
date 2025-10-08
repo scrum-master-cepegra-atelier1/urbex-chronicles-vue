@@ -25,12 +25,12 @@ import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
 
 //stores
-import { useMissionStore } from '@/stores/mission.js'
+import { useCircuitStore } from '@/stores/circuit.js'
 
-const missionStore = useMissionStore()
+const circuitStore = useCircuitStore()
 
-// Computed property pour obtenir les missions
-const missions = computed(() => missionStore.missions)
+// Computed property pour obtenir les circuits (anciennement missions)
+const missions = computed(() => circuitStore.circuits)
 
 </script>
 

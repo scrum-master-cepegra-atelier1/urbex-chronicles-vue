@@ -8,12 +8,12 @@
         <h1 class="home__title">URBEX Chronicles</h1>
 
         <div v-if="authStore.isAuthenticated" class="home__authenticated">
-          <SearchBar v-if="missionStore.missions.length" class="home__mission-search" :missions="missionStore.missions" />
-        <template v-if="missionStore.filteredMissions.length">
-          <MissionCard v-for="mission in missionStore.filteredMissions" :key="mission.id" :mission="mission" display-mode="long"/>
+          <SearchBar v-if="missionStore?.circuits && missionStore.circuits.length" class="home__mission-search" :missions="missionStore.circuits" />
+        <template v-if="missionStore?.filteredCircuits && missionStore.filteredCircuits.length">
+          <MissionCard v-for="mission in missionStore.filteredCircuits" :key="mission.id" :mission="mission" display-mode="long"/>
         </template>
         <template v-else>
-          <MissionCard v-for="mission in missionStore.missions" :key="mission.id" :mission="mission" display-mode="long"/>
+          <MissionCard v-for="mission in missionStore?.circuits || []" :key="mission.id" :mission="mission" display-mode="long"/>
         </template>
 
         <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
@@ -51,9 +51,19 @@ import AppFooter from '@/components/layout/_footer/Footer.vue'
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
+// Backwards-compatible alias for templates that still reference missionStore
+const missionStore = circuitStore
 
 onBeforeMount(async () => {
-  await circuitStore.getCircuits();
+  // ensure auth state is initialized before fetching protected resources
+  authStore.initializeAuth()
+  if (authStore.isAuthenticated) {
+    try {
+      await circuitStore.getCircuits();
+    } catch (e) {
+      console.error('Error fetching circuits:', e)
+    }
+  }
 })
 
 const handleLogout = () => {
