@@ -20,8 +20,6 @@
           <label for="answer4">4</label>
         </div>
       </section>
-      <!--text answer-->
-      <button class="question-card__info__start-button">Repondre</button>
       <!--if answer is correct-->
       <aside class="question-card__info__result">
         <p class="question-card__info__result__correct" v-show="isCorrect">Bonne reponse</p>
@@ -30,17 +28,30 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
+//variante de mission: sphere 360
+const angle = ref(0);
+const bulletpoints = ref([]);
+const isClicked = ref(false);
+
+function handleClick() {
+  isClicked.value = true;
+  angle.value = 360;
+  bulletpoints.value = [1, 2, 3, 4];
+}
+//BROUILLON 
+
+
+//variante de mission : question réponse
 const isCorrect = ref(false);
 const question_response = ref('');
-
 function checkAnswer(answer) {
+  //replace with api call to check answer
   console.log(answer);
   if (answer === 2) {
     isCorrect.value = true;
     question_response.value = 'Bonne reponse';
-    console.log('Bonne reponse');
   } else {
     isCorrect.value = false;
     question_response.value = 'Mauvaise reponse';
