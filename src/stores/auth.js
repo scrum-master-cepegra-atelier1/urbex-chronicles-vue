@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import AuthService from '@/services/AuthService.js'
+import ApiService from '@/services/ApiService'
 
 /**
  * Authentication Store using Pinia
@@ -128,5 +129,35 @@ export const useAuthStore = defineStore('auth', {
         this.user = user
       }
     },
+    /** 
+     * update user currentCircuit and mission
+     * @param {object} user - User object
+     * @param {string} token - JWT token
+    */
+    async updateUser(user, token) {
+      try {
+        const response = await AuthService.updateUser(user, token)
+        this.user = response
+        console.log('User updated successfully:', response)
+      } catch (error) {
+        this.error = error.message
+        console.error('Error updating user:', error)
+      }
+    },
+    /**
+     * Starts mission for current user
+     * @param {obecjt} circuit - Circuit object chosen by user
+     * @param {object} mission - Data of mission to start corresponding to mission[0] of the circuit
+     */
+    startCircuit(circuit, mission) {
+      this.user.currentCircuit = circuit
+      this.user.mission = mission
+      console.log(this.user.currentCircuit)
+      console.log(this.user.mission)
+      //sent this to api
+      ApiService.put(`/users/${this.user.id}`, {
+        
+      })
+    }
   },
 })

@@ -141,6 +141,7 @@ const starting = (mode) => {
   switch (mode) {
     case 'solo':
       //launch mission solo
+      authStore.startCircuit(circuitStore.currentCircuit, circuitStore.currentCircuit.missions[0])
       break
     case 'group':
       //add user to party

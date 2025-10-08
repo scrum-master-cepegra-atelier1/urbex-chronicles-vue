@@ -6,6 +6,7 @@
         Ceci est un indice statique. (À remplacer par une donnée dynamique plus tard)
       </p>
     </header>
+    <QuestionCard />
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
@@ -13,7 +14,9 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+//components
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
+import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
 
 const authStore = useAuthStore()
 const currentMission = computed(() => authStore.user?.current_mission || null)
