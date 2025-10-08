@@ -2,8 +2,8 @@
   <div class="progress-bar">
     <div class="progress-bar__label" v-if="label">{{ label }}</div>
     <div class="progress-bar__container">
-      <div 
-        class="progress-bar__fill" 
+      <div
+        class="progress-bar__fill"
         :style="{ width: progressPercentage + '%' }"
       ></div>
     </div>
@@ -37,14 +37,14 @@ const props = defineProps({
   }
 })
 
-const currentValue = computed(() => props.value)
-const maxValue = computed(() => props.max)
-const progressPercentage = computed(() => {
-  if (props.max === 0) return 0
-  return Math.min((props.value / props.max) * 100, 100)
-})
+  const currentValue = computed(() => props.value)
+  const maxValue = computed(() => props.max)
+  const progressPercentage = computed(() => {
+    if (props.max === 0) return 0
+    return Math.min((props.value / props.max) * 100, 100)
+  })
 </script>
 
 <style>
-@import './ProgressBar.css';
+  @import './ProgressBar.css';
 </style>
