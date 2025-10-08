@@ -36,7 +36,7 @@ import Icon from '@/components/ui/_IconAsset/Icon.vue'
       </li>
       <li class="navigation-list__item">
 
-        <router-link to="" class="navigation-label" id="">
+        <router-link to="/leaderboard" class="navigation-label" id="">
           <Icon name="trophy" :size="IconSize" dir="icon" />
           <p class="navigation-label__name">Succes</p>
         </router-link>

@@ -2,7 +2,7 @@
 
 
 .mission-card {
-  @apply grid overflow-hidden my-4 rounded-2xl;
+  @apply grid overflow-hidden my-4 rounded-2xl /*bg-main*/ bg-gray-500;
 }
 
 .mission-card__image {
@@ -31,7 +31,7 @@
 
 /* Mode Squared */
 .mission-card--squared {
-  @apply max-w-sm aspect-square mx-auto bg-main;
+  @apply max-w-sm aspect-square mx-auto /*bg-main*/ bg-gray-500;
 }
 
 .mission-card--squared .mission-card__image {
@@ -40,9 +40,9 @@
 
 .mission-card--squared .mission-card__info {
   @apply col-span-full row-span-full grid-rows-[2fr_2fr_1fr] grid-cols-[2fr_1fr];
-  grid-template-areas: 
+  grid-template-areas:
     "title title"
-    "description description" 
+    "description description"
     "blank start-button";
 }
 
@@ -69,9 +69,9 @@
 
 .mission-card--long .mission-card__info {
   @apply col-start-2 gap-1 p-2 grid-cols-[3fr_1fr];
-  grid-template-areas: 
+  grid-template-areas:
     "title blank"
-    "time time" 
+    "time time"
     "description description"
     "blank blank";
 }

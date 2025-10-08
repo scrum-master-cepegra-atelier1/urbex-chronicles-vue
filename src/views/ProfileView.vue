@@ -32,9 +32,6 @@ const missions = computed(() => circuitStore.circuits)
 
 </script>
 
-<style lang="scss" scoped></style>
-
-
 <style lang='scss' scoped>
 .profile-page {
   padding: 1rem;

@@ -3,11 +3,18 @@ import { useAuthStore } from '@/stores/auth.js'
 import HomeView from '@/views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
-import ProfileView from '@/views/ProfileView.vue'
 import CircuitView from '@/views/CircuitView.vue'
 import NotFound from '@/views/NotFound.vue'
 import GameRunningView from '@/views/GameRunningView.vue'
+
+
+//=== NAVBAR IMPORT ===//
+import ProfileView from '@/views/ProfileView.vue'
 import MissionsView from '@/views/MissionsView.vue'
+
+import LeaderBoardView from '@/views/LeaderBoardView.vue'
+
+
 
 const routes = [
   {
@@ -43,6 +50,12 @@ const routes = [
     path: '/missions', //need to add user id
     name: 'missions',
     component: MissionsView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/LeaderBoard', //need to add user id
+    name: 'leaderboard',
+    component: LeaderBoardView,
     meta: { requiresAuth: true },
   },
   {

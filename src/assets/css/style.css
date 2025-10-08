@@ -23,11 +23,11 @@
   --color-main: var(--color-eastbay);
   --color-complement: var(--color-deluge);
 
-  /* Token Fonts */  
+  /* Token Fonts */
   --font-family-title: var(--font-dohyeon);
 
 }
- 
+
 /* @layer base {
   h1 {
     @apply font-title;
@@ -37,5 +37,9 @@
 @layer utilities {
   .bg-main {
     background-color: var(--color-main);
+  }
+
+  .bg-second {
+    background-color: var(--color-complement);
   }
 }
