@@ -1,13 +1,7 @@
 <template>
-<<<<<<< HEAD:src/components/MissionCard.vue
-<section class="mission-card" :class="'mission-card--'+displayMode">
-  <figure class="mission-card__image">
-    <img src="/data/urbex.jpg" alt="Mission Image" class="mission-card__image__img"/>
-=======
 <section class="circuit-card" :class="'circuit-card--'+displayMode">
   <figure class="circuit-card__image">
     <img src="https://placehold.co/400x200?text=circuit+Image" alt="circuit Image" class="circuit-card__image__img"/>
->>>>>>> dev:src/components/CircuitCard.vue
   </figure>
   <aside class="circuit-card__info">
     <h2 class="circuit-card__info__title">{{ circuit.name}}</h2>

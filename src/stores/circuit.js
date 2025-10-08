@@ -61,7 +61,7 @@ export const useCircuitStore = defineStore('circuit', {
     },
     async getCircuit(id) {
       try {
-        const response = await apiService.get(`/circuits/${id}?populate=*`, {
+         const response = await apiService.get(`/circuits/${id}?populate[Missions][populate][media][populate]=*`, {
           headers: {
             Authorization: `Bearer ${this.jwtToken}`,
           },
