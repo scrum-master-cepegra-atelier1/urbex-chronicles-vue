@@ -1,27 +1,25 @@
 <template>
-<section class="circuit-card" :class="'circuit-card--'+displayMode">
-  <figure class="circuit-card__image">
-    <img src="https://placehold.co/400x200?text=circuit+Image" alt="circuit Image" class="circuit-card__image__img"/>
-  </figure>
-  <aside class="circuit-card__info">
-    <h2 class="circuit-card__info__title">{{ circuit.name}}</h2>
-    <p class="circuit-card__info__description">{{ circuit.description }}</p>
-    <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">Start circuit</button>
-  </aside>
-</section>
+  <section class="circuit-card" :class="'circuit-card--' + displayMode">
+    <figure class="circuit-card__image">
+      <img
+        src="https://placehold.co/400x200?text=circuit+Image"
+        alt="circuit Image"
+        class="circuit-card__image__img"
+      />
+    </figure>
+    <aside class="circuit-card__info">
+      <h2 class="circuit-card__info__title">{{ circuit.name }}</h2>
+      <p class="circuit-card__info__description">{{ circuit.description }}</p>
+      <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">
+        Start circuit
+      </button>
+    </aside>
+  </section>
 </template>
 
 <script setup>
 //import api
-import { useCircuitStore } from '@/stores/circuit';
-import { onBeforeMount} from 'vue';
-
-const circuitStore = useCircuitStore();
-
-onBeforeMount(async () => {
-  await circuitStore.getCircuits();
-  console.log(circuitStore.circuits);
-})
+import {  computed } from 'vue'
 
 //define props for display mode
 defineProps({
@@ -30,16 +28,20 @@ defineProps({
     default: 'squared',
     validator(value) {
       return ['squared', 'long'].includes(value) //only allow these two values
-    }
+    },
   },
   circuit: {
     type: Object,
     default: () => ({ title: 'Default circuit' }),
   },
 })
+//computed class for mode
+const cardClass = computed(() => {
+  return displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long'
+})
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 //general properties
 .circuit-card {
   //container styles
@@ -49,79 +51,81 @@ defineProps({
   overflow: hidden;
   display: grid;
   margin-block: 1rem;
-    &__image {
-      overflow: hidden;
-      &__img {
-        height: 100%;
-        object-fit: cover;
-      }
+  &__image {
+    overflow: hidden;
+    &__img {
+      height: 100%;
+      object-fit: cover;
     }
-    &__info {
-      display: grid;
-      gap: 1rem;
-      padding: 1rem;
-      &__title {
-        font-size: 1.2rem;
-        grid-area: title;
-      }
-      &__description {
-        grid-area: description;
-      }
-      &__start-button {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        padding: 0.5rem 1rem;
-        border-radius: 4px;
-        cursor: pointer;
-        grid-area: start-button;
-      }
+  }
+  &__info {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+    &__title {
+      font-size: 1.2rem;
+      grid-area: title;
     }
+    &__description {
+      grid-area: description;
+    }
+    &__start-button {
+      background-color: #007bff;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      grid-area: start-button;
+    }
+  }
 }
 //squared card
-  .circuit-card--squared {
-    //squared card version
-    //size
-    max-width: 400px;
-    aspect-ratio: 1/1;
-    margin: auto;
-    //grid layout
-    .circuit-card {
-      &__image {
-        grid-area: 1 / -1;
-      }
-      &__info {
-        grid-area: 1 / -1;
-        grid-template-rows: repeat(2, 2fr) 1fr;
-        grid-template-columns: 2fr 1fr;
-        grid-template-areas: "title title"
-       "description description"
-       "-- start-button";
-      }
+.circuit-card--squared {
+  //squared card version
+  //size
+  max-width: 400px;
+  aspect-ratio: 1/1;
+  margin: auto;
+  //grid layout
+  .circuit-card {
+    &__image {
+      grid-area: 1 / -1;
+    }
+    &__info {
+      grid-area: 1 / -1;
+      grid-template-rows: repeat(2, 2fr) 1fr;
+      grid-template-columns: 2fr 1fr;
+      grid-template-areas:
+        'title title'
+        'description description'
+        '-- start-button';
     }
   }
+}
 
-  //long card
-  .circuit-card--long {
-    //size
-    max-width: 800px;
-    grid-template-columns: 1fr repeat(2, 1fr); //thumbnail size / text info
-    grid-template-rows: 1fr;
-    .circuit-card {
-      &__image {
-        grid-area: 1 / 1;
-      }
-      &__info {
-        grid-area: 1 / 2 / 1 / 4;
-        gap: 0.2rem;
-        padding: .5rem;
-        //grid teamplate size to be calculated
-        grid-template-columns: 3fr 1fr;
-        grid-template-areas: "title blank"
-       "time time"
-       "description description"
-       "-- --";
-      }
+//long card
+.circuit-card--long {
+  //size
+  max-width: 800px;
+  grid-template-columns: 1fr repeat(2, 1fr); //thumbnail size / text info
+  grid-template-rows: 1fr;
+  .circuit-card {
+    &__image {
+      grid-area: 1 / 1;
+    }
+    &__info {
+      grid-area: 1 / 2 / 1 / 4;
+      gap: 0.2rem;
+      padding: 0.5rem;
+      //grid teamplate size to be calculated
+      grid-template-columns: 3fr 1fr;
+      grid-template-areas:
+        'title blank'
+        'time time'
+        'description description'
+        '-- --';
     }
   }
+}
 </style>
