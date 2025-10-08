@@ -5,8 +5,8 @@ import App from './App.vue'
 import router from './router'
 
 // Import des styles SCSS
-import './assets/scss/main.scss'
-import './assets/css/tailwindcss.css'
+// import './assets/scss/main.scss' REMOVE THE COMMENT LATER ! ! ! 
+import './assets/css/style.css'
 
 const app = createApp(App)
 

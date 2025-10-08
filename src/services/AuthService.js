@@ -1,4 +1,5 @@
 import { strapiApi } from './ApiService.js'
+import router from '@/router'
 
 /**
  * Authentication Service for Strapi
@@ -39,6 +40,8 @@ class AuthService {
           },
         })
         localStorage.setItem('user', JSON.stringify(userData))
+        // Redirect to Profile after successful login (English comment)
+        router.push({ name: 'Profile' })
       }
 
       return response
@@ -68,6 +71,8 @@ class AuthService {
       if (response.jwt) {
         localStorage.setItem('authToken', response.jwt)
         localStorage.setItem('user', JSON.stringify(response.user))
+        // Redirect to Profile after successful registration (English comment)
+        router.push({ name: 'Profile' })
       }
 
       return response

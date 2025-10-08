@@ -39,4 +39,23 @@ const handleSearch = () => {
 </script>
 
 <style lang = "scss" scoped>
+.search-bar {
+  @apply flex flex-wrap gap-2 items-center w-full max-w-2xl mx-auto mt-4 p-3 bg-white bg-opacity-10 rounded-lg;
+}
+
+.search-bar__input {
+  @apply flex-1 min-w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+.search-bar__button {
+  @apply px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200 cursor-pointer;
+}
+
+.search-bar__select {
+  @apply px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white;
+}
+
+.search-bar__no-results {
+  @apply text-red-400 text-sm mt-2 w-full text-center max-w-2xl mx-auto;
+}
 </style>

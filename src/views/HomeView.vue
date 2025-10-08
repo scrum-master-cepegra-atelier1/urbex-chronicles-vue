@@ -1,7 +1,11 @@
 <template>
-  <main class="home">
-    <div class="home__container">
-      <h1 class="home__title">URBEX Chronicles</h1>
+  <div>
+    <!-- Header avec UserCard (si authentifié) -->
+    <AppHeader v-if="authStore.isAuthenticated" />
+
+    <main class="home">
+      <div class="home__container">
+        <h1 class="home__title">URBEX Chronicles</h1>
 
       <div v-if="authStore.isAuthenticated" class="home__authenticated">
         <h2 class="home__welcome">Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !</h2>
@@ -48,9 +52,12 @@
             S'inscrire
           </router-link>
         </div>
+        </div>
       </div>
-    </div>
-  </main>
+    </main>
+    <!-- Footer added for all views (English comment) -->
+    <AppFooter />
+  </div>
 </template>
 
 <script setup>
@@ -58,13 +65,16 @@ import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
-import MissionCard from '@/components/CircuitCard.vue'
-import UserCard from '@/components/UserCard.vue'
+import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 import SearchBar from '@/components/SearchBar.vue'
+import AppHeader from '@/components/layout/_header/Header.vue'
+import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
+// Backwards-compatible alias for templates that still reference missionStore
+const missionStore = circuitStore
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
@@ -123,31 +133,6 @@ onMounted(() => {
 }
 
 .home__authenticated {
-  .home__welcome {
-    font-size: 1.5rem;
-    color: #28a745;
-    margin-bottom: 1rem;
-  }
-
-  .home__status {
-    color: #666;
-    margin-bottom: 2rem;
-    font-style: italic;
-  }
-
-  .home__user-info {
-    background: #f8f9fa;
-    padding: 1.5rem;
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    text-align: left;
-
-    p {
-      margin: 0.5rem 0;
-      color: #555;
-    }
-  }
-
   .home__logout-button {
     padding: 0.75rem 2rem;
     background-color: #dc3545;
@@ -157,6 +142,7 @@ onMounted(() => {
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s;
+    margin-top: 2rem;
 
     &:hover {
       background-color: #c82333;

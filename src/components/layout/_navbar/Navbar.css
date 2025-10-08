@@ -1,0 +1,22 @@
+@import '@/assets/css/style.css';
+
+.navigation-container{
+  @apply m-2 p-3 rounded-full  bg-main bg-gradient-to-b from-main to-complement;
+}
+
+.navigation-list{
+  @apply flex flex-row justify-center gap-6 ;
+}
+
+.navigation-list__item{
+  @apply list-none text-xl p-2;
+}
+
+.navigation-label{
+  @apply relative flex flex-col items-center justify-center gap-0 text-white/25;
+}
+
+.navigation-label__name{
+  @apply hidden;
+}
+

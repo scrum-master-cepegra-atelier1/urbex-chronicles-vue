@@ -16,7 +16,7 @@ if setup
 -->
 <section class="user-card">
   <figure class="user-card__avatar">
-    <img src="https://placehold.co/200x200?text=Avatar" alt="User avatar" class="user-card__avatar__img"/>
+    <img src="/data/doko.png" alt="User avatar" class="user-card__avatar__img"/>
     <p class="user-card__avatar__level"> Level: 21</p>
   </figure>
   <aside class="user-card__info">
@@ -130,4 +130,4 @@ console.log("user stocked" + user.value)
     }
   }
 }
-</style> 
+</style>

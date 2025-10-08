@@ -1,0 +1,28 @@
+@import '@/assets/css/style.css';
+
+:root {
+  --app-header-height: 72px;
+}
+
+.header-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  height: var(--app-header-height);
+}
+
+.header-content {
+  /* Match padding from Navbar/Footer: m-2 p-3 rounded-full bg-main */
+  margin: 0.5rem; /* tailwind m-2 */
+  padding: 0.75rem; /* tailwind p-3 */
+  border-radius: 9999px; /* rounded-full */
+  background-color: var(--color-main);
+  background-image: linear-gradient(to bottom, var(--color-main), var(--color-complement));
+  position: relative; /* establish stacking context for overlay */
+  overflow: visible; /* allow overlay to extend outside header */
+}

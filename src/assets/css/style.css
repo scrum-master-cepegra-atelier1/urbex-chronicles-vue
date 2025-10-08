@@ -1,0 +1,41 @@
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+@import 'tailwindcss';
+
+
+
+/* Theme Sombre */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme{
+
+  /* On ne touche pas au Primitive, on n'edite que les var() Tokens */
+  /* Primitive Custom Fonts */
+  --font-dohyeon: "Do Hyeon", sans-serif;
+
+  /* Primitive Custom Colors */
+  --color-eastbay: #3b3d77;
+  --color-deluge: #6e6caa;
+  --color-cyan: #3fa4a2;
+  --color-white: #ffffff;
+
+  /* On n'édit que les var() dans les tokens !*/
+  /* Token Colors */
+  --color-main: var(--color-eastbay);
+  --color-complement: var(--color-deluge);
+
+  /* Token Fonts */  
+  --font-family-title: var(--font-dohyeon);
+
+}
+ 
+/* @layer base {
+  h1 {
+    @apply font-title;
+  }
+} */
+
+@layer utilities {
+  .bg-main {
+    background-color: var(--color-main);
+  }
+}

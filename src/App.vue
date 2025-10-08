@@ -1,8 +1,15 @@
-<script setup></script>
+<script setup>
+
+</script>
 
 <template>
   <div id="app">
-    <router-view />
+    <!-- Contenu principal -->
+    <main class="main-content">
+      <router-view />
+    </main>
+
+
   </div>
 </template>
 
@@ -24,5 +31,11 @@ body {
 
 #app {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;
 }
 </style>
