@@ -1,18 +1,4 @@
 <template>
-<<<<<<< HEAD
-  <div>
-    <AppHeader />
-    <main>
-      <h1>Circuit</h1>
-    </main>
-    <AppFooter />
-  </div>
-</template>
-
-<script setup>
-import AppHeader from '@/components/layout/_header/Header.vue'
-import AppFooter from '@/components/layout/_footer/Footer.vue'
-=======
   <main class="circuit">
     <header class="circuit__header">
       <h1>Circuit</h1>
@@ -30,7 +16,7 @@ import AppFooter from '@/components/layout/_footer/Footer.vue'
           <li class="circuit__infos__tabs__list__el circuit__infos__tabs__list__el--active" data-tab="presentation">Présentation</li>
           <li class="circuit__infos__tabs__list__el" data-tab="feedback">Feedback</li>
           <li class="circuit__infos__tabs__list__el" data-tab="accessibilities">Accès</li>
-        </ul> 
+        </ul>
       </nav>
       <section class="circuit__infos__presentation" >
         <h2>Description</h2>
@@ -97,7 +83,6 @@ onBeforeMount(() => {
   //fetch missions for this circuit
   circuitStore.getCircuit(circuit_id.value);
 })
->>>>>>> dev
 
 const handlingClick = (circuit_id) => {
   console.log("Trying to launch circuit ", circuit_id)
@@ -151,7 +136,7 @@ onMounted(() => {
       }
       e.target.classList.add('circuit__infos__tabs__list__el--active');
       resetSections();
-      // Display the content based on the clicked tab 
+      // Display the content based on the clicked tab
       switch (e.target.dataset.tab) {
         case 'presentation':
           presentation.style.display = 'block';
@@ -159,7 +144,7 @@ onMounted(() => {
         case 'feedback':
           feedback.style.display = 'block';
           console.log("Tab clicked by switch: ", e.target.textContent);
-          break;  
+          break;
         case 'accessibilities':
           accessibilities.style.display = 'block';
           break;
@@ -176,7 +161,7 @@ onMounted(() => {
   const modeManager = document.querySelector('.circuit__popping');
   const soloMode = modeManager.querySelector('.circuit__popping__solo');
   const groupMode = modeManager.querySelector('.circuit__popping__group');
-  
+
   if (modeManager) {
     modeManager.addEventListener('click', (e) => {
       const activeMode = modeManager.querySelector('.circuit__popping__modes__list__el--active');
@@ -203,9 +188,6 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-<<<<<<< HEAD
-</style>
-=======
 .circuit {
   overflow: hidden;
   &__header {
@@ -226,7 +208,7 @@ onMounted(() => {
     .disabled {
       display: none;
     }
-    //tabs 
+    //tabs
     &__tabs {
       &__list {
         display: flex;
@@ -388,4 +370,3 @@ onMounted(() => {
   }
 }
 </style>
->>>>>>> dev
