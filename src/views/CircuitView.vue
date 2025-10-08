@@ -45,8 +45,8 @@
         <h2>Avis</h2>
         <p>
           {{
-            circuitStore.currentCircuit.feedback
-              ? circuitStore.currentCircuit.feedback
+            circuitStore.currentCircuit.comments
+              ? circuitStore.currentCircuit.comments
               : 'Aucun feedback disponible'
           }}
         </p>
