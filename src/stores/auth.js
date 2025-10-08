@@ -114,6 +114,29 @@ export const useAuthStore = defineStore('auth', {
       this.user = null
       this.token = null
     },
+    /**
+     * Update authenticated user fields in Strapi
+     * @param {object} payload - Fields to update (ex: { current_circuit, current_mission, ... })
+     * @returns {Promise<object>} Updated user object
+     */
+    async updateUser(payload) {
+      if (!this.user || !this.token) {
+        throw new Error('User must be authenticated')
+      }
+      this.isLoading = true
+      this.error = null
+
+      try {
+        const updatedUser = await AuthService.updateUser(this.user.id, payload, this.token)
+        this.user = updatedUser
+        return updatedUser
+      } catch (error) {
+        this.error = error.message
+        throw error
+      } finally {
+        this.isLoading = false
+      }
+    },
 
     /**
      * Initialize authentication state from localStorage

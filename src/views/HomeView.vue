@@ -7,51 +7,53 @@
       <div class="home__container">
         <h1 class="home__title">URBEX Chronicles</h1>
 
-      <div v-if="authStore.isAuthenticated" class="home__authenticated">
-        <h2 class="home__welcome">Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !</h2>
-        <p class="home__status">Vous êtes connecté(e)</p>
+        <div v-if="authStore.isAuthenticated" class="home__authenticated">
+          <h2 class="home__welcome">
+            Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
+          </h2>
+          <p class="home__status">Vous êtes connecté(e)</p>
 
-        <div class="home__user-info">
-          <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
-          <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
+          <div class="home__user-info">
+            <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
+            <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
+          </div>
+          <UserCard :user="authStore.user" />
+          <SearchBar
+            v-if="circuitStore.circuits.length"
+            class="home__mission-search"
+            :missions="circuitStore.missions"
+          />
+          <MissionCard
+            @click="handleCircuitClick(circuit)"
+            v-if="circuitStore.filteredCircuits.length"
+            v-for="circuit in circuitStore.filteredCircuits"
+            :key="circuit.id"
+            :circuit="circuit"
+            display-mode="long"
+          />
+          <MissionCard
+            @click="handleCircuitClick(circuit)"
+            v-else
+            v-for="circuit in circuitStore.circuits"
+            :key="circuit.documentId"
+            :circuit="circuit"
+            display-mode="long"
+          />
+
+          <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
         </div>
-        <UserCard :user="authStore.user" />
-        <SearchBar
-          v-if="circuitStore.circuits.length"
-          class="home__mission-search"
-          :missions="circuitStore.missions"
-        />
-        <MissionCard
-          @click="handleCircuitClick(circuit)"
-          v-if="circuitStore.filteredCircuits.length"
-          v-for="circuit in circuitStore.filteredCircuits"
-          :key="circuit.id"
-          :circuit="circuit"
-          display-mode="long"
-        />
-        <MissionCard
-          @click="handleCircuitClick(circuit)"
-          v-else
-          v-for="circuit in circuitStore.circuits"
-          :key="circuit.documentId"
-          :circuit="circuit"
-          display-mode="long"
-        />
 
-        <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
-      </div>
+        <div v-else class="home__unauthenticated">
+          <p class="home__description">Connectez-vous pour accéder à votre espace personnel</p>
 
-      <div v-else class="home__unauthenticated">
-        <p class="home__description">Connectez-vous pour accéder à votre espace personnel</p>
-
-        <div class="home__auth-buttons">
-          <router-link to="/login" class="home__auth-button home__auth-button--login">
-            Se connecter
-          </router-link>
-          <router-link to="/register" class="home__auth-button home__auth-button--register">
-            S'inscrire
-          </router-link>
-        </div>
+          <div class="home__auth-buttons">
+            <router-link to="/login" class="home__auth-button home__auth-button--login">
+              Se connecter
+            </router-link>
+            <router-link to="/register" class="home__auth-button home__auth-button--register">
+              S'inscrire
+            </router-link>
+          </div>
         </div>
       </div>
     </main>
