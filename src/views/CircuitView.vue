@@ -106,11 +106,12 @@
 import { onBeforeMount, onMounted, ref } from 'vue'
 import { useCircuitStore } from '@/stores/circuit.js'
 import { useAuthStore } from '@/stores/auth.js'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import MissionCard from '@/components/MissionCard.vue'
 
 const $route = useRoute()
+const $router = useRouter()
 
 const circuitStore = useCircuitStore()
 const authStore = useAuthStore()
@@ -135,26 +136,47 @@ const handlingClick = (circuit_id) => {
   cancelButton.classList.toggle('active')
 }
 
-const starting = (mode) => {
+const starting = async (mode) => {
   const party = []
   party.push(authStore.user.username)
-  switch (mode) {
-    case 'solo':
-      //launch mission solo
-      break
-    case 'group':
-      //add user to party
-      const friends = document.querySelectorAll('.circuit__popping__group__friends input')
-      friends.forEach((friend) => {
-        if (friend.value) {
-          party.push(friend.value)
-        }
-      })
-      break
+  if (mode === 'group') {
+    const friends = document.querySelectorAll('.circuit__popping__group__friends input')
+    friends.forEach((friend) => {
+      if (friend.value) {
+        party.push(friend.value)
+      }
+    })
   }
-  console.log('Starting circuit in ', mode)
-  console.log('Party members: ', party)
-  //redirect to map view with circuit_id and party info
+  // Enregistrement temporaire des membres du groupe en localStorage
+  localStorage.setItem('party_members', JSON.stringify(party))
+
+  // Récupérer le circuit_id
+  const currentCircuitId = circuit_id.value
+  // Récupérer la première mission_id
+  let firstMissionId = null
+  if (
+    circuitStore.currentCircuit &&
+    circuitStore.currentCircuit.missions &&
+    circuitStore.currentCircuit.missions.length > 0
+  ) {
+    firstMissionId = circuitStore.currentCircuit.missions[0].id
+  }
+
+  // Mettre à jour l'utilisateur avec le circuit et la mission
+  try {
+    await authStore.updateUser({
+      current_circuit: currentCircuitId,
+      current_mission: firstMissionId,
+    })
+    console.log('Utilisateur mis à jour avec circuit et mission')
+  } catch (err) {
+    console.error('Erreur lors de la mise à jour utilisateur:', err)
+  }
+
+  console.log('Starting circuit in', mode)
+  console.log('Party members:', party)
+  // Redirection vers la page game-running après démarrage
+  $router.push({ name: 'GameRunning' })
 }
 
 // Tabs content on click
