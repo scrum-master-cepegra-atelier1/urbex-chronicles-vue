@@ -13,32 +13,24 @@
           </h2>
           <p class="home__status">Vous êtes connecté(e)</p>
 
-        <div class="home__user-info">
-          <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
-          <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
-        </div>
-        <UserCard />
-        <SearchBar
-          v-if="circuitStore.circuits.length"
-          class="home__circuit-search"
-          :circuits="circuitStore.circuits"
-        />
-        <CircuitCard
-          @click="handleCircuitClick(circuit)"
-          v-if="circuitStore.filteredCircuits.length"
-          v-for="circuit in circuitStore.filteredCircuits"
-          :key="circuit.id"
-          :circuit="circuit"
-          display-mode="long"
-        />
-        <CircuitCard
-          @click="handleCircuitClick(circuit)"
-          v-else
-          v-for="circuit in circuitStore.circuits"
-          :key="circuit.documentId"
-          :circuit="circuit"
-          display-mode="long"
-        />
+          <div class="home__user-info">
+            <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
+            <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
+          </div>
+          <UserCard />
+          <SearchBar
+            v-if="circuitStore.circuits.length"
+            class="home__circuit-search"
+            :circuits="circuitStore.circuits"
+          />
+          <CircuitCard
+            @click="handleCircuitClick(circuit)"
+            v-if="circuitStore.filteredCircuits.length"
+            v-for="circuit in circuitStore.filteredCircuits"
+            :key="circuit.id"
+            :circuit="circuit"
+            display-mode="long"
+          />
 
           <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
         </div>
