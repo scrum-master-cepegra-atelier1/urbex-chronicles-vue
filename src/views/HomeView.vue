@@ -66,7 +66,7 @@ import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
-import SearchBar from '@/components/SearchBar.vue'
+import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
