@@ -1,7 +1,7 @@
 <template>
 <section class="mission-card" :class="'mission-card--'+props.displayMode">
   <figure class="mission-card__image">
-    <img src="/data/urbex.jpg" alt="Mission Image" class="mission-card__image__img"/>
+    <img :src="`http://localhost:1337${props.mission.media?.image?.url}` || `/data/urbex.jpg`" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
     <h2 class="mission-card__info__title">{{ props.mission.name}}</h2>
@@ -12,20 +12,6 @@
 </template>
 
 <script setup>
-//import api
-import { useCircuitStore } from '@/stores/circuit';
-import { onBeforeMount } from 'vue';
-
-const circuitStore = useCircuitStore();
-
-onBeforeMount(async () => {
-  // switch to circuits store fetching if needed by this component
-  if (typeof circuitStore.getCircuits === 'function') {
-    await circuitStore.getCircuits();
-    console.log(circuitStore.circuits);
-  }
-})
-
 //define props for display mode
 const props = defineProps({
   displayMode: {

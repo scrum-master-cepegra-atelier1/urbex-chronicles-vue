@@ -15,7 +15,7 @@
           <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
           <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
         </div>
-        <UserCard :user="authStore.user" />
+        <UserCard />
         <SearchBar
           v-if="circuitStore.circuits.length"
           class="home__mission-search"
