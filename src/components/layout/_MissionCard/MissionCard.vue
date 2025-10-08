@@ -1,7 +1,7 @@
 <template>
 <section class="mission-card" :class="'mission-card--'+props.displayMode">
   <figure class="mission-card__image">
-    <img :src="`http://localhost:1340${props.mission.media?.image?.url}` || `/data/urbex.jpg`" alt="Mission Image" class="mission-card__image__img"/>
+    <img :src="`http://localhost:1337${props.mission.media?.image?.url}` || `/data/urbex.jpg`" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
     <h2 class="mission-card__info__title">{{ props.mission.name}}</h2>

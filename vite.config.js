@@ -14,10 +14,10 @@ export default defineConfig({
     },
   },
 
-  // for Doryan because is PC is trash
+  /* for Doryan because is PC is trash
     server: {
       host: '0.0.0.0',
       port: 5175,
       strictPort: true,
-    },
+    },*/
 })
