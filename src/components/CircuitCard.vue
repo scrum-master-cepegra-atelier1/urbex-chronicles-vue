@@ -14,7 +14,7 @@
 <script setup>
 //import api
 import { useCircuitStore } from '@/stores/circuit';
-import { onBeforeMount, computed } from 'vue';
+import { onBeforeMount} from 'vue';
 
 const circuitStore = useCircuitStore();
 
@@ -37,10 +37,6 @@ defineProps({
     default: () => ({ title: 'Default circuit' }),
   },
 })
-//computed class for mode
-const cardClass = computed(() => {
-  return displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long';
-});
 </script>
 
 <style lang='scss' scoped>
