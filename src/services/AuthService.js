@@ -115,6 +115,28 @@ class AuthService {
   getToken() {
     return localStorage.getItem('authToken')
   }
+  /**
+   * Update user fields in Strapi
+   * @param {string|number} userId - User ID
+   * @param {object} payload - Fields to update
+   * @param {string} token - JWT token
+   * @returns {Promise<object>} - Updated user object
+   */
+  async updateUser(userId, payload, token) {
+    try {
+      const response = await strapiApi.put(`/users/${userId}`, payload, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      // Optionnel : mettre à jour le localStorage
+      localStorage.setItem('user', JSON.stringify(response))
+      return response
+    } catch (error) {
+      console.error('Update user error:', error)
+      throw error
+    }
+  }
 }
 
 export default new AuthService()

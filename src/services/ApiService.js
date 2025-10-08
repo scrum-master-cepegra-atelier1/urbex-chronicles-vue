@@ -57,7 +57,16 @@ class ApiService {
       const response = await fetch(url, config)
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        let errorMessage = `HTTP error! status: ${response.status}`
+        try {
+          const errorBody = await response.text()
+          console.error('API Error body:', errorBody)
+          errorMessage += ` | Body: ${errorBody}`
+        } catch (e) {
+          // ignore$
+          console.log(e)
+        }
+        throw new Error(errorMessage)
       }
 
       // Check if response contains JSON
