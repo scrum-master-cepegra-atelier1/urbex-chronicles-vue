@@ -19,7 +19,7 @@
         <SearchBar
           v-if="circuitStore.circuits.length"
           class="home__circuit-search"
-          :missions="circuitStore.missions"
+          :circuits="circuitStore.circuits"
         />
         <CircuitCard
           @click="handleCircuitClick(circuit)"

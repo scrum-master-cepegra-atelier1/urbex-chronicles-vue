@@ -4,8 +4,6 @@
 
   <!-- Page content -->
   <main class="profile-page">
-    <!--Search Bar-->
-    <SearchBar :missions="missions" />
     <!--Select mission-->
     <MissionCard :mission="missions" display-mode="squared"/>
     <!--Logout-->

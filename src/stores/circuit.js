@@ -25,7 +25,7 @@ export const useCircuitStore = defineStore('circuit', {
     /** @type {string|null} JWT authentication token from auth store */
     filteredCircuits: [],
     /** @type {string|null} Type of search */
-    searchBy: null,
+    searchBy: "name",
     /** @type {Object|null} Looked up circuit object */
     currentCircuit: null,
   }),
