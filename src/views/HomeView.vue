@@ -18,10 +18,10 @@
         <UserCard />
         <SearchBar
           v-if="circuitStore.circuits.length"
-          class="home__mission-search"
+          class="home__circuit-search"
           :missions="circuitStore.missions"
         />
-        <MissionCard
+        <CircuitCard
           @click="handleCircuitClick(circuit)"
           v-if="circuitStore.filteredCircuits.length"
           v-for="circuit in circuitStore.filteredCircuits"
@@ -29,7 +29,7 @@
           :circuit="circuit"
           display-mode="long"
         />
-        <MissionCard
+        <CircuitCard
           @click="handleCircuitClick(circuit)"
           v-else
           v-for="circuit in circuitStore.circuits"
@@ -65,7 +65,7 @@ import { onBeforeMount, onMounted } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
-import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
+import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
@@ -73,8 +73,6 @@ import AppFooter from '@/components/layout/_footer/Footer.vue'
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
-// Backwards-compatible alias for templates that still reference missionStore
-const missionStore = circuitStore
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
