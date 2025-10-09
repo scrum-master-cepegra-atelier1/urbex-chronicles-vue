@@ -8,6 +8,27 @@ import CircuitView from '@/views/CircuitView.vue'
 import NotFound from '@/views/NotFound.vue'
 import GameRunningView from '@/views/GameRunningView.vue'
 import MissionsView from '@/views/MissionsView.vue'
+import LeaderboardView from '@/views/LeaderboardView.vue'
+
+
+//=== NAVBAR ROUTING === //
+
+// Guard to ensure a circuit is selected before entering the running view
+function ensureGameSelected(to) {
+  const rawCircuit = localStorage.getItem('current_circuit')
+  if (!rawCircuit) {
+    return { path: '/' }
+  }
+  try {
+    const circuit = JSON.parse(rawCircuit)
+    if (!circuit || !circuit.id) {
+      return { path: '/' }
+    }
+  } catch (e) {
+    return { path: '/' }
+  }
+  // allow navigation otherwise
+}
 
 const routes = [
   {
@@ -20,6 +41,7 @@ const routes = [
     name: 'GameRunning',
     component: GameRunningView,
     meta: { requiresAuth: true },
+    beforeEnter: [ensureGameSelected],
   },
   {
     path: '/login',
@@ -43,6 +65,12 @@ const routes = [
     path: '/missions', //need to add user id
     name: 'missions',
     component: MissionsView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: LeaderboardView,
     meta: { requiresAuth: true },
   },
   {

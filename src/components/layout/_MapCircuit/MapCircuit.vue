@@ -17,6 +17,7 @@
 
 <script setup>
 import { ref, onMounted, watch } from 'vue'
+import { getImageUrl } from '@/utils/image'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 
@@ -93,7 +94,8 @@ function setMissionMarkerAndCircle(mission) {
   // Marqueur
   let popupContent = `<b>${mission.title || 'Mission en cours'}</b><br>${mission.description || ''}`
   if (mission.media) {
-    popupContent += `<br><img src="${mission.media}" style="max-width:100px;" />`
+    const mediaSrc = getImageUrl(mission.media)
+    popupContent += `<br><img src="${mediaSrc}" style="max-width:100px;" />`
   }
   if (missionMarker) {
     missionMarker.setLatLng([lat, lng])
