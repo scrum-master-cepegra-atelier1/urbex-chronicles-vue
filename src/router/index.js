@@ -13,6 +13,23 @@ import LeaderboardView from '@/views/LeaderboardView.vue'
 
 //=== NAVBAR ROUTING === //
 
+// Guard to ensure a circuit is selected before entering the running view
+function ensureGameSelected(to) {
+  const rawCircuit = localStorage.getItem('current_circuit')
+  if (!rawCircuit) {
+    return { path: '/' }
+  }
+  try {
+    const circuit = JSON.parse(rawCircuit)
+    if (!circuit || !circuit.id) {
+      return { path: '/' }
+    }
+  } catch (e) {
+    return { path: '/' }
+  }
+  // allow navigation otherwise
+}
+
 const routes = [
   {
     path: '/',
@@ -24,6 +41,7 @@ const routes = [
     name: 'GameRunning',
     component: GameRunningView,
     meta: { requiresAuth: true },
+    beforeEnter: [ensureGameSelected],
   },
   {
     path: '/login',
