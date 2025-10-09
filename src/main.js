@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
-import { useCurrentGameStore } from '@/stores/CurrentGame'
 
 import App from './App.vue'
 import router from './router'
@@ -13,9 +12,5 @@ const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
-
-// hydrate current game from localStorage so store getters reflect persisted state
-const currentGame = useCurrentGameStore()
-currentGame.hydrate()
 
 app.mount('#app')
