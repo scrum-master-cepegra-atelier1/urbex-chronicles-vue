@@ -31,6 +31,14 @@
             :circuit="circuit"
             display-mode="long"
           />
+          <CircuitCard
+            @click="handleCircuitClick(circuit)"
+            v-else
+            v-for="circuit in circuitStore.circuits"
+            :key="circuit.id"
+            :circuit="circuit"
+            display-mode="long"
+          />
 
           <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
         </div>
