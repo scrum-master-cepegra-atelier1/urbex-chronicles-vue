@@ -7,6 +7,7 @@ import ProfileView from '@/views/ProfileView.vue'
 import CircuitView from '@/views/CircuitView.vue'
 import NotFound from '@/views/NotFound.vue'
 import GameRunningView from '@/views/GameRunningView.vue'
+import MissionsView from '@/views/MissionsView.vue'
 
 const routes = [
   {
@@ -36,6 +37,12 @@ const routes = [
     path: '/profile', //need to add user id
     name: 'Profile',
     component: ProfileView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/missions', //need to add user id
+    name: 'missions',
+    component: MissionsView,
     meta: { requiresAuth: true },
   },
   {

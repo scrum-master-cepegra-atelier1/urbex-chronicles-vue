@@ -32,7 +32,7 @@
           <h2>Missions</h2>
           <ul>
             <MissionCard
-              v-if="circuitStore.currentCircuit"
+              :v-if="circuitStore.currentCircuit"
               v-for="mission in circuitStore.currentCircuit.missions"
               :key="mission.id"
               :mission="mission"
@@ -45,7 +45,7 @@
         <h2>Avis</h2>
         <p>
           {{
-            circuitStore.currentCircuit.comments && circuitStore.currentCircuit.comments.length>0
+            circuitStore.currentCircuit.comments && circuitStore.currentCircuit.comments.length > 0
               ? circuitStore.currentCircuit.comments
               : 'Aucun feedback disponible'
           }}
@@ -55,7 +55,8 @@
         <h2>Malvoyant etc</h2>
         <p>
           {{
-            circuitStore.currentCircuit.accessibilities && circuitStore.currentCircuit.accessibilities.length>0
+            circuitStore.currentCircuit.accessibilities &&
+            circuitStore.currentCircuit.accessibilities.length > 0
               ? circuitStore.currentCircuit.accessibilities
               : 'Aucun accès disponible'
           }}
@@ -106,14 +107,17 @@
 import { onBeforeMount, onMounted, ref } from 'vue'
 import { useCircuitStore } from '@/stores/circuit.js'
 import { useAuthStore } from '@/stores/auth.js'
-import { useRoute } from 'vue-router'
+import { useCurrentGameStore } from '@/stores/CurrentGame.js'
+import { useRoute, useRouter } from 'vue-router'
 
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 
 const $route = useRoute()
+const $router = useRouter()
 
 const circuitStore = useCircuitStore()
 const authStore = useAuthStore()
+const currentGameStore = useCurrentGameStore()
 
 const circuit_id = ref(null)
 //get circuit id from route paramss
@@ -135,27 +139,50 @@ const handlingClick = (circuit_id) => {
   cancelButton.classList.toggle('active')
 }
 
-const starting = (mode) => {
+const starting = async (mode) => {
   const party = []
   party.push(authStore.user.username)
-  switch (mode) {
-    case 'solo':
-      //launch mission solo
-      authStore.startCircuit(circuitStore.currentCircuit, circuitStore.currentCircuit.missions[0])
-      break
-    case 'group':
-      //add user to party
-      const friends = document.querySelectorAll('.circuit__popping__group__friends input')
-      friends.forEach((friend) => {
-        if (friend.value) {
-          party.push(friend.value)
-        }
-      })
-      break
+  if (mode === 'group') {
+    const friends = document.querySelectorAll('.circuit__popping__group__friends input')
+    friends.forEach((friend) => {
+      if (friend.value) {
+        party.push(friend.value)
+      }
+    })
   }
-  console.log('Starting circuit in ', mode)
-  console.log('Party members: ', party)
-  //redirect to map view with circuit_id and party info
+  // Enregistrement temporaire des membres du groupe en localStorage
+  localStorage.setItem('party', JSON.stringify(party))
+
+  // Récupérer le circuit courant
+  const currentCircuit = circuitStore.currentCircuit
+  localStorage.setItem('current_circuit', JSON.stringify(currentCircuit))
+
+  // Récupérer la première mission du circuit
+  let firstMission = null
+  if (currentCircuit && currentCircuit.missions && currentCircuit.missions.length > 0) {
+    firstMission = currentCircuit.missions[0]
+    localStorage.setItem('current_mission', JSON.stringify(firstMission))
+  }
+
+  // Initialiser le store CurrentGame (optionnel, peut être retiré si on veut juste hydrater dans GameRunningView)
+  // await currentGameStore.initGame(currentCircuitId, authStore.token)
+  currentGameStore.updateParty(party)
+
+  // Mettre en commentaire la mise à jour utilisateur (Strapi)
+  // try {
+  //   await authStore.updateUser({
+  //     current_circuit: { id: 1 },
+  //     current_mission: { id: 1 },
+  //   })
+  //   console.log('Utilisateur mis à jour avec circuit et mission')
+  // } catch (err) {
+  //   console.error('Erreur lors de la mise à jour utilisateur:', err)
+  // }
+
+  console.log('Starting circuit in', mode)
+  console.log('Party members:', party)
+  // Redirection vers la page game-running après démarrage
+  $router.push({ name: 'GameRunning' })
 }
 
 // Tabs content on click

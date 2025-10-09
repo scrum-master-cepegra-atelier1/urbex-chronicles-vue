@@ -5,14 +5,14 @@
       <div class="missions__container">
         <h1 class="missions__title">Missions</h1>
 
-        <div v-if="missionStore.missions.length" class="missions__content">
-          <!-- SearchBar shown when there are missions -->
-          <SearchBar class="missions__search" :missions="missionStore.missions" />
+        <div v-if="missionStore.circuits && missionStore.circuits.length" class="missions__content">
+          <!-- SearchBar shown when there are circuits -->
+          <SearchBar class="missions__search" :missions="missionStore.circuits" />
 
           <div class="missions__grid">
-            <template v-if="missionStore.filteredMissions.length">
+            <template v-if="missionStore.filteredCircuits && missionStore.filteredCircuits.length">
               <MissionCard
-                v-for="mission in missionStore.filteredMissions"
+                v-for="mission in missionStore.filteredCircuits"
                 :key="`filtered-${mission.id}`"
                 :mission="mission"
                 display-mode="squared"
@@ -20,7 +20,7 @@
             </template>
             <template v-else>
               <MissionCard
-                v-for="mission in missionStore.missions"
+                v-for="mission in missionStore.circuits"
                 :key="`all-${mission.id}`"
                 :mission="mission"
                 display-mode="squared"
@@ -41,17 +41,19 @@
 <script setup>
 import { onBeforeMount } from 'vue'
 import { useCircuitStore } from '@/stores/circuit.js'
-import MissionCard from '@/components/MissionCard.vue'
+import { useAuthStore } from '@/stores/auth.js'
+import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 const missionStore = useCircuitStore()
+const authStore = useAuthStore()
 
 onBeforeMount(async () => {
   // circuits store provides getCircuits
-  if (typeof missionStore.getCircuits === 'function') {
-    await missionStore.getCircuits()
+  if (typeof missionStore.getCircuits === 'function' && authStore.token) {
+    await missionStore.getCircuits(authStore.token)
   }
 })
 </script>

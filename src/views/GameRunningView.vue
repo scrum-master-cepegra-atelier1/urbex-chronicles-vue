@@ -13,16 +13,17 @@
   </div>
 </template>
 <script setup>
-import { computed, ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-
-//components
+import { computed, ref, onMounted } from 'vue'
+import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
 import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
 
-const authStore = useAuthStore()
-const currentMission = computed(() => authStore.user?.current_mission || null)
+const currentGameStore = useCurrentGameStore()
+onMounted(() => {
+  currentGameStore.hydrate()
+})
+const currentMission = computed(() => currentGameStore.current_mission)
 const mapVisible = ref(true)
 </script>
 <style scoped lang="scss">

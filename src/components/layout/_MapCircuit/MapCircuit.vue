@@ -33,15 +33,27 @@ let missionVisible = false
 
 // Utilitaire : mission valide ?
 function isMissionValid(m) {
-  return m && m.latitude && m.longitude && m.treshold
+  return m && m.latitude && m.longitude && m.threshold
 }
 
 // Calcul distance Haversine (en mètres)
 function isPlayerInMission(playerLat, playerLng, mission) {
+  console.log(
+    'playerLat:',
+    playerLat,
+    'playerLng:',
+    playerLng,
+    'mission.latitude:',
+    mission.latitude,
+    'mission.longitude:',
+    mission.longitude,
+    'mission.threshold:',
+    mission.threshold,
+  )
   if (!isMissionValid(mission)) return false
   const lat = parseFloat(mission.latitude)
   const lng = parseFloat(mission.longitude)
-  const radius = parseInt(mission.treshold)
+  const radius = parseInt(mission.threshold)
   const R = 6371000
   const dLat = ((playerLat - lat) * Math.PI) / 180
   const dLng = ((playerLng - lng) * Math.PI) / 180
@@ -77,13 +89,15 @@ function setMissionMarkerAndCircle(mission) {
   if (!map || !isMissionValid(mission)) return
   const lat = parseFloat(mission.latitude)
   const lng = parseFloat(mission.longitude)
-  const radius = parseInt(mission.treshold)
+  const radius = parseInt(mission.threshold)
   // Marqueur
+  let popupContent = `<b>${mission.title || 'Mission en cours'}</b><br>${mission.description || ''}`
+  if (mission.media) {
+    popupContent += `<br><img src="${mission.media}" style="max-width:100px;" />`
+  }
   if (missionMarker) {
     missionMarker.setLatLng([lat, lng])
-    missionMarker.setPopupContent(
-      `<b>${mission.title || 'Mission en cours'}</b><br>${mission.description || ''}`,
-    )
+    missionMarker.setPopupContent(popupContent)
     missionMarker.addTo(map)
   } else {
     missionMarker = L.marker([lat, lng], {
@@ -96,9 +110,7 @@ function setMissionMarkerAndCircle(mission) {
         shadowSize: [41, 41],
       }),
     }).addTo(map)
-    missionMarker.bindPopup(
-      `<b>${mission.title || 'Mission en cours'}</b><br>${mission.description || ''}`,
-    )
+    missionMarker.bindPopup(popupContent).openPopup()
   }
   // Cercle
   if (missionCircle) {
@@ -137,7 +149,7 @@ onMounted(() => {
   }).addTo(map)
 
   // Initialisation mission
-  if (isMissionValid(props.mission) && missionVisible) {
+  if (isMissionValid(props.mission)) {
     setMissionMarkerAndCircle(props.mission)
   } else {
     removeMissionMarkerAndCircle()
