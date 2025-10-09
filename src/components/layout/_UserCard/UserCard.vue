@@ -11,7 +11,7 @@
     @keydown.enter="toggleExpand"
     @keydown.space.prevent="toggleExpand"
   >
-  <img :src="`http://localhost:1337${currentUser?.avatar?.url || 'https://placehold.co/400x200?text=mission+Image'}`" alt="User avatar" class="user-card__avatar__img"/>
+  <img :src="getImageUrl(currentUser?.avatar?.url)" alt="User avatar" class="user-card__avatar__img"/>
     <div class="user-card__avatar__meta">
       <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
       <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 1 }}</p>
@@ -125,10 +125,13 @@ import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 //store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
 import { computed, ref } from 'vue'
+import { getImageUrl } from '@/utils/image'
 const authStore = useAuthStore()
 // Computed property pour obtenir l'utilisateur actuel
 const currentUser = computed(() => authStore.user)
   console.log(currentUser.value)
+
+// use shared `getImageUrl` from `src/utils/image.js`
 
 defineOptions({ name: 'UserCard' })
 

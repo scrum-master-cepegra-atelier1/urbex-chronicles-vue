@@ -44,7 +44,7 @@ Create a `.env` file at the root of the project with the following variables:
 
 ```env
 # Strapi API (required for authentication)
-VITE_STRAPI_BASE_URL=http://localhost:1337/api
+VITE_STRAPI_BASE_URL=http://localhost:1340/api
 VITE_STRAPI_TOKEN=
 
 # Main API (optional)
@@ -139,7 +139,7 @@ authStore.logout()
 
 ### Prerequisites
 
-1. **Strapi Setup**: Make sure Strapi is running locally on port 1337
+1. **Strapi Setup**: Make sure Strapi is running locally on port 1340
 2. **Environment**: Ensure `.env` file is configured with correct Strapi URL
 3. **Dependencies**: Run `npm install` to install all dependencies
 

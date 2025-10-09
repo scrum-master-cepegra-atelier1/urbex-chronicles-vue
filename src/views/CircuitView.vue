@@ -153,15 +153,23 @@ const starting = async (mode) => {
   // Enregistrement temporaire des membres du groupe en localStorage
   localStorage.setItem('party', JSON.stringify(party))
 
-  // Récupérer le circuit courant
-  const currentCircuit = circuitStore.currentCircuit
-  localStorage.setItem('current_circuit', JSON.stringify(currentCircuit))
+  // Récupérer le circuit courant (assurer qu'il est chargé)
+  let currentCircuit = circuitStore.currentCircuit
+  if (!currentCircuit || !currentCircuit.id) {
+    await circuitStore.getCircuit(circuit_id.value, authStore.token)
+    currentCircuit = circuitStore.currentCircuit
+  }
+  if (currentCircuit) {
+    localStorage.setItem('current_circuit', JSON.stringify(currentCircuit))
+  }
 
   // Récupérer la première mission du circuit
   let firstMission = null
   if (currentCircuit && currentCircuit.missions && currentCircuit.missions.length > 0) {
     firstMission = currentCircuit.missions[0]
-    localStorage.setItem('current_mission', JSON.stringify(firstMission))
+    if (firstMission) {
+      localStorage.setItem('current_mission', JSON.stringify(firstMission))
+    }
   }
 
   // Initialiser le store CurrentGame (optionnel, peut être retiré si on veut juste hydrater dans GameRunningView)

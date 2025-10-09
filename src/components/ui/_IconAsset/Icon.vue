@@ -23,7 +23,7 @@ const sizeMap = {
   xl: 'w-8 h-8',   // 32px
   '2xl': 'w-10 h-10', // 40px
   '3xl': 'w-12 h-12', // 48px
-  '4xl': "w-14 h-14",
+  '4xl': "w-14 h-14", // i don't know 
 }
 
 const sizeClass = computed(() => {

@@ -14,31 +14,31 @@ import Icon from '@/components/ui/_IconAsset/Icon.vue'
     <ul class="navigation-list">
       <li class="navigation-list__item">
 
+        <router-link to="/" class="navigation-label" id="">
+          <Icon name="home" :size="IconSize" dir="icon" />
+          <p class="navigation-label__name">Home</p>
+        </router-link>
+
+      </li>
+      <li class="navigation-list__item">
+
         <router-link to="/profile" class="navigation-label" id="">
           <Icon name="account" :size="IconSize" dir="icon" />
           <p class="navigation-label__name">Profil</p>
         </router-link>
-
       </li>
       <li class="navigation-list__item">
 
-        <router-link to="/missions" class="navigation-label" id="">
-          <Icon name="flag" :size="IconSize" dir="icon" />
-          <p class="navigation-label__name">Mission</p>
-        </router-link>
-      </li>
-      <li class="navigation-list__item">
-
-        <router-link to="" class="navigation-label" id="">
+        <router-link to="/game-running" class="navigation-label" id="">
           <Icon name="map" :size="IconSize" dir="icon" />
           <p class="navigation-label__name">Map</p>
         </router-link>
       </li>
       <li class="navigation-list__item">
 
-        <router-link to="" class="navigation-label" id="">
-          <Icon name="trophy" :size="IconSize" dir="icon" />
-          <p class="navigation-label__name">Succes</p>
+        <router-link to="/leaderboard" class="navigation-label" id="">
+          <Icon name="leaderboard" :size="IconSize" dir="icon" />
+          <p class="navigation-label__name">Leaderboard</p>
         </router-link>
       </li>
     </ul>
