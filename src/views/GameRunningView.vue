@@ -1,4 +1,5 @@
 <template>
+  <OverlayMission />
   <div class="game-running-view">
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
@@ -6,7 +7,7 @@
         Ceci est un indice statique. (À remplacer par une donnée dynamique plus tard)
       </p>
     </header>
-    <QuestionCard />
+    <QuestionCard :mission="currentMission || null"/>
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
@@ -14,9 +15,11 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
+
 //components
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
+import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
 
 const authStore = useAuthStore()
 const currentMission = computed(() => authStore.user?.current_mission || null)
