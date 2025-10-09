@@ -1,6 +1,6 @@
 <template>
-  <OverlayMission />
   <div class="game-running-view">
+    <OverlayMission />
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
       <p class="game__header-indice__text">
