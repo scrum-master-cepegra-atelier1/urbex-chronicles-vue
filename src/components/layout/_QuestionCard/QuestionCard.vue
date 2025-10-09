@@ -1,63 +1,110 @@
 <template>
-      <h2 class="question-card__info__title">Enigme 1 Combien d'ascenseurs</h2>
-      <p class="question-card__info__description">Quel est le nombre d'ascenseurs dans ce circuit ?</p>
-      <!--mutli choice answer-->
-      <section class="question-card__info__answers">
-        <div class="question-card__info__answers__answer">
-          <input type="radio" name="answer" id="answer1" value="1" @change="checkAnswer(1)">
-          <label for="answer1">1</label>
-        </div>
-        <div class="question-card__info__answers__answer">
-          <input type="radio" name="answer" id="answer2" value="2" @change="checkAnswer(2)">
-          <label for="answer2">2</label>
-        </div>
-        <div class="question-card__info__answers__answer">
-          <input type="radio" name="answer" id="answer3" value="3" @change="checkAnswer(3)">
-          <label for="answer3">3</label>
-        </div>
-        <div class="question-card__info__answers__answer">
-          <input type="radio" name="answer" id="answer4" value="4" @change="checkAnswer(4)">
-          <label for="answer4">4</label>
-        </div>
-      </section>
-      <!--if answer is correct-->
-      <aside class="question-card__info__result">
-        <p class="question-card__info__result__correct" v-show="isCorrect">Bonne reponse</p>
-        <p class="question-card__info__result__wrong" v-show="!isCorrect && question_response">Mauvaise reponse</p>
-      </aside>
+  <div class="question-card">
+    <h2 class="question-card__info__title">{{ questionnaire.question }}</h2>
+    <p class="question-card__info__description" v-if="questionnaire.explanation">
+      {{ questionnaire.explanation }}
+    </p>
+    <img
+      v-if="questionnaire.image"
+      :src="questionnaire.image"
+      alt="question image"
+      class="question-card__info__image"
+    />
+    <!-- Multiple Choice -->
+    <section v-if="questionnaire.type === 'multiple-choice'" class="question-card__info__answers">
+      <div
+        v-for="(option, idx) in questionnaire.options"
+        :key="idx"
+        class="question-card__info__answers__answer"
+      >
+        <input
+          type="radio"
+          :name="'answer-' + questionnaire.id"
+          :id="'answer-' + idx"
+          :value="option"
+          v-model="selectedAnswer"
+          @change="checkAnswer(option)"
+        />
+        <label :for="'answer-' + idx">{{ option }}</label>
+      </div>
+    </section>
+    <!-- Boolean (True/False) -->
+    <section v-else-if="questionnaire.type === 'boolean'" class="question-card__info__answers">
+      <div class="question-card__info__answers__answer">
+        <input
+          type="radio"
+          :name="'answer-' + questionnaire.id"
+          id="true"
+          value="true"
+          v-model="selectedAnswer"
+          @change="checkAnswer(true)"
+        />
+        <label for="true">Vrai</label>
+      </div>
+      <div class="question-card__info__answers__answer">
+        <input
+          type="radio"
+          :name="'answer-' + questionnaire.id"
+          id="false"
+          value="false"
+          v-model="selectedAnswer"
+          @change="checkAnswer(false)"
+        />
+        <label for="false">Faux</label>
+      </div>
+    </section>
+    <!-- Text Answer -->
+    <section v-else-if="questionnaire.type === 'text'" class="question-card__info__answers">
+      <input
+        type="text"
+        v-model="selectedAnswer"
+        @keyup.enter="checkAnswer(selectedAnswer)"
+        placeholder="Votre réponse..."
+      />
+      <button @click="checkAnswer(selectedAnswer)">Valider</button>
+    </section>
+    <!-- Result -->
+    <aside class="question-card__info__result">
+      <p class="question-card__info__result__correct" v-show="isCorrect">Bonne réponse</p>
+      <p class="question-card__info__result__wrong" v-show="!isCorrect && question_response">
+        Mauvaise réponse
+      </p>
+    </aside>
+  </div>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, defineProps, defineEmits } from 'vue'
 
-//variante de mission: sphere 360
-const angle = ref(0);
-const bulletpoints = ref([]);
-const isClicked = ref(false);
+const props = defineProps({
+  questionnaire: {
+    type: Object,
+    required: true,
+  },
+})
+const emit = defineEmits(['answerChecked'])
 
-function handleClick() {
-  isClicked.value = true;
-  angle.value = 360;
-  bulletpoints.value = [1, 2, 3, 4];
-}
-//BROUILLON 
+const isCorrect = ref(false)
+const question_response = ref('')
+const selectedAnswer = ref('')
 
-
-//variante de mission : question réponse
-const isCorrect = ref(false);
-const question_response = ref('');
 function checkAnswer(answer) {
-  //replace with api call to check answer
-  console.log(answer);
-  if (answer === 2) {
-    isCorrect.value = true;
-    question_response.value = 'Bonne reponse';
+  let correct = false
+  // Multiple answers
+  if (Array.isArray(props.questionnaire.answer)) {
+    correct = props.questionnaire.answer.includes(answer)
   } else {
-    isCorrect.value = false;
-    question_response.value = 'Mauvaise reponse';
+    // Boolean answers: convert to string for comparison
+    if (props.questionnaire.type === 'boolean') {
+      correct = String(props.questionnaire.answer) === String(answer)
+    } else {
+      correct = props.questionnaire.answer === answer
+    }
   }
+  isCorrect.value = correct
+  question_response.value = correct ? 'Bonne réponse' : 'Mauvaise réponse'
+  emit('answerChecked', correct)
 }
 </script>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

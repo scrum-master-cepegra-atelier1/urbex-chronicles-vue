@@ -78,6 +78,8 @@ const circuitStore = useCircuitStore()
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
+    console.log('hello')
+
     await circuitStore.getCircuits(authStore.token)
   }
 })

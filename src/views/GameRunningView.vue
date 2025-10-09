@@ -12,37 +12,96 @@
         Ceci est un indice statique. (À remplacer par une donnée dynamique plus tard)
       </p>
     </header>
-    <QuestionCard :mission="currentMission || null" />
+    <QuestionCard
+      v-if="currentQuestionnaire"
+      :questionnaire="currentQuestionnaire"
+      @answerChecked="handleAnswerChecked"
+    />
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
   <AppFooter />
 </template>
 <script setup>
-import { computed, ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
 import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
+// Tableau brut de questions QCM pour le test
+const testQuestions = [
+  {
+    id: 1,
+    type: 'multiple-choice',
+    question: 'Quelle est la capitale de l’Italie ?',
+    options: ['Rome', 'Milan', 'Venise'],
+    answer: 'Rome',
+    image: null,
+    explanation: 'Rome est la capitale de l’Italie.',
+    multipleAnswers: false,
+  },
+  {
+    id: 2,
+    type: 'multiple-choice',
+    question: 'Quel est le plus grand océan du monde ?',
+    options: ['Atlantique', 'Indien', 'Pacifique'],
+    answer: 'Pacifique',
+    image: null,
+    explanation: 'Le Pacifique est le plus grand océan.',
+    multipleAnswers: false,
+  },
+]
+
+const currentQuestionIndex = ref(0)
+
 const currentGameStore = useCurrentGameStore()
 onMounted(() => {
   currentGameStore.hydrate()
+  initQuestionnaire()
 })
+
 const currentMission = computed(() => currentGameStore.current_mission)
 const mapVisible = ref(true)
 
-// Titre de la mission
 const missionTitle = computed(
   () => currentGameStore.current_circuit?.name || 'Parcours introuvable',
 )
-// Progression en % (à adapter selon logique métier)
 const missionProgress = computed(() => currentGameStore.progression || 0)
-// Utilisateurs (à adapter selon structure réelle)
 const missionUsers = computed(() =>
   currentGameStore.current_mission?.party ? [{ name: currentGameStore.current_mission.name }] : [],
 )
+
+// Gestion du questionnaire dynamique
+const currentQuestionnaire = ref(null)
+
+function initQuestionnaire() {
+  // Utilisation du tableau de test pour le questionnaire
+  currentQuestionnaire.value = testQuestions[currentQuestionIndex.value]
+}
+
+function handleAnswerChecked(isCorrect) {
+  if (isCorrect) {
+    goToNextMission()
+  }
+}
+
+function goToNextMission() {
+  // Passe à la question suivante (brut)
+  if (currentQuestionIndex.value < testQuestions.length - 1) {
+    currentQuestionIndex.value++
+    currentQuestionnaire.value = testQuestions[currentQuestionIndex.value]
+    // Met à jour la mission courante avec la mission suivante du circuit
+    const missions = currentGameStore.current_circuit?.missions || []
+    const nextMission = missions[currentQuestionIndex.value] || null
+    currentGameStore.updateMission(nextMission)
+  } else {
+    // Fin du test
+    currentQuestionnaire.value = null
+    currentGameStore.updateMission(null)
+  }
+}
 </script>
 <style scoped lang="scss">
 // Header indice styles respectant la convention SCSS

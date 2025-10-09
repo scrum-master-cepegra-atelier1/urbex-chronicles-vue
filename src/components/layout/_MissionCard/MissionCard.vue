@@ -35,21 +35,24 @@ const props = defineProps({
     default: 'squared',
     validator(value) {
       return ['squared', 'long'].includes(value) //only allow these two values
-    }
+    },
   },
   mission: {
     type: Object,
     default: () => ({
       name: 'Default Mission',
-      description: 'Default mission description'
+      description: 'Default mission description',
     }),
   },
+})
+
+console.log({
+  displayMode: props.displayMode,
+  mission: props.mission,
 })
 </script>
 
 <style>
-
-    /* Tailwind ne prend pas c'est @apply directement dans le style !*/
-    @import './MissionCard.css';
-
+/* Tailwind ne prend pas c'est @apply directement dans le style !*/
+@import './MissionCard.css';
 </style>
