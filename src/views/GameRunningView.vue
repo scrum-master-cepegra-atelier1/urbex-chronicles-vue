@@ -1,19 +1,30 @@
 <template>
   <div class="game-running-view">
+    <OverlayMission
+      :title="missionTitle"
+      :progress="missionProgress"
+      :users="missionUsers"
+      :mission="currentMission"
+    />
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
       <p class="game__header-indice__text">
         Ceci est un indice statique. (À remplacer par une donnée dynamique plus tard)
       </p>
     </header>
+    <QuestionCard :mission="currentMission || null" />
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
+  <AppFooter />
 </template>
 <script setup>
 import { computed, ref, onMounted } from 'vue'
 import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
+import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
+import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
+import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 const currentGameStore = useCurrentGameStore()
 onMounted(() => {
@@ -21,6 +32,17 @@ onMounted(() => {
 })
 const currentMission = computed(() => currentGameStore.current_mission)
 const mapVisible = ref(true)
+
+// Titre de la mission
+const missionTitle = computed(
+  () => currentGameStore.current_circuit?.name || 'Parcours introuvable',
+)
+// Progression en % (à adapter selon logique métier)
+const missionProgress = computed(() => currentGameStore.progression || 0)
+// Utilisateurs (à adapter selon structure réelle)
+const missionUsers = computed(() =>
+  currentGameStore.current_mission?.party ? [{ name: currentGameStore.current_mission.name }] : [],
+)
 </script>
 <style scoped lang="scss">
 // Header indice styles respectant la convention SCSS
