@@ -10,15 +10,10 @@
       <!-- Titre + tag + logo -->
       <div class="overlay-mission__header">
         <h2 class="overlay-mission__title">{{ props.title }}</h2>
-        <div class="overlay-mission__meta">
-          <span class="overlay-mission__tag">#tag</span>
-          <span class="overlay-mission__logo">logo?</span>
-        </div>
       </div>
       <!-- Progression -->
       <div class="overlay-mission__progress">
-        <ProgressBar :label="'Progression'" :value="props.progress" />
-        <span class="overlay-mission__progress-value">{{ props.progress }}%</span>
+        <ProgressBar :label="'Progression'" :value="props.progress" :max="100" />
       </div>
       <!-- Utilisateurs -->
       <div class="overlay-mission__users">
@@ -85,6 +80,7 @@ const expand = () => {
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
+  color: #ffffff;
   &__toggle-button {
     position: absolute;
     top: 2rem;
@@ -118,8 +114,8 @@ const expand = () => {
 .fixed {
   position: fixed;
   margin: 1rem;
-  top: 0;
-  left: 0;
+  top: -1rem;
+  left: -1rem;
   right: 0;
   bottom: 0;
   z-index: 9999;
