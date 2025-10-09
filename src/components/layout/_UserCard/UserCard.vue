@@ -11,7 +11,7 @@
     @keydown.enter="toggleExpand"
     @keydown.space.prevent="toggleExpand"
   >
-  <img :src="`http://localhost:1337${currentUser?.avatar?.url || 'https://placehold.co/400x200?text=mission+Image'}`" alt="User avatar" class="user-card__avatar__img"/>
+  <img :src="`http://localhost:1340${currentUser?.avatar?.url || 'https://placehold.co/400x200?text=mission+Image'}`" alt="User avatar" class="user-card__avatar__img"/>
     <div class="user-card__avatar__meta">
       <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
       <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 1 }}</p>

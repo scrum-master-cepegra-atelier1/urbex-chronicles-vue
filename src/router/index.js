@@ -8,6 +8,10 @@ import CircuitView from '@/views/CircuitView.vue'
 import NotFound from '@/views/NotFound.vue'
 import GameRunningView from '@/views/GameRunningView.vue'
 import MissionsView from '@/views/MissionsView.vue'
+import LeaderboardView from '@/views/LeaderboardView.vue'
+
+
+//=== NAVBAR ROUTING === //
 
 const routes = [
   {
@@ -43,6 +47,12 @@ const routes = [
     path: '/missions', //need to add user id
     name: 'missions',
     component: MissionsView,
+    meta: { requiresAuth: true },
+  },
+  {
+    path: '/leaderboard',
+    name: 'Leaderboard',
+    component: LeaderboardView,
     meta: { requiresAuth: true },
   },
   {
