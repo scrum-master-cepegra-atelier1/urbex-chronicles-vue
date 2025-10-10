@@ -5,6 +5,7 @@
       :progress="missionProgress"
       :users="missionUsers"
       :mission="currentMission"
+      :length="circuitLength"
     />
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
@@ -68,6 +69,8 @@ const mapVisible = ref(true)
 const missionTitle = computed(
   () => currentGameStore.current_circuit?.name || 'Parcours introuvable',
 )
+
+const circuitLength = computed(() => currentGameStore.current_circuit?.missions?.length || 1)
 const missionProgress = computed(() => currentGameStore.progression || 0)
 const missionUsers = computed(() =>
   currentGameStore.current_mission?.party ? [{ name: currentGameStore.current_mission.name }] : [],
