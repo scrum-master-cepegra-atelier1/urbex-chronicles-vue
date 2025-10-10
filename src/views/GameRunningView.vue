@@ -93,8 +93,11 @@ function handleAnswerChecked(isCorrect) {
 function goToNextMission() {
   // Passe à la question suivante (brut)
   if (currentQuestionIndex.value < testQuestions.length - 1) {
+    // Met à jour l'index de la question
     currentQuestionIndex.value++
     currentQuestionnaire.value = testQuestions[currentQuestionIndex.value]
+    //update progress
+    missionProgress.value = currentQuestionIndex.value
     // Met à jour la mission courante avec la mission suivante du circuit
     const missions = currentGameStore.current_circuit?.missions || []
     const nextMission = missions[currentQuestionIndex.value] || null
