@@ -11,12 +11,6 @@
           <h2 class="home__welcome">
             Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
           </h2>
-          <p class="home__status">Vous êtes connecté(e)</p>
-
-          <div class="home__user-info">
-            <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
-            <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
-          </div>
           <UserCard />
           <SearchBar
             v-if="circuitStore.circuits.length"
@@ -39,8 +33,6 @@
             :circuit="circuit"
             display-mode="long"
           />
-
-          <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
         </div>
 
         <div v-else class="home__unauthenticated">
@@ -83,11 +75,6 @@ onBeforeMount(async () => {
     await circuitStore.getCircuits(authStore.token)
   }
 })
-
-const handleLogout = () => {
-  authStore.logout()
-  console.log('Déconnexion réussie')
-}
 
 const handleCircuitClick = (circuit) => {
   console.log('circuit cliquée :', circuit)
