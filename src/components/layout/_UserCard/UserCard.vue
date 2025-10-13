@@ -84,6 +84,7 @@
     <div class="user-card__cogwheel" @click="handleSettings">
       <Icon name="settings" size="xl" dir="icon" />
       <span>Paramètres</span>
+      <button @click="handleLogout" class="user-card__details__item">Se déconnecter</button>
     </div>
 
     <aside class="user-card__details-all" v-if="currentUser">
@@ -142,6 +143,11 @@ const props = defineProps({
     default: false
   }
 })
+
+const handleLogout = () => {
+  authStore.logout()
+  console.log('Déconnexion réussie')
+}
 
 
 // État du déploiement, initialisé depuis le prop
