@@ -22,11 +22,20 @@
             :circuits="circuitStore.circuits"
           />
           <CircuitCard
-            v-for="circuit in displayedCircuits"
+            @click="handleCircuitClick(circuit)"
+            v-if="circuitStore.filteredCircuits.length"
+            v-for="circuit in circuitStore.filteredCircuits"
             :key="circuit.id"
             :circuit="circuit"
             display-mode="long"
+          />
+          <CircuitCard
             @click="handleCircuitClick(circuit)"
+            v-else
+            v-for="circuit in circuitStore.circuits"
+            :key="circuit.id"
+            :circuit="circuit"
+            display-mode="long"
           />
         </div>
 
