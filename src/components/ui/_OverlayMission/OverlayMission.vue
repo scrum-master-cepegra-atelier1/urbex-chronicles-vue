@@ -13,7 +13,7 @@
       </div>
       <!-- Progression -->
       <div class="overlay-mission__progress">
-        <ProgressBar :label="'Progression'" :value="props.progress" :max="100" />
+        <ProgressBar :label="'Progression'" :value="props.progress" :max="length" />
       </div>
       <!-- Utilisateurs -->
       <div class="overlay-mission__users">
@@ -45,7 +45,7 @@ const props = defineProps({
   },
   progress: {
     type: Number,
-    default: 0,
+    default: 1,
   },
   users: {
     type: Array,
@@ -54,6 +54,10 @@ const props = defineProps({
   mission: {
     type: Object,
     required: true,
+  },
+  length: {
+    type: Number,
+    default: 1,
   },
 })
 

@@ -5,6 +5,7 @@
       :progress="missionProgress"
       :users="missionUsers"
       :mission="currentMission"
+      :length="circuitLength"
     />
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
@@ -68,6 +69,8 @@ const mapVisible = ref(true)
 const missionTitle = computed(
   () => currentGameStore.current_circuit?.name || 'Parcours introuvable',
 )
+
+const circuitLength = computed(() => currentGameStore.current_circuit?.missions?.length || 1)
 const missionProgress = computed(() => currentGameStore.progression || 0)
 const missionUsers = computed(() =>
   currentGameStore.current_mission?.party ? [{ name: currentGameStore.current_mission.name }] : [],
@@ -90,8 +93,11 @@ function handleAnswerChecked(isCorrect) {
 function goToNextMission() {
   // Passe à la question suivante (brut)
   if (currentQuestionIndex.value < testQuestions.length - 1) {
+    // Met à jour l'index de la question
     currentQuestionIndex.value++
     currentQuestionnaire.value = testQuestions[currentQuestionIndex.value]
+    //update progress
+    missionProgress.value = currentQuestionIndex.value
     // Met à jour la mission courante avec la mission suivante du circuit
     const missions = currentGameStore.current_circuit?.missions || []
     const nextMission = missions[currentQuestionIndex.value] || null
