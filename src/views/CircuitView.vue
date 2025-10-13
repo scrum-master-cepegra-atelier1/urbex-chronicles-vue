@@ -5,12 +5,6 @@
       <p v-if="circuitStore.currentCircuit">Circuit Name: {{ circuitStore.currentCircuit.name }}</p>
       <p v-else>Chargement...</p>
     </header>
-    <!--
-    3tab structure with
-    présetation of the circuit (description)
-    users feedback
-    accessibilities
-    -->
     <section class="circuit__infos">
       <nav class="circuit__infos__tabs">
         <ul class="circuit__infos__tabs__list">
@@ -43,13 +37,11 @@
       </section>
       <section class="circuit__infos__feedback disabled">
         <h2>Avis</h2>
-        <p>
-          {{
-            circuitStore.currentCircuit.comments && circuitStore.currentCircuit.comments.length > 0
-              ? circuitStore.currentCircuit.comments
-              : 'Aucun feedback disponible'
-          }}
-        </p>
+        <CommentCard v-if="circuitStore.currentCircuit" 
+        v-for="comment in circuitStore.currentCircuit.comments"
+        :key="comment.id"
+        :comment="comment" />
+        <p v-else> Aucun feedback disponible </p>
       </section>
       <section class="circuit__infos__accessibilities disabled">
         <h2>Malvoyant etc</h2>
@@ -111,6 +103,7 @@ import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import { useRoute, useRouter } from 'vue-router'
 
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
+import CommentCard from '@/components/layout/_CommentCard/CommentCard.vue'
 
 const $route = useRoute()
 const $router = useRouter()
