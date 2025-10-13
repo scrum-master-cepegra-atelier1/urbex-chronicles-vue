@@ -37,22 +37,19 @@
       </section>
       <section class="circuit__infos__feedback disabled">
         <h2>Avis</h2>
-        <CommentCard v-if="circuitStore.currentCircuit" 
+        <CommentCard v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.comments.length>0" 
         v-for="comment in circuitStore.currentCircuit.comments"
         :key="comment.id"
         :comment="comment" />
         <p v-else> Aucun feedback disponible </p>
       </section>
       <section class="circuit__infos__accessibilities disabled">
-        <h2>Malvoyant etc</h2>
-        <p>
-          {{
-            circuitStore.currentCircuit.accessibilities &&
-            circuitStore.currentCircuit.accessibilities.length > 0
-              ? circuitStore.currentCircuit.accessibilities
-              : 'Aucun accès disponible'
-          }}
+        <h2>Accessibilités du circuit</h2>
+        <p v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.accessibilities.length>0"
+          v-for="aid in circuitStore.currentCircuit.accessibilities">
+          {{ aid.name }}
         </p>
+        <p v-else> Aucun accésibilité disponible </p>
       </section>
     </section>
     <button
