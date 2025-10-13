@@ -25,6 +25,8 @@
       <div class="overlay-mission__mission-card">
         <MissionCard :mission="props.mission" displayMode="squared" />
       </div>
+      <!-- Stop circuit -->
+      <button class="overlay-mission__stop" @click="$emit('stop')">Stop circuit</button>
     </div>
   </aside>
 </template>
@@ -38,6 +40,7 @@ import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 const IconSize = '3xl'
 defineOptions({ name: 'OverlayMission' })
 
+defineEmits(['stop'])
 const props = defineProps({
   title: {
     type: String,
@@ -113,6 +116,17 @@ const expand = () => {
 }
 .overlay-mission.active {
   transform: translateX(0);
+}
+
+.overlay-mission__stop {
+  margin-top: 1.5rem;
+  padding: 0.75rem 1rem;
+  width: 100%;
+  background: #ff4d4f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .fixed {

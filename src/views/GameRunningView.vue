@@ -6,6 +6,7 @@
       :users="missionUsers"
       :mission="currentMission"
       :length="circuitLength"
+      @stop="stopCircuit"
     />
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
@@ -25,6 +26,7 @@
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
@@ -58,6 +60,7 @@ const testQuestions = [
 const currentQuestionIndex = ref(0)
 
 const currentGameStore = useCurrentGameStore()
+const router = useRouter()
 onMounted(() => {
   currentGameStore.hydrate()
   initQuestionnaire()
@@ -107,6 +110,14 @@ function goToNextMission() {
     currentQuestionnaire.value = null
     currentGameStore.updateMission(null)
   }
+}
+
+function stopCircuit() {
+  // Do NOT reset store so the circuit remains "en cours"
+  // Optionally hide the map quickly for UX
+  mapVisible.value = false
+  // Navigate back to Home (small visual hint uses ongoing state)
+  router.push({ name: 'Home' }).catch(() => {})
 }
 </script>
 <style scoped lang="scss">
