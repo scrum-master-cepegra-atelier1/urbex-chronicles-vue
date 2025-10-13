@@ -4,7 +4,7 @@
   <img :src="getImageUrl(props.mission.media?.image?.url)" alt="Mission Image" class="mission-card__image__img"/>
   </figure>
   <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ props.mission.name}}</h2>
+    <h2 class="mission-card__info__title">{{ props.mission.title}}</h2>
     <p class="mission-card__info__description">{{ props.mission.description }}</p>
     <button class="mission-card__info__start-button" v-if="props.displayMode === 'squared'">Start Mission</button>
   </aside>

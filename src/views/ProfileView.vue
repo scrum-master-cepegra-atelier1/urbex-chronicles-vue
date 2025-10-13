@@ -2,18 +2,25 @@
   <!-- Header with UserCard inside (overlay mode) -->
   <AppHeader />
 
-    <div class="profile-page__background">
-      <!-- J'ai pas trouver mieux mais à changer plutard-->
-    </div>
-
+  <div class="profile-page__background">
+    <!-- J'ai pas trouver mieux mais à changer plutard-->
+  </div>
+  
   <!-- Page content -->
   <main class="profile-page">
-    <!--Select mission-->
-    <MissionCard :mission="missions" display-mode="squared"/>
-    <!--Logout-->
+    <section class="profile-page__circuit" v-if="user.current_circuit">
+      <h1>Votre circuit actuel: {{ user.current_circuit.name }}</h1>
+      progression du circuit: 
+      0% <!-- A remplacer par une vrai valeur -->
+      <ProgressBar :label="'Progression'" :value="0" :max="currentCircuit.missions.length" />
+      <MissionCard :mission="mission" display-mode="squared"/>
+      <p>{{ user.current_circuit.description }}</p> 
+    </section>
+    <section class="profile-page__circuit" v-else>
+      <h1>No current circuit</h1>
+    </section>
+    <h2>User Info</h2>
   </main>
-
-  <!-- Footer (per-view) -->
   <AppFooter />
 </template>
 
@@ -24,15 +31,18 @@ import { computed } from 'vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
-import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
+import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 
 //stores
 import { useCircuitStore } from '@/stores/circuit.js'
+import { useAuthStore } from '@/stores/auth'
 
 const circuitStore = useCircuitStore()
-
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
 // Computed property pour obtenir les circuits (anciennement missions)
-const missions = computed(() => circuitStore.circuits)
+const mission = computed(() => authStore.user.current_mission)
+const currentCircuit = JSON.parse(localStorage.getItem('current_circuit'))
 
 </script>
 
