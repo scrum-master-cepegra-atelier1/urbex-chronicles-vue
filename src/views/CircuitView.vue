@@ -5,12 +5,6 @@
       <p v-if="circuitStore.currentCircuit">Circuit Name: {{ circuitStore.currentCircuit.name }}</p>
       <p v-else>Chargement...</p>
     </header>
-    <!--
-    3tab structure with
-    présetation of the circuit (description)
-    users feedback
-    accessibilities
-    -->
     <section class="circuit__infos">
       <nav class="circuit__infos__tabs">
         <ul class="circuit__infos__tabs__list">
@@ -43,31 +37,26 @@
       </section>
       <section class="circuit__infos__feedback disabled">
         <h2>Avis</h2>
-        <p>
-          {{
-            circuitStore.currentCircuit.comments && circuitStore.currentCircuit.comments.length > 0
-              ? circuitStore.currentCircuit.comments
-              : 'Aucun feedback disponible'
-          }}
-        </p>
+        <CommentCard v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.comments.length>0" 
+        v-for="comment in circuitStore.currentCircuit.comments"
+        :key="comment.id"
+        :comment="comment" />
+        <p v-else> Aucun feedback disponible </p>
       </section>
       <section class="circuit__infos__accessibilities disabled">
-        <h2>Malvoyant etc</h2>
-        <p>
-          {{
-            circuitStore.currentCircuit.accessibilities &&
-            circuitStore.currentCircuit.accessibilities.length > 0
-              ? circuitStore.currentCircuit.accessibilities
-              : 'Aucun accès disponible'
-          }}
+        <h2>Accessibilités du circuit</h2>
+        <p v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.accessibilities.length>0"
+          v-for="aid in circuitStore.currentCircuit.accessibilities">
+          {{ aid.name }}
         </p>
+        <p v-else> Aucun accésibilité disponible </p>
       </section>
     </section>
     <button
       @click="handlingClick(circuit_id)"
       class="circuit__start-button circuit__start-button--start active"
     >
-      Lancer la mission
+      Lancer le parcours
     </button>
     <button
       @click="handlingClick(circuit_id)"
@@ -101,6 +90,7 @@
       </div>
     </aside>
   </main>
+  <AppFooter />
 </template>
 
 <script setup>
@@ -111,6 +101,8 @@ import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import { useRoute, useRouter } from 'vue-router'
 
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
+import CommentCard from '@/components/layout/_CommentCard/CommentCard.vue'
+import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 const $route = useRoute()
 const $router = useRouter()
@@ -361,7 +353,7 @@ onMounted(() => {
   &__start-button {
     position: fixed;
     display: none;
-    bottom: 1rem;
+    bottom: 6rem;
     right: 1rem;
     margin-block: 1rem;
     padding: 0.75rem 2rem;
