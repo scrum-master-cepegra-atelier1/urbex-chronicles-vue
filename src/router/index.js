@@ -56,8 +56,8 @@ const routes = [
     meta: { requiresGuest: true },
   },
   {
-    path: '/profile', //need to add user id
-    name: 'Profile',
+    path: '/circuit', // renamed from /profile
+    name: 'Circuit',
     component: ProfileView,
     meta: { requiresAuth: true },
   },

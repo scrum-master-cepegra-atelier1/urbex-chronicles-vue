@@ -40,8 +40,8 @@ class AuthService {
           },
         })
         localStorage.setItem('user', JSON.stringify(userData))
-        // Redirect to Profile after successful login (English comment)
-        router.push({ name: 'Profile' })
+        // Redirect to Circuit after successful login
+        router.push({ name: 'Circuit' })
       }
 
       return response
@@ -71,8 +71,8 @@ class AuthService {
       if (response.jwt) {
         localStorage.setItem('authToken', response.jwt)
         localStorage.setItem('user', JSON.stringify(response.user))
-        // Redirect to Profile after successful registration (English comment)
-        router.push({ name: 'Profile' })
+        // Redirect to Circuit after successful registration
+        router.push({ name: 'Circuit' })
       }
 
       return response

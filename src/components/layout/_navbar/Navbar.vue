@@ -22,9 +22,9 @@ import Icon from '@/components/ui/_IconAsset/Icon.vue'
       </li>
       <li class="navigation-list__item">
 
-        <router-link to="/profile" class="navigation-label" id="">
-          <Icon name="account" :size="IconSize" dir="icon" />
-          <p class="navigation-label__name">Profil</p>
+        <router-link to="/circuit" class="navigation-label" id="">
+          <Icon name="pin_drop" :size="IconSize" dir="icon" />
+          <p class="navigation-label__name">Circuit</p>
         </router-link>
       </li>
       <li class="navigation-list__item">

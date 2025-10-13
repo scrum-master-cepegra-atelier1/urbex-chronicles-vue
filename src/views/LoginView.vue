@@ -60,8 +60,8 @@ const handleLogin = async () => {
   try {
     await authStore.login(form.identifier, form.password)
     console.log('Connexion réussie !')
-    // Redirect to Profile after successful login (English comment)
-    router.push({ name: 'Profile' })
+    // Redirect to Circuit after successful login
+    router.push({ name: 'Circuit' })
   } catch (error) {
     console.error('Erreur de connexion:', error)
   }
