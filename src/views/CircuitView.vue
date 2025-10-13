@@ -56,7 +56,7 @@
       @click="handlingClick(circuit_id)"
       class="circuit__start-button circuit__start-button--start active"
     >
-      Lancer la mission
+      Lancer le parcours
     </button>
     <button
       @click="handlingClick(circuit_id)"
@@ -90,6 +90,7 @@
       </div>
     </aside>
   </main>
+  <AppFooter />
 </template>
 
 <script setup>
@@ -101,6 +102,7 @@ import { useRoute, useRouter } from 'vue-router'
 
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 import CommentCard from '@/components/layout/_CommentCard/CommentCard.vue'
+import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 const $route = useRoute()
 const $router = useRouter()
@@ -351,7 +353,7 @@ onMounted(() => {
   &__start-button {
     position: fixed;
     display: none;
-    bottom: 1rem;
+    bottom: 6rem;
     right: 1rem;
     margin-block: 1rem;
     padding: 0.75rem 2rem;
