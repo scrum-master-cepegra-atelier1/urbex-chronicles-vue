@@ -8,8 +8,8 @@
       />
     </figure>
     <aside class="circuit-card__info">
-      <h2 class="circuit-card__info__title">{{ circuit.name }}</h2>
-      <p class="circuit-card__info__description">{{ circuit.description }}</p>
+      <h2 class="circuit-card__info__title truncate">{{ circuit.name }}</h2>
+      <p class="circuit-card__info__description line-clamp-1">{{ circuit.description }}</p>
       <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">
         Start circuit
       </button>
@@ -62,6 +62,7 @@ const cardClass = computed(() => {
     display: grid;
     gap: 1rem;
     padding: 1rem;
+    text-overflow: clip;
     &__title {
       font-size: 1.2rem;
       grid-area: title;
