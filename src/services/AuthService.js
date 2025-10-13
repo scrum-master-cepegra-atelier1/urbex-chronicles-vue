@@ -41,7 +41,7 @@ class AuthService {
         })
         localStorage.setItem('user', JSON.stringify(userData))
         // Redirect to home after successful login
-        router.push({ name: '/' })
+        router.push({ name: 'Home' })
       }
 
       return response
@@ -72,7 +72,7 @@ class AuthService {
         localStorage.setItem('authToken', response.jwt)
         localStorage.setItem('user', JSON.stringify(response.user))
         // Redirect to home after successful registration
-        router.push({ name: '/' })
+        router.push({ name: 'Home' })
       }
 
       return response
