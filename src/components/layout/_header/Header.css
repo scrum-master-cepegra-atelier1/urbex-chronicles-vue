@@ -1,19 +1,7 @@
 @import '@/assets/css/style.css';
 
-:root {
-  --app-header-height: 72px;
-}
-
 .header-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
-  z-index: 9999;
-  display: flex;
-  justify-content: center;
-  height: var(--app-header-height);
+@apply w-full fixed top-0 z-50;
 }
 
 .header-content {

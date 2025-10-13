@@ -3,6 +3,10 @@
     <!-- Header avec UserCard (si authentifié) -->
     <AppHeader v-if="authStore.isAuthenticated" />
 
+      <div class="home__background">
+        <!-- J'ai pas trouver mieux mais à changer plutard-->
+      </div>
+
     <main class="home">
       <div class="home__container">
         <h1 class="home__title">URBEX Chronicles</h1>
@@ -55,7 +59,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted } from 'vue'
+import { onBeforeMount, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
@@ -67,6 +71,10 @@ import AppFooter from '@/components/layout/_footer/Footer.vue'
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
+
+const displayedCircuits = computed(() =>
+  circuitStore.filteredCircuits.length ? circuitStore.filteredCircuits : circuitStore.circuits
+)
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
@@ -96,14 +104,26 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.5rem;
+}
+
+.home__background {
+  position: fixed;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: -1;
+
+  background: #141717;
+  background: linear-gradient(180deg, rgba(20, 23, 23, 1) 0%, rgba(110, 108, 170, 1) 50%, rgba(255, 225, 77, 1) 100%);
 }
 
 .home__container {
+  margin-top: 5.5rem;
+  margin-bottom: 5.5rem;
   background: white;
-  padding: 3rem;
-  border-radius: 12px;
+  border-radius: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 500px;

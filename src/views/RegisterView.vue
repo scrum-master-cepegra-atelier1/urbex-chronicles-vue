@@ -109,8 +109,8 @@ const handleRegister = async () => {
   try {
     await authStore.register(form.username, form.email, form.password)
     console.log('Inscription réussie !')
-    // Redirect to Profile after successful registration (English comment)
-    router.push({ name: 'Profile' })
+    // Redirect to Circuit after successful registration
+    router.push({ name: 'Circuit' })
   } catch (error) {
     console.error("Erreur d'inscription:", error)
   }
