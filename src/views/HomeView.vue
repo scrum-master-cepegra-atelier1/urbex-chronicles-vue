@@ -24,23 +24,12 @@
             :circuits="circuitStore.circuits"
           />
           <CircuitCard
-            @click="handleCircuitClick(circuit)"
-            v-if="circuitStore.filteredCircuits.length"
-            v-for="circuit in circuitStore.filteredCircuits"
+            v-for="circuit in displayedCircuits"
             :key="circuit.id"
             :circuit="circuit"
             display-mode="long"
-          />
-          <CircuitCard
             @click="handleCircuitClick(circuit)"
-            v-else
-            v-for="circuit in circuitStore.circuits"
-            :key="circuit.id"
-            :circuit="circuit"
-            display-mode="long"
           />
-
-          <button @click="handleLogout" class="home__logout-button">Se déconnecter</button>
         </div>
 
         <div v-else class="home__unauthenticated">
@@ -63,7 +52,7 @@
 </template>
 
 <script setup>
-import { onBeforeMount, onMounted } from 'vue'
+import { onBeforeMount, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 //components
@@ -71,10 +60,15 @@ import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
+import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
 
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
+
+const displayedCircuits = computed(() =>
+  circuitStore.filteredCircuits.length ? circuitStore.filteredCircuits : circuitStore.circuits
+)
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
@@ -84,10 +78,7 @@ onBeforeMount(async () => {
   }
 })
 
-const handleLogout = () => {
-  authStore.logout()
-  console.log('Déconnexion réussie')
-}
+// logout handled by LogoutButton
 
 const handleCircuitClick = (circuit) => {
   console.log('circuit cliquée :', circuit)
@@ -109,14 +100,16 @@ onMounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 0.5rem;
+  background: #141717;
+  background: linear-gradient(180deg, rgba(20, 23, 23, 1) 0%, rgba(110, 108, 170, 1) 50%, rgba(255, 225, 77, 1) 100%);
 }
 
 .home__container {
+  margin-top: 5.5rem;
+  margin-bottom: 5.5rem;
   background: white;
-  padding: 3rem;
-  border-radius: 12px;
+  border-radius: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
   width: 100%;
   max-width: 500px;

@@ -86,6 +86,10 @@
       <span>Paramètres</span>
     </div>
 
+    <div class="user-card__logout">
+      <LogoutButton />
+    </div>
+
     <aside class="user-card__details-all" v-if="currentUser">
       <div class="user-card__details-all__title">Toutes les informations</div>
       <div class="user-card__details-all__grid">
@@ -121,6 +125,7 @@
 //components imports
 import Icon from '@/components/ui/_IconAsset/Icon.vue'
 import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
+import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
 
 //store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
