@@ -3,6 +3,10 @@
     <!-- Header avec UserCard (si authentifié) -->
     <AppHeader v-if="authStore.isAuthenticated" />
 
+      <div class="home__background">
+        <!-- J'ai pas trouver mieux mais à changer plutard-->
+      </div>
+
     <main class="home">
       <div class="home__container">
         <h1 class="home__title">URBEX Chronicles</h1>
@@ -11,12 +15,6 @@
           <h2 class="home__welcome">
             Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
           </h2>
-          <p class="home__status">Vous êtes connecté(e)</p>
-
-          <div class="home__user-info">
-            <p><strong>Email :</strong> {{ authStore.user?.email }}</p>
-            <p><strong>ID :</strong> {{ authStore.user?.id }}</p>
-          </div>
           <UserCard />
           <SearchBar
             v-if="circuitStore.circuits.length"
@@ -60,7 +58,6 @@ import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
-import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
 
 //stores
 const authStore = useAuthStore()
@@ -77,8 +74,6 @@ onBeforeMount(async () => {
     await circuitStore.getCircuits(authStore.token)
   }
 })
-
-// logout handled by LogoutButton
 
 const handleCircuitClick = (circuit) => {
   console.log('circuit cliquée :', circuit)
@@ -101,6 +96,16 @@ onMounted(() => {
   align-items: center;
   justify-content: center;
   padding: 0.5rem;
+}
+
+.home__background {
+  position: fixed;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: -1;
+
   background: #141717;
   background: linear-gradient(180deg, rgba(20, 23, 23, 1) 0%, rgba(110, 108, 170, 1) 50%, rgba(255, 225, 77, 1) 100%);
 }

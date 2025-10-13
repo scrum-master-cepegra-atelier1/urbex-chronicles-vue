@@ -82,8 +82,7 @@
     </div>
 
     <div class="user-card__cogwheel" @click="handleSettings">
-      <Icon name="settings" size="xl" dir="icon" />
-      <span>Paramètres</span>
+      <SettingButton />
     </div>
 
     <div class="user-card__logout">
@@ -123,9 +122,9 @@
 
 <script setup>
 //components imports
-import Icon from '@/components/ui/_IconAsset/Icon.vue'
 import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
+import SettingButton from '@/components/ui/_Button/SettingButton.vue'
 
 //store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
@@ -147,6 +146,8 @@ const props = defineProps({
     default: false
   }
 })
+
+// removed inline handleLogout; using dedicated LogoutButton component
 
 
 // État du déploiement, initialisé depuis le prop
