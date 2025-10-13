@@ -1,5 +1,5 @@
 <template>
-  <section class="circuit-card" :class="'circuit-card--' + displayMode">
+  <section class="circuit-card" :class="['circuit-card--' + props.displayMode, 'circuit-card--status-' + resolvedStatus]">
     <figure class="circuit-card__image">
       <img
         src="https://placehold.co/400x200?text=circuit+Image"
@@ -8,9 +8,9 @@
       />
     </figure>
     <aside class="circuit-card__info">
-      <h2 class="circuit-card__info__title truncate">{{ circuit.name }}</h2>
-      <p class="circuit-card__info__description line-clamp-1">{{ circuit.description }}</p>
-      <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">
+      <h2 class="circuit-card__info__title truncate">{{ props.circuit.name }}</h2>
+      <p class="circuit-card__info__description line-clamp-1">{{ props.circuit.description }}</p>
+      <button class="circuit-card__info__start-button" v-if="props.displayMode === 'squared'">
         Start circuit
       </button>
     </aside>
@@ -19,10 +19,12 @@
 
 <script setup>
 //import api
-import {  computed } from 'vue'
+import { computed } from 'vue'
+import { useAuthStore } from '@/stores/auth.js'
+import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 
 //define props for display mode
-defineProps({
+const props = defineProps({
   displayMode: {
     type: String,
     default: 'squared',
@@ -34,10 +36,24 @@ defineProps({
     type: Object,
     default: () => ({ title: 'Default circuit' }),
   },
+  status: {
+    type: String,
+    default: 'none',
+    validator(value) {
+      return ['none', 'current', 'finished'].includes(value)
+    },
+  },
 })
-//computed class for mode
-const cardClass = computed(() => {
-  return displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long'
+
+// derive status from stores if not explicitly provided
+const authStore = useAuthStore()
+const currentGameStore = useCurrentGameStore()
+
+const resolvedStatus = computed(() => {
+  if (props.status !== 'none') return props.status
+  const currentCircuitId = authStore?.user?.currentCircuit?.id || currentGameStore?.current_circuit?.id
+  if (currentCircuitId && props.circuit?.id && currentCircuitId === props.circuit.id) return 'current'
+  return 'none'
 })
 </script>
 
@@ -128,5 +144,18 @@ const cardClass = computed(() => {
         '-- --';
     }
   }
+}
+
+// status borders
+.circuit-card--status-none {
+  border: 1px solid #ccc;
+}
+
+.circuit-card--status-current {
+  border: 2px solid #ff9800; // orange
+}
+
+.circuit-card--status-finished {
+  border: 2px solid #4caf50; // green
 }
 </style>
