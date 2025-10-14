@@ -1,32 +1,25 @@
 <template>
-<section class="mission-card" :class="'mission-card--'+props.displayMode">
-  <figure class="mission-card__image">
-  <img :src="getImageUrl(props.mission.media?.image?.url)" alt="Mission Image" class="mission-card__image__img"/>
-  </figure>
-  <aside class="mission-card__info">
-    <h2 class="mission-card__info__title">{{ props.mission.name}}</h2>
-    <p class="mission-card__info__description">{{ props.mission.description }}</p>
-    <button class="mission-card__info__start-button" v-if="props.displayMode === 'squared'">Start Mission</button>
-  </aside>
-</section>
+  <section class="mission-card" :class="'mission-card--' + props.displayMode">
+    <figure class="mission-card__image">
+      <img
+        :src="getImageUrl(props.mission.media?.image?.url)"
+        alt="Mission Image"
+        class="mission-card__image__img"
+      />
+    </figure>
+    <aside class="mission-card__info">
+      <h2 class="mission-card__info__title">{{ props.mission.name }}</h2>
+      <p class="mission-card__info__description">{{ props.mission.description }}</p>
+      <button class="mission-card__info__start-button" v-if="props.displayMode === 'squared'">
+        Start Mission
+      </button>
+    </aside>
+  </section>
 </template>
 
 <script setup>
 //import api
-import { useCircuitStore } from '@/stores/circuit';
-import { onBeforeMount } from 'vue';
 import { getImageUrl } from '@/utils/image'
-
-const circuitStore = useCircuitStore();
-// use shared `getImageUrl` from `src/utils/image.js`
-
-onBeforeMount(async () => {
-  // switch to circuits store fetching if needed by this component
-  if (typeof circuitStore.getCircuits === 'function') {
-    await circuitStore.getCircuits();
-    console.log(circuitStore.circuits);
-  }
-})
 
 //define props for display mode
 const props = defineProps({
