@@ -7,41 +7,45 @@
       <!-- J'ai pas trouver mieux mais à changer plutard-->
     </div>
 
-    <main class="home">
-      <div class="home__container">
-        <h1 class="home__title">URBEX Chronicles</h1>
 
-        <div v-if="authStore.isAuthenticated" class="home__authenticated">
-          <h2 class="home__welcome">
-            Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
-          </h2>
-          <!-- <UserCard /> -->
-          <div class="home__circuit-search">
-            <SearchBar v-if="displayedCircuits.length" :circuits="displayedCircuits" />
+    
+    <AppContent>
+      <main class="home">
+        <div class="home__container">
+          <h1 class="home__title">URBEX Chronicles</h1>
+
+          <div v-if="authStore.isAuthenticated" class="home__authenticated">
+            <h2 class="home__welcome">
+              Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
+            </h2>
+            <!-- <UserCard /> -->
+            <div class="home__circuit-search">
+              <SearchBar v-if="displayedCircuits.length" :circuits="displayedCircuits" />
+            </div>
+            <CircuitCard
+              @click="handleCircuitClick(circuit)"
+              v-for="circuit in displayedCircuits"
+              :key="circuit.id"
+              :circuit="circuit"
+              display-mode="long"
+            />
           </div>
-          <CircuitCard
-            @click="handleCircuitClick(circuit)"
-            v-for="circuit in displayedCircuits"
-            :key="circuit.id"
-            :circuit="circuit"
-            display-mode="long"
-          />
-        </div>
-
-        <div v-else class="home__unauthenticated">
-          <p class="home__description">Connectez-vous pour accéder à votre espace personnel</p>
-
-          <div class="home__auth-buttons">
-            <router-link to="/login" class="home__auth-button home__auth-button--login">
-              Se connecter
-            </router-link>
-            <router-link to="/register" class="home__auth-button home__auth-button--register">
-              S'inscrire
-            </router-link>
+          <div v-else class="home__unauthenticated">
+            <p class="home__description">Connectez-vous pour accéder à votre espace personnel</p>
+            <div class="home__auth-buttons">
+              <router-link to="/login" class="home__auth-button home__auth-button--login">
+                Se connecter
+              </router-link>
+              <router-link to="/register" class="home__auth-button home__auth-button--register">
+                S'inscrire
+              </router-link>
+            </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+
+    </AppContent>
+
     <!-- Footer added for all views (English comment) -->
     <AppFooter />
   </div>
@@ -52,10 +56,13 @@ import { onBeforeMount, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
 
-//components
+// ASSETS COMPONENTS
 import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
+
+// LAYOUT COMPONENTS 
 import AppHeader from '@/components/layout/_header/Header.vue'
+import AppContent from '@/components/layout/_content/Content.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 //stores
@@ -88,9 +95,9 @@ onMounted(() => {
 .home {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0.5rem;
+  align-items: flex-start;
+  justify-content: start;
+  padding: 1.0rem;
 }
 
 .home__background {
@@ -111,8 +118,6 @@ onMounted(() => {
 }
 
 .home__container {
-  margin-top: 5.5rem;
-  margin-bottom: 5.5rem;
   background: white;
   border-radius: 2rem;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);

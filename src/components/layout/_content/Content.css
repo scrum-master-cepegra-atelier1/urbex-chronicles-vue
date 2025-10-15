@@ -1,0 +1,6 @@
+@import '@/assets/css/style.css';
+
+.content-container {
+  @apply flex-1 absolute h-full w-full z-40;
+  padding-top: 6.5rem; 
+}
