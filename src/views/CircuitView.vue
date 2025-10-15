@@ -2,7 +2,9 @@
   <main class="circuit">
     <header class="circuit__header">
       <h1>Circuit</h1>
-      <p v-if="circuitStore.currentCircuit">Circuit Name: {{ circuitStore.currentCircuit.name }}</p>
+      <p v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.circuit">
+        Circuit Name: {{ circuitStore.currentCircuit.circuit.name }}
+      </p>
       <p v-else>Chargement...</p>
     </header>
     <section class="circuit__infos">
@@ -20,14 +22,15 @@
       </nav>
       <section class="circuit__infos__presentation">
         <h2>Description</h2>
-        <p v-if="circuitStore.currentCircuit">{{ circuitStore.currentCircuit.description }}</p>
+        <p v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.circuit">
+          {{ circuitStore.currentCircuit.circuit.description }}
+        </p>
         <p v-else>Chargement...</p>
         <section class="circuit__missions">
           <h2>Missions</h2>
-          <ul>
+          <ul v-if="circuitStore.currentCircuit">
             <MissionCard
-              :v-if="circuitStore.currentCircuit"
-              v-for="mission in circuitStore.currentCircuit.missions"
+              v-for="mission in circuitStore.currentCircuit.circuit.missions"
               :key="mission.id"
               :mission="mission"
               display-mode="long"
@@ -37,19 +40,37 @@
       </section>
       <section class="circuit__infos__feedback disabled">
         <h2>Avis</h2>
-        <CommentCard v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.comments.length>0" 
-        v-for="comment in circuitStore.currentCircuit.comments"
-        :key="comment.id"
-        :comment="comment" />
-        <p v-else> Aucun feedback disponible </p>
+        <div
+          v-if="
+            circuitStore.currentCircuit &&
+            circuitStore.currentCircuit.circuit &&
+            circuitStore.currentCircuit.circuit.comments &&
+            circuitStore.currentCircuit.circuit.comments.length > 0
+          "
+        >
+          <CommentCard
+            v-for="comment in circuitStore.currentCircuit.circuit.comments"
+            :key="comment.id"
+            :comment="comment"
+          />
+        </div>
+        <p v-else>Aucun feedback disponible</p>
       </section>
       <section class="circuit__infos__accessibilities disabled">
         <h2>Accessibilités du circuit</h2>
-        <p v-if="circuitStore.currentCircuit && circuitStore.currentCircuit.accessibilities.length>0"
-          v-for="aid in circuitStore.currentCircuit.accessibilities">
-          {{ aid.name }}
-        </p>
-        <p v-else> Aucun accésibilité disponible </p>
+        <div
+          v-if="
+            circuitStore.currentCircuit &&
+            circuitStore.currentCircuit.circuit &&
+            circuitStore.currentCircuit.circuit.accessibilities &&
+            circuitStore.currentCircuit.circuit.accessibilities.length > 0
+          "
+        >
+          <p v-for="aid in circuitStore.currentCircuit.circuit.accessibilities" :key="aid.id">
+            {{ aid.name }}
+          </p>
+        </div>
+        <p v-else>Aucun accésibilité disponible</p>
       </section>
     </section>
     <button
@@ -113,11 +134,11 @@ const currentGameStore = useCurrentGameStore()
 
 const circuit_id = ref(null)
 //get circuit id from route paramss
-onBeforeMount(() => {
+onBeforeMount(async () => {
   circuit_id.value = $route.params.circuit_id
   console.log('Circuit ID from route params: ', circuit_id.value)
   //fetch missions for this circuit
-  circuitStore.getCircuit(circuit_id.value, authStore.token)
+  await circuitStore.getCircuit(circuit_id.value, authStore.token)
 })
 
 const handlingClick = (circuit_id) => {
@@ -146,10 +167,14 @@ const starting = async (mode) => {
   localStorage.setItem('party', JSON.stringify(party))
 
   // Récupérer le circuit courant (assurer qu'il est chargé)
-  let currentCircuit = circuitStore.currentCircuit
+  let currentCircuit = null
+  if (circuitStore.currentCircuit && circuitStore.currentCircuit.circuit) {
+    currentCircuit = circuitStore.currentCircuit.circuit
+  }
+
   if (!currentCircuit || !currentCircuit.id) {
     await circuitStore.getCircuit(circuit_id.value, authStore.token)
-    currentCircuit = circuitStore.currentCircuit
+    currentCircuit = circuitStore.currentCircuit?.circuit
   }
   if (currentCircuit) {
     localStorage.setItem('current_circuit', JSON.stringify(currentCircuit))
@@ -168,16 +193,16 @@ const starting = async (mode) => {
   // await currentGameStore.initGame(currentCircuitId, authStore.token)
   currentGameStore.updateParty(party)
 
-  // Mettre en commentaire la mise à jour utilisateur (Strapi)
-  // try {
-  //   await authStore.updateUser({
-  //     current_circuit: { id: 1 },
-  //     current_mission: { id: 1 },
-  //   })
-  //   console.log('Utilisateur mis à jour avec circuit et mission')
-  // } catch (err) {
-  //   console.error('Erreur lors de la mise à jour utilisateur:', err)
-  // }
+  // Mise à jour utilisateur via API Laravel
+  try {
+    await authStore.updateUser({
+      current_circuit_id: currentCircuit.id,
+      current_mission_id: firstMission ? firstMission.id : null,
+    })
+    console.log('Utilisateur mis à jour avec circuit et mission')
+  } catch (err) {
+    console.error('Erreur lors de la mise à jour utilisateur:', err)
+  }
 
   console.log('Starting circuit in', mode)
   console.log('Party members:', party)
