@@ -1,12 +1,15 @@
 <template>
-  <!-- Header with UserCard inside (overlay mode) -->
-  <AppHeader />
 
   <div class="profile-page__background">
     <!-- J'ai pas trouver mieux mais à changer plutard-->
   </div>
-  
-  <!-- Page content -->
+
+  <!-- Header with UserCard inside (overlay mode) -->
+  <AppHeader />
+
+  <AppContent>
+
+      <!-- Page content -->
   <main class="profile-page">
     <section class="profile-page__circuit" v-if="user.current_circuit">
       <h1>Votre circuit actuel: {{ user.current_circuit.name }}</h1>
@@ -28,6 +31,11 @@
       <h2>User Info</h2>
     </aside>
   </main>
+
+  </AppContent>
+
+
+
   <AppFooter />
 </template>
 
@@ -37,6 +45,9 @@ import { computed } from 'vue'
 //components
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
+import AppContent from '@/components/layout/_content/Content.vue'
+
+
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 
@@ -95,11 +106,8 @@ const resetCircuit = async () => {
 
 .profile-page {
   //sizes
-  padding: 1rem;
-  margin: 5.5rem auto;
-  min-height: 80vh;
-  max-width: 500px;
-  width: 100%;
+  padding: 1.0rem;
+  margin: 1.0rem;
   //flex properties
   display: flex;
   align-items: center;

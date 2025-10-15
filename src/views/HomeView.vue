@@ -93,7 +93,6 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .home {
-  min-height: 100vh;
   display: flex;
   align-items: flex-start;
   justify-content: start;

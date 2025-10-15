@@ -1,6 +1,13 @@
 <template>
   <div class="content-container">
-    <slot></slot>
+    <slot>
+
+    </slot>
+
+  <div class="h-[6.5rem]">
+    <!-- Keep Blank -->
+  </div>
+
   </div>
 </template>
 
