@@ -17,6 +17,7 @@ function onClick() {
 <style scoped>
 .btn-logout {
   padding: 0.75rem 2rem;
+  margin: 0 auto;
   background-color: #dc3545;
   color: white;
   border: none;

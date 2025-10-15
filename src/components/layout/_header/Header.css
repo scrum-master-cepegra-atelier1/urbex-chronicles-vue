@@ -1,10 +1,11 @@
 @import '@/assets/css/style.css';
 
+.header-container {
+  @apply w-full fixed top-0 z-50;
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+}
 
-
-.header-content {
-  position: relative;
-  overflow: visible;
-  background: transparent !important;
-  box-shadow: none !important;
+.header-container.header-hidden {
+  transform: translateY(-100%);
 }

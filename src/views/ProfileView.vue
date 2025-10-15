@@ -1,19 +1,41 @@
 <template>
+
+  <div class="profile-page__background">
+    <!-- J'ai pas trouver mieux mais à changer plutard-->
+  </div>
+
   <!-- Header with UserCard inside (overlay mode) -->
   <AppHeader />
 
-    <div class="profile-page__background">
-      <!-- J'ai pas trouver mieux mais à changer plutard-->
-    </div>
+  <AppContent>
 
-  <!-- Page content -->
+      <!-- Page content -->
   <main class="profile-page">
-    <!--Select mission-->
-    <MissionCard :mission="missions" display-mode="squared"/>
-    <!--Logout-->
+    <section class="profile-page__circuit" v-if="user.current_circuit">
+      <h1>Votre circuit actuel: {{ user.current_circuit.name }}</h1>
+      progression du circuit: 
+      {{(1/currentCircuit.missions.length)*100}}% <!-- A remplacer par une vrai valeur -->
+      <ProgressBar :label="'Progression'" :value="1" :max="currentCircuit.missions.length" />
+      <MissionCard :mission="mission" display-mode="squared"/>
+      <p>{{ user.current_circuit.description }}</p> 
+      <button @click="showCircuits" class="profile-page__circuit__button">Voir les circuits</button>
+      <button @click="resetCircuit"class="profile-page__circuit__button">Changer de circuit</button>
+    </section>
+    <section class="profile-page__circuit" v-else>
+      <h1>Vous n'avez pas encore choisi de parcours à faire</h1>
+      <p> Inscrivez vous à l'un des circuits d'urbex</p>
+      <button @click="showCircuits" class="profile-page__circuit__button">Voir les circuits</button>
+      <button @click="randomCircuit"class="profile-page__circuit__button">Surprends-moi</button>
+    </section>
+    <aside>
+      <h2>User Info</h2>
+    </aside>
   </main>
 
-  <!-- Footer (per-view) -->
+  </AppContent>
+
+
+
   <AppFooter />
 </template>
 
@@ -23,30 +45,96 @@ import { computed } from 'vue'
 //components
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
+import AppContent from '@/components/layout/_content/Content.vue'
+
+
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
-import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
+import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 
 //stores
 import { useCircuitStore } from '@/stores/circuit.js'
+import { useAuthStore } from '@/stores/auth'
 
 const circuitStore = useCircuitStore()
-
+const authStore = useAuthStore()
+const user = computed(() => authStore.user)
 // Computed property pour obtenir les circuits (anciennement missions)
-const missions = computed(() => circuitStore.circuits)
+const mission = computed(() => authStore.user.current_mission)
+const currentCircuit = JSON.parse(localStorage.getItem('current_circuit'))
+
+// Methods
+const showCircuits = () => {
+  // Rediriger vers la page des circuits
+  window.location.href = '/'
+}
+const randomCircuit= async () => {
+  // Sélectionner un circuit aléatoire et rediriger vers sa page
+  const circuits = circuitStore.circuits
+  if (!circuitStore.circuits.length) {
+    await circuitStore.getCircuits(authStore.token)
+  }
+  if (circuits.length > 0) {
+    const randomIndex = Math.floor(Math.random() * circuits.length)
+    const randomCircuit = circuits[randomIndex]
+    window.location.href = `/circuits/${randomCircuit.id}`
+  } else {
+    alert('Aucun circuit disponible pour le moment.')
+  }
+}
+
+const resetCircuit = async () => {
+  try {
+    await authStore.updateUser(authStore.user.id,
+    { current_circuit_id: null,
+      current_mission_id: null})
+    // Mettre à jour l'état local
+    authStore.user.current_circuit = null
+    authStore.user.current_mission = null
+    localStorage.removeItem('current_circuit')
+    localStorage.removeItem('current_mission')
+    alert('Votre circuit a été réinitialisé. Vous pouvez en choisir un nouveau.')
+  } catch (error) {
+    console.error('Erreur lors de la réinitialisation du circuit:', error)
+    alert("Une erreur s'est produite lors de la réinitialisation de votre circuit.")
+  }
+}
+
 
 </script>
-
-<style lang="scss" scoped></style>
-
 
 <style lang='scss' scoped>
 
 .profile-page {
-
-  padding: 1rem;
-  margin-top: 5.5rem;
-  margin-bottom: 5.5rem;
-
+  //sizes
+  padding: 1.0rem;
+  margin: 1.0rem;
+  //flex properties
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column wrap;
+  background: white;
+  //border
+  border-radius: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  &__circuit {
+    width: 90%;
+    margin-bottom: 2rem;
+    text-align: center;
+    &__button {
+      margin: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #6e6caa;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #5755a1;
+      }
+    }
+  }
 }
 .profile-page__background {
   position: fixed;

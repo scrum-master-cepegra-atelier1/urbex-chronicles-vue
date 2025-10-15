@@ -6,6 +6,7 @@
       :users="missionUsers"
       :mission="currentMission"
       :length="circuitLength"
+      @stop="stopCircuit"
     />
     <header class="game__header-indice">
       <h2 class="game__header-indice__title">INDICE POUR TROUVER LE CHEMIN</h2>
@@ -21,43 +22,19 @@
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
-  <AppFooter />
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
 import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
-import AppFooter from '@/components/layout/_footer/Footer.vue'
-
-// Tableau brut de questions QCM pour le test
-const testQuestions = [
-  {
-    id: 1,
-    type: 'multiple-choice',
-    question: 'Quelle est la capitale de l’Italie ?',
-    options: ['Rome', 'Milan', 'Venise'],
-    answer: 'Rome',
-    image: null,
-    explanation: 'Rome est la capitale de l’Italie.',
-    multipleAnswers: false,
-  },
-  {
-    id: 2,
-    type: 'multiple-choice',
-    question: 'Quel est le plus grand océan du monde ?',
-    options: ['Atlantique', 'Indien', 'Pacifique'],
-    answer: 'Pacifique',
-    image: null,
-    explanation: 'Le Pacifique est le plus grand océan.',
-    multipleAnswers: false,
-  },
-]
 
 const currentQuestionIndex = ref(0)
 
 const currentGameStore = useCurrentGameStore()
+const router = useRouter()
 onMounted(() => {
   currentGameStore.hydrate()
   initQuestionnaire()
@@ -107,6 +84,14 @@ function goToNextMission() {
     currentQuestionnaire.value = null
     currentGameStore.updateMission(null)
   }
+}
+
+function stopCircuit() {
+  // Do NOT reset store so the circuit remains "en cours"
+  // Optionally hide the map quickly for UX
+  mapVisible.value = false
+  // Navigate back to Home (small visual hint uses ongoing state)
+  router.push({ name: 'Home' }).catch(() => {})
 }
 </script>
 <style scoped lang="scss">

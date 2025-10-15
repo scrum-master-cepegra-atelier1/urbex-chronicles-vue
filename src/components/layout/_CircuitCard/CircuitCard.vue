@@ -1,5 +1,5 @@
 <template>
-  <section class="circuit-card" :class="'circuit-card--' + displayMode">
+  <section class="circuit-card" :class="['circuit-card--' + props.displayMode, 'circuit-card--status-' + resolvedStatus]">
     <figure class="circuit-card__image">
       <img
         src="https://placehold.co/400x200?text=circuit+Image"
@@ -131,5 +131,18 @@ const cardClass = computed(() => {
         '-- --';
     }
   }
+}
+
+// status borders
+.circuit-card--status-none {
+  border: 1px solid #ccc;
+}
+
+.circuit-card--status-current {
+  border: 2px solid #ff9800; // orange
+}
+
+.circuit-card--status-finished {
+  border: 2px solid #4caf50; // green
 }
 </style>

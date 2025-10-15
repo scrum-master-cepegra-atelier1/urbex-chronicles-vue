@@ -189,16 +189,27 @@ const starting = async (mode) => {
     }
   }
 
+  console.log('First mission:', firstMission)
+  console.log('Current circuit after fetch:', currentCircuit)
+  // Hydrater le store CurrentGame
+  const current_circuit_id = currentCircuit ? currentCircuit.id : null
+  const current_mission_id = firstMission ? firstMission.id : null
+  if (!current_circuit_id) {
+    console.error('No valid current circuit ID found.')
+    return
+  }
+  console.log('Current Circuit ID for game store:', current_circuit_id)
+
   // Initialiser le store CurrentGame (optionnel, peut être retiré si on veut juste hydrater dans GameRunningView)
-  // await currentGameStore.initGame(currentCircuitId, authStore.token)
+  // await currentGameStore.initGame(current_circuit_id, authStore.token)
   currentGameStore.updateParty(party)
 
   // Mise à jour utilisateur via API Laravel
   try {
-    await authStore.updateUser({
-      current_circuit_id: currentCircuit.id,
-      current_mission_id: firstMission ? firstMission.id : null,
-    })
+    await authStore.updateUser(authStore.user.id,{
+      current_mission_id,
+      current_circuit_id
+    }, authStore.token)
     console.log('Utilisateur mis à jour avec circuit et mission')
   } catch (err) {
     console.error('Erreur lors de la mise à jour utilisateur:', err)
