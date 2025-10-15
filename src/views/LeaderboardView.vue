@@ -40,13 +40,6 @@
         <div class="leaderboard-container">
           <!-- Podium Top 3 -->
           <div v-if="filteredUsers.length >= 3" class="podium-section">
-            <!-- Confettis décoratifs -->
-            <div class="confetti-container">
-              <div class="confetti confetti-1"></div>
-              <div class="confetti confetti-2"></div>
-              <div class="confetti confetti-3"></div>
-            </div>
-
             <div class="podium-wrapper">
               <!-- 2ème place -->
               <div class="podium-item podium-second">
@@ -65,7 +58,6 @@
               <!-- 1ère place -->
               <div class="podium-item podium-first">
                 <div class="medal-container">
-                  <div class="crown">👑</div>
                   <div class="medal medal-gold">
                     <span class="medal-emoji">🥇</span>
                   </div>
@@ -95,10 +87,7 @@
 
           <!-- Top 4-10 -->
           <div class="rankings-section">
-            <h2 class="section-title">
-              <span class="star-icon">⭐</span>
-              Top Explorateurs
-            </h2>
+            <h2 class="section-title">Top Explorateurs</h2>
             
             <div class="rankings-list">
               <div
@@ -140,7 +129,7 @@
 
         <!-- Message d'encouragement -->
         <div class="encouragement">
-          <p>Continue d'explorer pour grimper dans le classement ! 🌟</p>
+          <p>Continue d'explorer pour grimper dans le classement !</p>
         </div>
       </div>
     </main>
@@ -171,6 +160,7 @@ const filteredUsers = computed(() => {
 onMounted(async () => {
   try {
     const response = await strapiApi.get('/users?populate=all')
+    console.log('Réponse brute API /users:', response)
     let users = []
     if (Array.isArray(response)) {
       users = response
@@ -179,7 +169,12 @@ onMounted(async () => {
     } else if (Array.isArray(response.data?.data)) {
       users = response.data.data
     }
-    leaderboardUsers.value = users
+    leaderboardUsers.value = users.map(user => ({
+      ...user,
+      badges: Array.isArray(user.badges) ? user.badges.length : (user.badges?.data?.length || 0),
+      xp: user.xp || 0
+    }))
+    console.log('Utilisateurs leaderboard:', leaderboardUsers.value)
   } catch (error) {
     console.error('Erreur de récupération du leaderboard :', error)
   }
@@ -200,49 +195,6 @@ $text-gray-500: #6b7280;
 $bg-white: #ffffff;
 $border-color: rgba(255, 255, 255, 0.3);
 
-// Animations
-@keyframes gradientShift {
-  0%, 100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.5), 0 0 40px rgba(251, 191, 36, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 30px rgba(251, 191, 36, 0.8), 0 0 60px rgba(251, 191, 36, 0.5);
-  }
-}
-
-@keyframes bounce-slow {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse-slow {
-  0%, 100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 0.3;
-  }
-}
-
-@keyframes ping {
-  75%, 100% {
-    transform: scale(2);
-    opacity: 0;
-  }
-}
 
 // Layout principal
 .leaderboard-page {
@@ -381,43 +333,7 @@ $border-color: rgba(255, 255, 255, 0.3);
   background: linear-gradient(to bottom right, #9333ea, #7c3aed, #c026d3);
   padding: 2rem;
   padding-bottom: 3rem;
-  
-  .confetti-container {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    
-    .confetti {
-      position: absolute;
-      width: 0.5rem;
-      height: 0.5rem;
-      border-radius: 50%;
-      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
-      
-      &.confetti-1 {
-        top: 1rem;
-        left: 1rem;
-        background: #fcd34d;
-      }
-      
-      &.confetti-2 {
-        top: 2rem;
-        right: 2rem;
-        width: 0.75rem;
-        height: 0.75rem;
-        background: #f9a8d4;
-        animation-delay: 300ms;
-      }
-      
-      &.confetti-3 {
-        bottom: 3rem;
-        left: 3rem;
-        background: #93c5fd;
-        animation-delay: 700ms;
-      }
-    }
-  }
+}
   
   .podium-wrapper {
     display: flex;
@@ -583,7 +499,7 @@ $border-color: rgba(255, 255, 255, 0.3);
       }
     }
   }
-}
+
 
 // Rankings section
 .rankings-section {
