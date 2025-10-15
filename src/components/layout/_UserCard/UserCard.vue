@@ -45,7 +45,7 @@
         <p class="user-card__progress__title">📈 Progression</p>
         <ProgressBar
           :value="currentUser?.experience || 0"
-          :max="100"
+          :max="userLevelInfos?.xpForNextLevel || 100"
           :label="`${currentUser?.experience || 0} XP`"
           :show-text="false"
         />
@@ -198,10 +198,15 @@ function formatAny(value) {
 }
 
 //get xp
-onBeforeMount(()=>{
-  const userLevelInfos= authStore.getLevel(currentUser.experience)
-  console.log(userLevelInfos)
+onBeforeMount(() => {
+  const userLevelInfos= authStore.getLevel(currentUser.value.experience)
+  console.log('userLevelInfos', userLevelInfos)
+  currentUser.value.level= userLevelInfos.level
+  currentUser.value.experience= userLevelInfos.xpInLevel
+  console.log('currentUser', currentUser.value)
 })
+console.log('currentUser not mount', currentUser.value)
+
 
 
 </script>

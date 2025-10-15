@@ -184,23 +184,23 @@ export const useAuthStore = defineStore('auth', {
         current_mission_id: mission.id,
       })
     },
+    getLevel(xp) {
+    let level = 1;
+    let xpNeeded = 100;
+    let total = 0;
+  
+    while (xp >= xpNeeded) {
+      total += xpNeeded;
+      level++;
+      xpNeeded += 100; // chaque niveau demande 100 XP de plus que le précédent
+      xp -= xpNeeded;
+      console.log(`Niveau: ${level}, XP dans le niveau: ${xp}, XP pour le prochain niveau: ${xpNeeded}`);
+    }
+    return {
+      level,
+      xpInLevel: xp,
+      xpToNext: xpNeeded
+    };
   },
-  getLevel(xp) {
-  let level = 1;
-  let xpNeeded = 100;
-  let total = 0;
-
-  while (xp >= xpNeeded) {
-    total += xpNeeded;
-    level++;
-    xpNeeded += 100; // chaque niveau demande 100 XP de plus que le précédent
-    xp -= xpNeeded;
-  }
-
-  return {
-    level,
-    xpInLevel: xp - total,
-    xpToNext: xpNeeded
-  };
 }
 })
