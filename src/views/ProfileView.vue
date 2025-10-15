@@ -19,8 +19,8 @@
     <section class="profile-page__circuit" v-else>
       <h1>Vous n'avez pas encore choisi de parcours à faire</h1>
       <p> Inscrivez vous à l'un des circuits d'urbex</p>
-      <button @click="showCircuits">Voir les circuits</button>
-      <button @click="randomCircuit">Surprends-moi</button>
+      <button @click="showCircuits" class="profile-page__circuit__button">Voir les circuits</button>
+      <button @click="randomCircuit"class="profile-page__circuit__button">Surprends-moi</button>
     </section>
     <aside>
       <h2>User Info</h2>
@@ -54,13 +54,16 @@ function showCircuits() {
   // Rediriger vers la page des circuits
   window.location.href = '/'
 }
-function randomCircuit() {
+async function randomCircuit() {
   // Sélectionner un circuit aléatoire et rediriger vers sa page
   const circuits = circuitStore.circuits
+  if (!circuitStore.circuits.length) {
+    await circuitStore.getCircuits(authStore.token)
+  }
   if (circuits.length > 0) {
     const randomIndex = Math.floor(Math.random() * circuits.length)
     const randomCircuit = circuits[randomIndex]
-    window.location.href = `/circuits/${randomCircuit.documentId}`
+    window.location.href = `/circuits/${randomCircuit.id}`
   } else {
     alert('Aucun circuit disponible pour le moment.')
   }
@@ -72,16 +75,39 @@ function randomCircuit() {
 <style lang='scss' scoped>
 
 .profile-page {
-
+  //sizes
   padding: 1rem;
-  margin-top: 5.5rem;
-  margin-bottom: 5.5rem;
+  margin: 5.5rem auto;
   min-height: 80vh;
+  max-width: 500px;
+  width: 100%;
+  //flex properties
   display: flex;
   align-items: center;
   justify-content: center;
   flex-flow: column wrap;
-
+  background: white;
+  //border
+  border-radius: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  &__circuit {
+    width: 90%;
+    margin-bottom: 2rem;
+    text-align: center;
+    &__button {
+      margin: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.5rem;
+      background-color: #6e6caa;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      &:hover {
+        background-color: #5755a1;
+      }
+    }
+  }
 }
 .profile-page__background {
   position: fixed;
