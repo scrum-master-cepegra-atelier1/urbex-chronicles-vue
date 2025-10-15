@@ -11,10 +11,12 @@
     <section class="profile-page__circuit" v-if="user.current_circuit">
       <h1>Votre circuit actuel: {{ user.current_circuit.name }}</h1>
       progression du circuit: 
-      0% <!-- A remplacer par une vrai valeur -->
-      <ProgressBar :label="'Progression'" :value="0" :max="currentCircuit.missions.length" />
+      {{(1/currentCircuit.missions.length)*100}}% <!-- A remplacer par une vrai valeur -->
+      <ProgressBar :label="'Progression'" :value="1" :max="currentCircuit.missions.length" />
       <MissionCard :mission="mission" display-mode="squared"/>
       <p>{{ user.current_circuit.description }}</p> 
+      <button @click="showCircuits" class="profile-page__circuit__button">Voir les circuits</button>
+      <button @click="resetCircuit"class="profile-page__circuit__button">Changer de circuit</button>
     </section>
     <section class="profile-page__circuit" v-else>
       <h1>Vous n'avez pas encore choisi de parcours à faire</h1>
@@ -50,11 +52,11 @@ const mission = computed(() => authStore.user.current_mission)
 const currentCircuit = JSON.parse(localStorage.getItem('current_circuit'))
 
 // Methods
-function showCircuits() {
+const showCircuits = () => {
   // Rediriger vers la page des circuits
   window.location.href = '/'
 }
-async function randomCircuit() {
+const randomCircuit= async () => {
   // Sélectionner un circuit aléatoire et rediriger vers sa page
   const circuits = circuitStore.circuits
   if (!circuitStore.circuits.length) {
@@ -66,6 +68,23 @@ async function randomCircuit() {
     window.location.href = `/circuits/${randomCircuit.id}`
   } else {
     alert('Aucun circuit disponible pour le moment.')
+  }
+}
+
+const resetCircuit = async () => {
+  try {
+    await authStore.updateUser(authStore.user.id,
+    { current_circuit_id: null,
+      current_mission_id: null})
+    // Mettre à jour l'état local
+    authStore.user.current_circuit = null
+    authStore.user.current_mission = null
+    localStorage.removeItem('current_circuit')
+    localStorage.removeItem('current_mission')
+    alert('Votre circuit a été réinitialisé. Vous pouvez en choisir un nouveau.')
+  } catch (error) {
+    console.error('Erreur lors de la réinitialisation du circuit:', error)
+    alert("Une erreur s'est produite lors de la réinitialisation de votre circuit.")
   }
 }
 

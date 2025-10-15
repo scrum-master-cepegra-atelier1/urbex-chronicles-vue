@@ -155,28 +155,19 @@ class AuthService {
    * @returns {Promise<object>} - Updated user object
    */
   async updateUser(userId, payload, token) {
+    console.log('Updating user with payload:',token)
     try {
       let response
-      // Adaptation selon la clé du payload
-      if (payload.current_circuit_id) {
-        response = await apiService.patch(
-          '/api/user/current-circuit',
-          { current_circuit_id: payload.current_circuit_id },
+      response = await apiService.put(
+        `/api/users/${userId}`,
+          { current_circuit_id: payload.current_circuit_id,
+            current_mission_id: payload.current_mission_id 
+          },
           {
             ...authHeader(token),
           },
         )
-      }
-
-      if (payload.current_mission_id) {
-        response = await apiService.patch(
-          '/api/user/current-mission',
-          { current_mission_id: payload.current_mission_id },
-          {
-            ...authHeader(token),
-          },
-        )
-      }
+      console.log('User updated:', response)
       // Après la mise à jour, récupérer le profil complet
       const userProfile = await apiService.get('/api/auth/me', {
         ...authHeader(token),
