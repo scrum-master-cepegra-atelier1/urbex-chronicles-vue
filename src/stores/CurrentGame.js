@@ -12,7 +12,9 @@ export const useCurrentGameStore = defineStore('currentGame', {
     user: null,
     current_circuit: null,
     current_mission: null,
+    current_question: null,
     party: null,
+    progression: 0,
   }),
   getters: {
     isGameActive: (state) => !!state.current_circuit && !!state.current_mission,
@@ -87,5 +89,14 @@ export const useCurrentGameStore = defineStore('currentGame', {
       localStorage.removeItem(LS_MISSION_KEY)
       localStorage.removeItem(LS_PARTY_KEY)
     },
+    async getQuestion(missionId) {
+      try {
+        const data = await apiService.get(`/api/questions?mission_id=${missionId}`)
+        this.current_question = data[0] || null
+      } catch (error) {
+        console.error('Error fetching questions:', error)
+        throw error
+      }
   },
+}
 })

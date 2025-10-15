@@ -11,9 +11,9 @@
     <section class="profile-page__circuit" v-if="user.current_circuit">
       <h1>Votre circuit actuel: {{ user.current_circuit.name }}</h1>
       progression du circuit: 
-      {{(1/currentCircuit.missions.length)*100}}% <!-- A remplacer par une vrai valeur -->
-      <ProgressBar :label="'Progression'" :value="1" :max="currentCircuit.missions.length" />
-      <MissionCard :mission="mission" display-mode="squared"/>
+      {{(0/currentCircuit.missions.length)*100}}% <!-- A remplacer par une vrai valeur -->
+      <ProgressBar :label="'Progression'" :value="0" :max="currentCircuit.missions.length" />
+      <MissionCard :mission="mission" display-mode="squared" start="true"/>
       <p>{{ user.current_circuit.description }}</p> 
       <button @click="showCircuits" class="profile-page__circuit__button">Voir les circuits</button>
       <button @click="resetCircuit"class="profile-page__circuit__button">Changer de circuit</button>

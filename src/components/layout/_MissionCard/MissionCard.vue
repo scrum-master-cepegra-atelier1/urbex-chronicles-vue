@@ -10,7 +10,8 @@
     <aside class="mission-card__info">
       <h2 class="mission-card__info__title">{{ props.mission.name }}</h2>
       <p class="mission-card__info__description">{{ props.mission.description }}</p>
-      <button class="mission-card__info__start-button" v-if="props.displayMode === 'squared'">
+      <button class="mission-card__info__start-button" v-if="props.start"
+      @click="$emit('start-mission', props.mission.id)">
         Start Mission
       </button>
     </aside>
@@ -36,6 +37,10 @@ const props = defineProps({
       name: 'Default Mission',
       description: 'Default mission description',
     }),
+  },
+  start: {
+    type: Boolean,
+    default: false,
   },
 })
 
