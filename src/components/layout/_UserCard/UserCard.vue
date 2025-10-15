@@ -38,8 +38,6 @@
         <div class="user-card__badges__title">🏅 Badges</div>
         <div class="user-card__badges__list">
           <img src="https://placehold.co/50x50?text=🏆" alt="Badge 1" />
-          <img src="https://placehold.co/50x50?text=⭐" alt="Badge 2" />
-          <img src="https://placehold.co/50x50?text=🎖️" alt="Badge 3" />
         </div>
       </div>
 
@@ -61,49 +59,18 @@
           <span class="label">Email</span>
           <span class="value">{{ currentUser?.email || '—' }}</span>
         </div>
-        <div class="user-card__details__item" v-if="currentUser?.provider">
-          <span class="label">Provider</span>
-          <span class="value">{{ currentUser?.provider }}</span>
-        </div>
         <div class="user-card__details__item" v-if="'confirmed' in (currentUser || {})">
           <span class="label">Confirmé</span>
           <span class="value">{{ currentUser?.confirmed ? 'Oui' : 'Non' }}</span>
         </div>
-        <div class="user-card__details__item" v-if="'blocked' in (currentUser || {})">
-          <span class="label">Bloqué</span>
-          <span class="value">{{ currentUser?.blocked ? 'Oui' : 'Non' }}</span>
-        </div>
         <div class="user-card__details__item" v-if="currentUser?.createdAt">
-          <span class="label">Inscrit</span>
+          <span class="label">Inscrit depuis</span>
           <span class="value">{{ formatDate(currentUser?.createdAt) }}</span>
         </div>
-        <div class="user-card__details__item" v-if="currentUser?.updatedAt">
-          <span class="label">MAJ</span>
-          <span class="value">{{ formatDate(currentUser?.updatedAt) }}</span>
-        </div>
-        <div class="user-card__details__item" v-if="Array.isArray(currentUser?.roles)">
-          <span class="label">Rôles</span>
-          <span class="value">{{ roleNames(currentUser?.roles) }}</span>
-        </div>
       </div>
-
-      <div class="user-card__cogwheel" @click="handleSettings">
-        <SettingButton />
-      </div>
-
       <div class="user-card__logout">
         <LogoutButton />
       </div>
-
-      <aside class="user-card__details-all" v-if="currentUser">
-        <div class="user-card__details-all__title">Toutes les informations</div>
-        <div class="user-card__details-all__grid">
-          <div class="user-card__details__item" v-for="(val, key) in currentUser" :key="key">
-            <span class="label">{{ key }}</span>
-            <span class="value">{{ formatAny(val) }}</span>
-          </div>
-        </div>
-      </aside>
     </section>
 
     <!-- Barre de slide TOUJOURS en bas -->
@@ -126,7 +93,6 @@
 //components imports
 import ProgressBar from '@/components/ui/_ProgressBar/ProgressBar.vue'
 import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
-import SettingButton from '@/components/ui/_Button/SettingButton.vue'
 
 //store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
@@ -191,10 +157,6 @@ function onPointerUp() {
   dragY.value = 0
 }
 
-function handleSettings() {
-  console.log('Ouvrir les paramètres')
-}
-
 // cleaned logs
 
 function toggleExpand() {
@@ -239,4 +201,10 @@ function formatAny(value) {
 <style>
 /* Tailwind ne prend pas c'est @apply directement dans le style scoped !*/
 @import './userCard.css';
+.user-card__logout {
+  margin-top: auto;
+  padding: 1rem;
+  text-align: center;
+  border-top: 1px solid #eee;
+}
 </style>
