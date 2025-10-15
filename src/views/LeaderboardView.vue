@@ -1,31 +1,21 @@
 <template>
   <div class="leaderboard-page">
-    <!-- Header -->
-    <AppHeader />
+    <!-- Header avec UserCard (si authentifié) -->
+    <AppHeader/>
 
-    <!-- Fond animé -->
-    <div class="animated-background">
-      <div class="grid-pattern"></div>
-      <div class="gradient-overlay"></div>
-    </div>
+    <div class="home__background"></div>
 
     <!-- Contenu principal -->
-    <main class="main-content pt-5">
+    <main class="main-content">
       <div class="content-wrapper">
         <!-- Titre principal -->
-        <div class="header-section pt-5">
+        <div class="header-section">
           <h1 class="main-title">Classement des Explorateurs</h1>
           <p class="subtitle">Les meilleurs aventuriers de la communauté</p>
           
           <!-- Filtres -->
+           
           <div class="filters">
-            <button 
-              @click="currentFilter = 'badges'" 
-              :class="{ active: currentFilter === 'badges' }"
-              class="filter-btn"
-            >
-              🏅 Badges
-            </button>
             <button 
               @click="currentFilter = 'xp'" 
               :class="{ active: currentFilter === 'xp' }"
@@ -33,6 +23,14 @@
             >
               ⭐ XP
             </button>
+            <button 
+              @click="currentFilter = 'badges'" 
+              :class="{ active: currentFilter === 'badges' }"
+              class="filter-btn"
+            >
+              🏅 Badges
+            </button>
+            
           </div>
         </div>
 
@@ -160,7 +158,6 @@ const filteredUsers = computed(() => {
 
 onMounted(async () => {
   try {
-    // Récupère dynamiquement le token JWT généré par headers.js (ex: stocké dans localStorage)
     const token = localStorage.getItem('authToken')
     const response = await apiService.get('/api/users', authHeader(token))
     console.log('Réponse brute API /users:', response)
@@ -174,12 +171,11 @@ onMounted(async () => {
       users = response.data.data
     }
 
+    // Utilise le champ experience pour l'XP, et badges à 0 si non présent
     leaderboardUsers.value = users.map(user => ({
       ...user,
-      badges: Array.isArray(user.badges)
-        ? user.badges.length
-        : user.badges?.data?.length || 0,
-      xp: user.xp || 0
+      xp: user.experience ?? 0,
+      badges: user.badges ?? 0 // adapte ici si tu ajoutes un champ badges plus tard
     }))
 
     console.log('Utilisateurs leaderboard formatés:', leaderboardUsers.value)
@@ -211,25 +207,22 @@ $border-color: rgba(255, 255, 255, 0.3);
   min-height: 100vh;
 }
 
-.animated-background {
+
+.home__background {
   position: fixed;
-  inset: 0;
-  z-index: -10;
-  background: linear-gradient(to bottom right, #1e1b4b, #581c87, #701a75);
-  
-  .grid-pattern {
-    position: absolute;
-    inset: 0;
-    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHBhdHRlcm4gaWQ9ImdyaWQiIHdpZHRoPSI2MCIgaGVpZ2h0PSI2MCIgcGF0dGVyblVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+PHBhdGggZD0iTSAxMCAwIEwgMCAwIDAgMTAiIGZpbGw9Im5vbmUiIHN0cm9rZT0icmdiYSgyNTUsMjU1LDI1NSwwLjAzKSIgc3Ryb2tlLXdpZHRoPSIxIi8+PC9wYXR0ZXJuPjwvZGVmcz48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSJ1cmwoI2dyaWQpIi8+PC9zdmc+');
-    opacity: 0.2;
-  }
-  
-  .gradient-overlay {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(245, 158, 11, 0.2), transparent);
-    animation: pulse-slow 4s ease-in-out infinite;
-  }
+
+  width: 100%;
+  height: 100%;
+
+  z-index: -1;
+
+  background: #141717;
+  background: linear-gradient(
+    180deg,
+    rgba(20, 23, 23, 1) 0%,
+    rgba(110, 108, 170, 1) 50%,
+    rgba(255, 225, 77, 1) 100%
+  );
 }
 
 .main-content {
@@ -239,6 +232,7 @@ $border-color: rgba(255, 255, 255, 0.3);
   align-items: center;
   padding: 0 1rem 6rem;
   margin-top: 5.5rem;
+  background: transparent !important;
 }
 
 .content-wrapper {
@@ -331,9 +325,7 @@ $border-color: rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(20px);
   border-radius: 1.5rem;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   overflow: hidden;
-  border: 1px solid $border-color;
 }
 
 // Podium section
@@ -681,4 +673,9 @@ $border-color: rgba(255, 255, 255, 0.3);
   }
 }
 
+</style>
+<style>
+body {
+  background: transparent !important;
+}
 </style>
