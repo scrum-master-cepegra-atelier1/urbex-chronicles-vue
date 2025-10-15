@@ -15,7 +15,7 @@
           <h2 class="home__welcome">
             Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
           </h2>
-          <UserCard />
+          <!-- <UserCard /> -->
           <div class="home__circuit-search">
             <SearchBar v-if="displayedCircuits.length" :circuits="displayedCircuits" />
           </div>

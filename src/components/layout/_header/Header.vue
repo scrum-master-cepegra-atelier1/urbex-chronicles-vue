@@ -34,9 +34,9 @@ const handleScroll = () => {
   const currentScrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
   
   // Debug logs (à retirer en production)
-  // console.log('Scroll:', { currentScrollY, lastScrollY, isHeaderHidden: isHeaderHidden.value })
+   console.log('Scroll:', { currentScrollY, lastScrollY, isHeaderHidden: isHeaderHidden.value })
   
-  if (currentScrollY > lastScrollY && currentScrollY > 50) {
+  if (currentScrollY > lastScrollY && currentScrollY > 40) {
     // Scroll vers le bas - cacher le header
     isHeaderHidden.value = true
   } else if (currentScrollY < lastScrollY) {
@@ -69,7 +69,7 @@ onMounted(() => {
   // Support pour le scroll sur mobile (touch events)
   window.addEventListener('touchmove', onScroll, { passive: true })
   
-  //console.log('Header scroll listener mounted')
+  console.log('Header scroll listener mounted')
 })
 
 onUnmounted(() => {
@@ -77,7 +77,7 @@ onUnmounted(() => {
   document.removeEventListener('scroll', onScroll)
   window.removeEventListener('touchmove', onScroll)
   
-  //console.log('Header scroll listener unmounted')
+  console.log('Header scroll listener unmounted')
 })
 
 defineOptions({ name: 'AppHeader' })
