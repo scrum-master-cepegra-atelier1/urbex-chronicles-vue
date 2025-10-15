@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
-import { strapiApi } from '../services/ApiService'
+import { apiService } from '../services/ApiService'
 import { useAuthStore } from './auth'
+import { authHeader } from '../utils/headers'
 
 const LS_CIRCUIT_KEY = 'current_circuit'
 const LS_MISSION_KEY = 'current_mission'
@@ -30,12 +31,8 @@ export const useCurrentGameStore = defineStore('currentGame', {
 
       let circuit = JSON.parse(localStorage.getItem(LS_CIRCUIT_KEY))
       if (!circuit || circuit.id !== circuitId) {
-        const data = await strapiApi.get(`/circuits/${circuitId}?populate=all`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        circuit = data.data
+        const data = await apiService.get(`/api/circuits/${circuitId}`, authHeader(token))
+        circuit = data
         localStorage.setItem(LS_CIRCUIT_KEY, JSON.stringify(circuit))
       }
       this.current_circuit = circuit
@@ -46,14 +43,36 @@ export const useCurrentGameStore = defineStore('currentGame', {
         if (mission) localStorage.setItem(LS_MISSION_KEY, JSON.stringify(mission))
       }
       this.current_mission = mission
+
+      // Synchroniser avec l'API Laravel
+      if (circuit && mission) {
+        await authStore.updateUser({
+          current_circuit_id: circuit.id,
+          current_mission_id: mission.id,
+        })
+      }
     },
     updateMission(mission) {
       this.current_mission = mission
       localStorage.setItem(LS_MISSION_KEY, JSON.stringify(mission))
+      const authStore = useAuthStore()
+      if (this.current_circuit && mission) {
+        authStore.updateUser({
+          current_circuit_id: this.current_circuit.id,
+          current_mission_id: mission.id,
+        })
+      }
     },
     updateCircuit(circuit) {
       this.current_circuit = circuit
       localStorage.setItem(LS_CIRCUIT_KEY, JSON.stringify(circuit))
+      const authStore = useAuthStore()
+      if (circuit && this.current_mission) {
+        authStore.updateUser({
+          current_circuit_id: circuit.id,
+          current_mission_id: this.current_mission.id,
+        })
+      }
     },
     updateParty(newParty) {
       this.party = newParty

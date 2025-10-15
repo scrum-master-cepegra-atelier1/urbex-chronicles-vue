@@ -8,9 +8,9 @@
       />
     </figure>
     <aside class="circuit-card__info">
-      <h2 class="circuit-card__info__title truncate">{{ circuit.name }}</h2>
-      <p class="circuit-card__info__description line-clamp-1">{{ circuit.description }}</p>
-      <button class="circuit-card__info__start-button" v-if="displayMode === 'squared'">
+      <h2 class="circuit-card__info__title truncate">{{ props.circuit.name }}</h2>
+      <p class="circuit-card__info__description line-clamp-1">{{ props.circuit.description }}</p>
+      <button class="circuit-card__info__start-button" v-if="props.displayMode === 'squared'">
         Start circuit
       </button>
     </aside>
@@ -19,10 +19,14 @@
 
 <script setup>
 //import api
-import {  computed } from 'vue'
+import { computed } from 'vue'
 
 //define props for display mode
-defineProps({
+const props = defineProps({
+  circuit: {
+    type: Object,
+    default: () => ({ name: 'Default circuit', description: 'No description' }),
+  },
   displayMode: {
     type: String,
     default: 'squared',
@@ -30,14 +34,13 @@ defineProps({
       return ['squared', 'long'].includes(value) //only allow these two values
     },
   },
-  circuit: {
-    type: Object,
-    default: () => ({ title: 'Default circuit' }),
-  },
 })
+
+console.log('Circuit data:', props.circuit)
+
 //computed class for mode
 const cardClass = computed(() => {
-  return displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long'
+  return props.displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long'
 })
 </script>
 

@@ -152,11 +152,11 @@ export const useAuthStore = defineStore('auth', {
         this.user = user
       }
     },
-    /** 
+    /**
      * update user currentCircuit and mission
      * @param {object} user - User object
      * @param {string} token - JWT token
-    */
+     */
     async updateUser(user, token) {
       try {
         const response = await AuthService.updateUser(user, token)
@@ -168,19 +168,21 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     /**
-     * Starts mission for current user
-     * @param {obecjt} circuit - Circuit object chosen by user
-     * @param {object} mission - Data of mission to start corresponding to mission[0] of the circuit
+     * Starts a circuit for the current user.
+     * Updates the user's `currentCircuit` and `mission` properties,
+     * then synchronizes this information with the Laravel API.
+     *
+     * @param {Object} circuit - The circuit object to start.
+     * @param {Object} mission - The mission object associated with the circuit.
      */
     startCircuit(circuit, mission) {
       this.user.currentCircuit = circuit
       this.user.mission = mission
-      console.log(this.user.currentCircuit)
-      console.log(this.user.mission)
-      //sent this to api
-      ApiService.put(`/users/${this.user.id}`, {
-        
+      // Mise à jour via API Laravel
+      this.updateUser({
+        current_circuit_id: circuit.id,
+        current_mission_id: mission.id,
       })
-    }
+    },
   },
 })

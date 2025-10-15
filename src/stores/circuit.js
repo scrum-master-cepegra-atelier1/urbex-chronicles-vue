@@ -1,8 +1,7 @@
+import { authHeader } from '../utils/headers'
 import { defineStore } from 'pinia'
-import ApiService from '@/services/ApiService'
+import { apiService } from '@/services/ApiService'
 import { useAuthStore } from './auth'
-
-const apiService = new ApiService() //request manager
 
 /**
  * Circuit Store using Pinia (replaces the older Mission store)
@@ -25,7 +24,7 @@ export const useCircuitStore = defineStore('circuit', {
     /** @type {string|null} JWT authentication token from auth store */
     filteredCircuits: [],
     /** @type {string|null} Type of search */
-    searchBy: "name",
+    searchBy: 'name',
     /** @type {Object|null} Looked up circuit object */
     currentCircuit: null,
   }),
@@ -38,6 +37,7 @@ export const useCircuitStore = defineStore('circuit', {
       const authStore = useAuthStore()
       return authStore.user.mission ? authStore.user.mission : null
     },
+    allCircuits: (state) => state.circuits,
   },
   /*
   Store actions
@@ -45,35 +45,56 @@ export const useCircuitStore = defineStore('circuit', {
   actions: {
     async getCircuits(token) {
       try {
-        this.circuits = await apiService.get('/circuits?populate=all', {
+        const response = await apiService.get('/api/circuits', {
           headers: {
-            Authorization: `Bearer ${token}`,
+            ...authHeader(token).headers,
           },
         })
-        // Store missions in localStorage & in store
-        localStorage.setItem('circuits', JSON.stringify(this.circuits.data))
-        this.circuits = JSON.parse(localStorage.getItem('circuits'))
+        if (response.circuits) {
+          this.circuits = response.circuits
+        }
+        // Store circuits in localStorage
       } catch (error) {
         console.error('Error fetching circuits:', error)
       }
     },
     async getCircuit(id, token) {
+      if (!this._getCircuitCallCount) this._getCircuitCallCount = 0
+      this._getCircuitCallCount++
+      console.log(`[getCircuit] Appel n°${this._getCircuitCallCount} pour l'id:`, id)
+
+      // Protection contre les appels multiples pour le même circuit
+      if (
+        this.currentCircuit &&
+        this.currentCircuit.circuit &&
+        this.currentCircuit.circuit.id == id
+      ) {
+        console.log(`[getCircuit] Circuit ${id} déjà chargé, pas de nouvel appel`)
+        return this.currentCircuit
+      }
+
+      // Protection contre les appels simultanés
+      if (this._loadingCircuitId === id) {
+        console.log(`[getCircuit] Circuit ${id} en cours de chargement, appel ignoré`)
+        return
+      }
+
+      this._loadingCircuitId = id
+
       try {
-        const response = await apiService.get(
-          `/circuits/${id}?populate=all`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        const response = await apiService.get(`/api/circuits/${id}`, {
+          headers: {
+            ...authHeader(token).headers,
           },
-        )
-        this.currentCircuit = response.data
+        })
+
+        this.currentCircuit = response
         console.log('Fetched circuit with ID:', id)
-        console.log(this.currentCircuit.missions)
-        // Optionally, you can store the fetched mission in the store if needed
-        // this.currentMission = response.data;
+        console.log(this.currentCircuit.circuit.missions)
       } catch (error) {
         console.error('Error fetching circuit:', error)
+      } finally {
+        this._loadingCircuitId = null
       }
     },
     searchCircuit(query, filter) {

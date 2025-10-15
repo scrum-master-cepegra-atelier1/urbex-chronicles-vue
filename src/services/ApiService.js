@@ -175,9 +175,11 @@ class ApiService {
 }
 
 // Default instance for Strapi
-export const strapiApi = new ApiService(
-  import.meta.env.VITE_STRAPI_BASE_URL,
-  import.meta.env.VITE_STRAPI_TOKEN,
+// Default instance for Laravel API
+// Default instance for Laravel API
+export const apiService = new ApiService(
+  import.meta.env.VITE_API_BASE_URL,
+  import.meta.env.VITE_API_TOKEN,
 )
 
 // Export the class to create other instances
