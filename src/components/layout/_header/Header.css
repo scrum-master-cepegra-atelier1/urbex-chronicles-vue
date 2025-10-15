@@ -1,12 +1,10 @@
 @import '@/assets/css/style.css';
 
-.header-container {
-@apply w-full fixed top-0 z-50;
-}
+
 
 .header-content {
-  /*background-color: var(--color-main);*/
-  /*background-image: linear-gradient(to bottom, var(--color-main), var(--color-complement));*/
-  position: relative; /* establish stacking context for overlay */
-  overflow: visible; /* allow overlay to extend outside header */
+  position: relative;
+  overflow: visible;
+  background: transparent !important;
+  box-shadow: none !important;
 }
