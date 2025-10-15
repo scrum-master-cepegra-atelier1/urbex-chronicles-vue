@@ -22,7 +22,6 @@
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
     <!-- Overlay composant à ajouter ici plus tard -->
   </div>
-  <AppFooter />
 </template>
 <script setup>
 import { ref, computed, onMounted } from 'vue'
@@ -31,31 +30,6 @@ import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
 import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
-import AppFooter from '@/components/layout/_footer/Footer.vue'
-
-// Tableau brut de questions QCM pour le test
-const testQuestions = [
-  {
-    id: 1,
-    type: 'multiple-choice',
-    question: 'Quelle est la capitale de l’Italie ?',
-    options: ['Rome', 'Milan', 'Venise'],
-    answer: 'Rome',
-    image: null,
-    explanation: 'Rome est la capitale de l’Italie.',
-    multipleAnswers: false,
-  },
-  {
-    id: 2,
-    type: 'multiple-choice',
-    question: 'Quel est le plus grand océan du monde ?',
-    options: ['Atlantique', 'Indien', 'Pacifique'],
-    answer: 'Pacifique',
-    image: null,
-    explanation: 'Le Pacifique est le plus grand océan.',
-    multipleAnswers: false,
-  },
-]
 
 const currentQuestionIndex = ref(0)
 

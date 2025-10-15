@@ -37,7 +37,7 @@ import Icon from '@/components/ui/_IconAsset/Icon.vue'
 import ProgressBar from '../_ProgressBar/ProgressBar.vue'
 import MissionCard from '@/components/layout/_MissionCard/MissionCard.vue'
 
-const IconSize = '3xl'
+const IconSize = '2xl'
 defineOptions({ name: 'OverlayMission' })
 
 defineEmits(['stop'])
@@ -76,8 +76,8 @@ const expand = () => {
   top: 0;
   left: 0;
   bottom: 0;
-  width: 350px;
-  max-width: 90vw;
+  width: 100vw;
+  max-width: 100vw;
   background-color: rgba(0, 0, 0, 0.85);
   z-index: 9999;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.2);
@@ -90,8 +90,8 @@ const expand = () => {
   color: #ffffff;
   &__toggle-button {
     position: absolute;
-    top: 2rem;
-    left: 0.5rem;
+    top: 2.5rem;
+    left: 2.5rem;
     cursor: pointer;
     background-color: #222;
     border: none;
@@ -115,7 +115,7 @@ const expand = () => {
   }
 }
 .overlay-mission.active {
-  transform: translateX(0);
+  transform: translateX(10%);
 }
 
 .overlay-mission__stop {
@@ -132,11 +132,12 @@ const expand = () => {
 .fixed {
   position: fixed;
   margin: 1rem;
-  top: -1rem;
-  left: -1rem;
+  top: -0.5rem;
+  left: -0.5rem;
   right: 0;
   bottom: 0;
   z-index: 9999;
   border-radius: 100%;
+  opacity: 25%;
 }
 </style>

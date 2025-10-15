@@ -1,7 +1,13 @@
 @import '@/assets/css/style.css';
 
 .header-container {
-@apply w-full fixed top-0 z-50;
+  @apply w-full fixed top-0 z-50;
+  transform: translateY(0);
+  transition: transform 0.3s ease-in-out;
+}
+
+.header-container.header-hidden {
+  transform: translateY(-100%);
 }
 
 .header-content {
