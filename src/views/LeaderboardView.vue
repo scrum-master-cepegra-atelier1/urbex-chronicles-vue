@@ -141,7 +141,8 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { strapiApi } from '@/services/ApiService'
+import { apiService } from '@/services/ApiService'
+import { authHeader } from '@/utils/headers'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
@@ -159,8 +160,11 @@ const filteredUsers = computed(() => {
 
 onMounted(async () => {
   try {
-    const response = await strapiApi.get('/users?populate=all')
+    // Récupère dynamiquement le token JWT généré par headers.js (ex: stocké dans localStorage)
+    const token = localStorage.getItem('authToken')
+    const response = await apiService.get('/api/users', authHeader(token))
     console.log('Réponse brute API /users:', response)
+
     let users = []
     if (Array.isArray(response)) {
       users = response
@@ -169,17 +173,22 @@ onMounted(async () => {
     } else if (Array.isArray(response.data?.data)) {
       users = response.data.data
     }
+
     leaderboardUsers.value = users.map(user => ({
       ...user,
-      badges: Array.isArray(user.badges) ? user.badges.length : (user.badges?.data?.length || 0),
+      badges: Array.isArray(user.badges)
+        ? user.badges.length
+        : user.badges?.data?.length || 0,
       xp: user.xp || 0
     }))
-    console.log('Utilisateurs leaderboard:', leaderboardUsers.value)
+
+    console.log('Utilisateurs leaderboard formatés:', leaderboardUsers.value)
   } catch (error) {
-    console.error('Erreur de récupération du leaderboard :', error)
+    console.error('Erreur lors de la récupération du leaderboard :', error)
   }
 })
 </script>
+
 
 
 <style scoped lang="scss">
@@ -640,35 +649,36 @@ $border-color: rgba(255, 255, 255, 0.3);
       font-size: 0.875rem;
     }
   }
-}
-
-// Encouragement
-.encouragement {
-  margin-top: 1.5rem;
-  text-align: center;
   
-  p {
-    color: rgba(255, 255, 255, 0.8);
-    font-size: 0.875rem;
-  }
-}
-
-// Responsive
-@media (max-width: 640px) {
-  .podium-wrapper {
-    gap: 1rem;
-  }
-  
-  .podium-item {
-    max-width: 6rem;
+  // Encouragement
+  .encouragement {
+    margin-top: 1.5rem;
+    text-align: center;
     
-    &.podium-first {
-      max-width: 7rem;
+    p {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 0.875rem;
     }
   }
   
-  .header-section .main-title {
-    font-size: 1.875rem;
+  // Responsive
+  @media (max-width: 640px) {
+    .podium-wrapper {
+      gap: 1rem;
+    }
+    
+    .podium-item {
+      max-width: 6rem;
+      
+      &.podium-first {
+        max-width: 7rem;
+      }
+    }
+    
+    .header-section .main-title {
+      font-size: 1.875rem;
+    }
   }
 }
+
 </style>
