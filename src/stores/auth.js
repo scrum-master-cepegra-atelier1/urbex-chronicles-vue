@@ -157,9 +157,9 @@ export const useAuthStore = defineStore('auth', {
      * @param {object} user - User object
      * @param {string} token - JWT token
      */
-    async updateUser(user, token) {
+    async updateUser(user, payload) {
       try {
-        const response = await AuthService.updateUser(user, token)
+        const response = await AuthService.updateUser(user, payload, this.token)
         this.user = response
         console.log('User updated successfully:', response)
       } catch (error) {
