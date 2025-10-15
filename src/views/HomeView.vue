@@ -3,9 +3,9 @@
     <!-- Header avec UserCard (si authentifié) -->
     <AppHeader v-if="authStore.isAuthenticated" />
 
-      <div class="home__background">
-        <!-- J'ai pas trouver mieux mais à changer plutard-->
-      </div>
+    <div class="home__background">
+      <!-- J'ai pas trouver mieux mais à changer plutard-->
+    </div>
 
     <main class="home">
       <div class="home__container">
@@ -16,23 +16,12 @@
             Bienvenue, {{ authStore.user?.username || 'Utilisateur' }} !
           </h2>
           <UserCard />
-          <SearchBar
-            v-if="circuitStore.circuits.length"
-            class="home__circuit-search"
-            :circuits="circuitStore.circuits"
-          />
+          <div class="home__circuit-search">
+            <SearchBar v-if="displayedCircuits.length" :circuits="displayedCircuits" />
+          </div>
           <CircuitCard
             @click="handleCircuitClick(circuit)"
-            v-if="circuitStore.filteredCircuits.length"
-            v-for="circuit in circuitStore.filteredCircuits"
-            :key="circuit.id"
-            :circuit="circuit"
-            display-mode="long"
-          />
-          <CircuitCard
-            @click="handleCircuitClick(circuit)"
-            v-else
-            v-for="circuit in circuitStore.circuits"
+            v-for="circuit in displayedCircuits"
             :key="circuit.id"
             :circuit="circuit"
             display-mode="long"
@@ -67,29 +56,26 @@ import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
+import UserCard from '@/components/layout/_UserCard/UserCard.vue'
 
 //stores
 const authStore = useAuthStore()
 const circuitStore = useCircuitStore()
 
 const displayedCircuits = computed(() =>
-  circuitStore.filteredCircuits.length ? circuitStore.filteredCircuits : circuitStore.circuits
+  circuitStore.filteredCircuits.length ? circuitStore.filteredCircuits : circuitStore.allCircuits,
 )
+console.log('Circuits to display:', displayedCircuits.value)
 
 onBeforeMount(async () => {
   if (authStore.isAuthenticated && authStore.token) {
-    console.log('hello')
-
     await circuitStore.getCircuits(authStore.token)
   }
 })
 
 const handleCircuitClick = (circuit) => {
-  console.log('circuit cliquée :', circuit)
-  // on click send to circuit detail view
-  console.log('Current Circuit ID set to:', circuit.documentId)
   //navigate to circuit view
-  window.location.href = `/circuits/${circuit.documentId}`
+  window.location.href = `/circuits/${circuit.id}`
 }
 
 onMounted(() => {
@@ -116,7 +102,12 @@ onMounted(() => {
   z-index: -1;
 
   background: #141717;
-  background: linear-gradient(180deg, rgba(20, 23, 23, 1) 0%, rgba(110, 108, 170, 1) 50%, rgba(255, 225, 77, 1) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 23, 23, 1) 0%,
+    rgba(110, 108, 170, 1) 50%,
+    rgba(255, 225, 77, 1) 100%
+  );
 }
 
 .home__container {
