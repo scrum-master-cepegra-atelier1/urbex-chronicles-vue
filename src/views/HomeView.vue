@@ -51,12 +51,12 @@
 import { onBeforeMount, onMounted, computed } from 'vue'
 import { useAuthStore } from '@/stores/auth.js'
 import { useCircuitStore } from '@/stores/circuit.js'
+
 //components
 import CircuitCard from '@/components/layout/_CircuitCard/CircuitCard.vue'
 import SearchBar from '@/components/layout/_SearchBar/SearchBar.vue'
 import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
-import UserCard from '@/components/layout/_UserCard/UserCard.vue'
 
 //stores
 const authStore = useAuthStore()
