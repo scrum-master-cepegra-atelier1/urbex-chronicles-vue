@@ -1,5 +1,5 @@
 <template>
-  <div class="game-running-view">
+  <div class="game-running-view" v-if="currentGameStore.current_circuit">
     <OverlayMission
       :title="missionTitle"
       :progress="missionProgress"
@@ -19,17 +19,20 @@
       @answerChecked="handleAnswerChecked"
     />
     <MapCircuit :mission="currentMission || null" v-model:visible="mapVisible" />
-    <!-- Overlay composant à ajouter ici plus tard -->
+  </div>
+  <div v-else>
+    <p>Aucune mission en cours. Veuillez sélectionner un circuit et une mission pour commencer.</p>
   </div>
   <AppFooter />
 </template>
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeMount } from 'vue'
 import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 import MapCircuit from '@/components/layout/_MapCircuit/MapCircuit.vue'
 import QuestionCard from '@/components/layout/_QuestionCard/QuestionCard.vue'
 import OverlayMission from '@/components/ui/_OverlayMission/OverlayMission.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
+import { useAuthStore } from '@/stores/auth'
 
 // Tableau brut de questions QCM pour le test
 const testQuestions = [
@@ -57,6 +60,7 @@ const testQuestions = [
 
 const currentQuestionIndex = ref(0)
 
+const authStore = useAuthStore()
 const currentGameStore = useCurrentGameStore()
 onMounted(() => {
   currentGameStore.hydrate()
@@ -64,6 +68,19 @@ onMounted(() => {
 })
 
 const currentMission = computed(() => currentGameStore.current_mission)
+
+onBeforeMount(() => {
+    // Initialiser la progression en fonction de la mission actuelle
+    const missions = currentGameStore.current_circuit?.missions || []
+    const currentIndex = missions.findIndex(
+      (mission) => mission.id === currentGameStore.current_mission?.id,
+    )
+    //fetch questions
+    const length = missions.length
+    const questions = currentGameStore.getQuestion(currentGameStore.current_mission.id, authStore.token)
+    console.log('Fetched questions:', questions) 
+})
+
 const mapVisible = ref(true)
 
 const missionTitle = computed(
