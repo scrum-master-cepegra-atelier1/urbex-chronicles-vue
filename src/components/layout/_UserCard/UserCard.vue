@@ -96,7 +96,7 @@ import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
 
 //store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
-import { computed, ref } from 'vue'
+import { computed, ref, onBeforeMount } from 'vue'
 import { getImageUrl } from '@/utils/image'
 const authStore = useAuthStore()
 // Computed property pour obtenir l'utilisateur actuel
@@ -196,6 +196,14 @@ function formatAny(value) {
   }
   return String(value)
 }
+
+//get xp
+onBeforeMount(()=>{
+  const userLevelInfos= authStore.getLevel(currentUser.experience)
+  console.log(userLevelInfos)
+})
+
+
 </script>
 
 <style>
