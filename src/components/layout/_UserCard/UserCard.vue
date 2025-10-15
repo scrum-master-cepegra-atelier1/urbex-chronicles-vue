@@ -1,123 +1,125 @@
 <template>
-<section class="user-card" :class="{ 'user-card--expanded': isExpanded }">
-  <!-- Avatar toujours visible -->
-  <figure
-    class="user-card__avatar"
-    role="button"
-    tabindex="0"
-    :aria-expanded="isExpanded"
-    aria-controls="user-card-expandable"
-    @click="toggleExpand"
-    @keydown.enter="toggleExpand"
-    @keydown.space.prevent="toggleExpand"
-  >
-  <img :src="getImageUrl(currentUser?.avatar?.url)" alt="User avatar" class="user-card__avatar__img"/>
-    <div class="user-card__avatar__meta">
-      <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
-      <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 1 }}</p>
-    </div>
-  </figure>
-
-  <!-- Contenu étendu -->
-  <section
-    class="user-card__expandable"
-    :class="{ 'user-card__expandable--visible': isExpanded }"
-    id="user-card-expandable"
-    :aria-hidden="!isExpanded"
-  >
-    <div class="user-card__info">
-      <h2 class="user-card__info__name">{{ currentUser?.username || 'Utilisateur' }}</h2>
-      <p class="user-card__info__title">{{ currentUser?.title || 'Explorateur urbain' }}</p>
-    </div>
-
-    <div class="user-card__badges">
-      <div class="user-card__badges__title">🏅 Badges</div>
-      <div class="user-card__badges__list">
-        <img src="https://placehold.co/50x50?text=🏆" alt="Badge 1" />
-        <img src="https://placehold.co/50x50?text=⭐" alt="Badge 2" />
-        <img src="https://placehold.co/50x50?text=🎖️" alt="Badge 3" />
-      </div>
-    </div>
-
-    <div class="user-card__progress">
-      <p class="user-card__progress__title">📈 Progression</p>
-      <ProgressBar
-        :value="currentUser?.experience || 0"
-        :max="100"
-        :label="`${currentUser?.experience || 0} XP`"
-        :show-text="false"
+  <section class="user-card" :class="{ 'user-card--expanded': isExpanded }">
+    <!-- Avatar toujours visible -->
+    <figure
+      class="user-card__avatar"
+      role="button"
+      tabindex="0"
+      :aria-expanded="isExpanded"
+      aria-controls="user-card-expandable"
+      @click="toggleExpand"
+      @keydown.enter="toggleExpand"
+      @keydown.space.prevent="toggleExpand"
+    >
+      <img
+        :src="getImageUrl(currentUser?.avatar?.url)"
+        alt="User avatar"
+        class="user-card__avatar__img"
       />
-      <p class="user-card__progress__level">Prochain niveau: {{ currentUser?.level ? currentUser.level+1 : 1 }}</p>
-    </div>
+      <div class="user-card__avatar__meta">
+        <p class="user-card__avatar__name">{{ currentUser?.username || 'Utilisateur' }}</p>
+        <p class="user-card__avatar__level">Niveau {{ currentUser?.level || 1 }}</p>
+      </div>
+    </figure>
 
-    <div class="user-card__details">
-      <div class="user-card__details__item">
-        <span class="label">Email</span>
-        <span class="value">{{ currentUser?.email || '—' }}</span>
+    <!-- Contenu étendu -->
+    <section
+      class="user-card__expandable"
+      :class="{ 'user-card__expandable--visible': isExpanded }"
+      id="user-card-expandable"
+      :aria-hidden="!isExpanded"
+    >
+      <div class="user-card__info">
+        <h2 class="user-card__info__name">{{ currentUser?.username || 'Utilisateur' }}</h2>
+        <p class="user-card__info__title">{{ currentUser?.title || 'Explorateur urbain' }}</p>
       </div>
-      <div class="user-card__details__item" v-if="currentUser?.provider">
-        <span class="label">Provider</span>
-        <span class="value">{{ currentUser?.provider }}</span>
-      </div>
-      <div class="user-card__details__item" v-if="'confirmed' in (currentUser || {})">
-        <span class="label">Confirmé</span>
-        <span class="value">{{ currentUser?.confirmed ? 'Oui' : 'Non' }}</span>
-      </div>
-      <div class="user-card__details__item" v-if="'blocked' in (currentUser || {})">
-        <span class="label">Bloqué</span>
-        <span class="value">{{ currentUser?.blocked ? 'Oui' : 'Non' }}</span>
-      </div>
-      <div class="user-card__details__item" v-if="currentUser?.createdAt">
-        <span class="label">Inscrit</span>
-        <span class="value">{{ formatDate(currentUser?.createdAt) }}</span>
-      </div>
-      <div class="user-card__details__item" v-if="currentUser?.updatedAt">
-        <span class="label">MAJ</span>
-        <span class="value">{{ formatDate(currentUser?.updatedAt) }}</span>
-      </div>
-      <div class="user-card__details__item" v-if="Array.isArray(currentUser?.roles)">
-        <span class="label">Rôles</span>
-        <span class="value">{{ roleNames(currentUser?.roles) }}</span>
-      </div>
-    </div>
 
-    <div class="user-card__cogwheel" @click="handleSettings">
-      <SettingButton />
-    </div>
-
-    <div class="user-card__logout">
-      <LogoutButton />
-    </div>
-
-    <aside class="user-card__details-all" v-if="currentUser">
-      <div class="user-card__details-all__title">Toutes les informations</div>
-      <div class="user-card__details-all__grid">
-        <div
-          class="user-card__details__item"
-          v-for="(val, key) in currentUser"
-          :key="key"
-        >
-          <span class="label">{{ key }}</span>
-          <span class="value">{{ formatAny(val) }}</span>
+      <div class="user-card__badges">
+        <div class="user-card__badges__title">🏅 Badges</div>
+        <div class="user-card__badges__list">
+          <img src="https://placehold.co/50x50?text=🏆" alt="Badge 1" />
+          <img src="https://placehold.co/50x50?text=⭐" alt="Badge 2" />
+          <img src="https://placehold.co/50x50?text=🎖️" alt="Badge 3" />
         </div>
       </div>
-    </aside>
-  </section>
 
-  <!-- Barre de slide TOUJOURS en bas -->
-  <div
-    class="user-card-handle"
-    @pointerdown="startDrag"
-    role="button"
-    tabindex="0"
-    :aria-expanded="isExpanded"
-    aria-controls="user-card-expandable"
-    @click.prevent="onHandleClick"
-    @keydown.enter="toggleExpand"
-  >
-    <div class="user-card-handle__bar"></div>
-  </div>
-</section>
+      <div class="user-card__progress">
+        <p class="user-card__progress__title">📈 Progression</p>
+        <ProgressBar
+          :value="currentUser?.experience || 0"
+          :max="100"
+          :label="`${currentUser?.experience || 0} XP`"
+          :show-text="false"
+        />
+        <p class="user-card__progress__level">
+          Prochain niveau: {{ currentUser?.level ? currentUser.level + 1 : 1 }}
+        </p>
+      </div>
+
+      <div class="user-card__details">
+        <div class="user-card__details__item">
+          <span class="label">Email</span>
+          <span class="value">{{ currentUser?.email || '—' }}</span>
+        </div>
+        <div class="user-card__details__item" v-if="currentUser?.provider">
+          <span class="label">Provider</span>
+          <span class="value">{{ currentUser?.provider }}</span>
+        </div>
+        <div class="user-card__details__item" v-if="'confirmed' in (currentUser || {})">
+          <span class="label">Confirmé</span>
+          <span class="value">{{ currentUser?.confirmed ? 'Oui' : 'Non' }}</span>
+        </div>
+        <div class="user-card__details__item" v-if="'blocked' in (currentUser || {})">
+          <span class="label">Bloqué</span>
+          <span class="value">{{ currentUser?.blocked ? 'Oui' : 'Non' }}</span>
+        </div>
+        <div class="user-card__details__item" v-if="currentUser?.createdAt">
+          <span class="label">Inscrit</span>
+          <span class="value">{{ formatDate(currentUser?.createdAt) }}</span>
+        </div>
+        <div class="user-card__details__item" v-if="currentUser?.updatedAt">
+          <span class="label">MAJ</span>
+          <span class="value">{{ formatDate(currentUser?.updatedAt) }}</span>
+        </div>
+        <div class="user-card__details__item" v-if="Array.isArray(currentUser?.roles)">
+          <span class="label">Rôles</span>
+          <span class="value">{{ roleNames(currentUser?.roles) }}</span>
+        </div>
+      </div>
+
+      <div class="user-card__cogwheel" @click="handleSettings">
+        <SettingButton />
+      </div>
+
+      <div class="user-card__logout">
+        <LogoutButton />
+      </div>
+
+      <aside class="user-card__details-all" v-if="currentUser">
+        <div class="user-card__details-all__title">Toutes les informations</div>
+        <div class="user-card__details-all__grid">
+          <div class="user-card__details__item" v-for="(val, key) in currentUser" :key="key">
+            <span class="label">{{ key }}</span>
+            <span class="value">{{ formatAny(val) }}</span>
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- Barre de slide TOUJOURS en bas -->
+    <div
+      class="user-card-handle"
+      @pointerdown="startDrag"
+      role="button"
+      tabindex="0"
+      :aria-expanded="isExpanded"
+      aria-controls="user-card-expandable"
+      @click.prevent="onHandleClick"
+      @keydown.enter="toggleExpand"
+    >
+      <div class="user-card-handle__bar"></div>
+    </div>
+  </section>
 </template>
 
 <script setup>
@@ -133,7 +135,6 @@ import { getImageUrl } from '@/utils/image'
 const authStore = useAuthStore()
 // Computed property pour obtenir l'utilisateur actuel
 const currentUser = computed(() => authStore.user)
-  console.log(currentUser.value)
 
 // use shared `getImageUrl` from `src/utils/image.js`
 
@@ -143,12 +144,11 @@ defineOptions({ name: 'UserCard' })
 const props = defineProps({
   initiallyExpanded: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
 // removed inline handleLogout; using dedicated LogoutButton component
-
 
 // État du déploiement, initialisé depuis le prop
 const isExpanded = ref(props.initiallyExpanded)

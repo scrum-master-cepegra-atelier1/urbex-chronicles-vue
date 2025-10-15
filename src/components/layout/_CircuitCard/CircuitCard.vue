@@ -20,11 +20,13 @@
 <script setup>
 //import api
 import { computed } from 'vue'
-import { useAuthStore } from '@/stores/auth.js'
-import { useCurrentGameStore } from '@/stores/CurrentGame.js'
 
 //define props for display mode
 const props = defineProps({
+  circuit: {
+    type: Object,
+    default: () => ({ name: 'Default circuit', description: 'No description' }),
+  },
   displayMode: {
     type: String,
     default: 'squared',
@@ -32,28 +34,13 @@ const props = defineProps({
       return ['squared', 'long'].includes(value) //only allow these two values
     },
   },
-  circuit: {
-    type: Object,
-    default: () => ({ title: 'Default circuit' }),
-  },
-  status: {
-    type: String,
-    default: 'none',
-    validator(value) {
-      return ['none', 'current', 'finished'].includes(value)
-    },
-  },
 })
 
-// derive status from stores if not explicitly provided
-const authStore = useAuthStore()
-const currentGameStore = useCurrentGameStore()
+console.log('Circuit data:', props.circuit)
 
-const resolvedStatus = computed(() => {
-  if (props.status !== 'none') return props.status
-  const currentCircuitId = authStore?.user?.currentCircuit?.id || currentGameStore?.current_circuit?.id
-  if (currentCircuitId && props.circuit?.id && currentCircuitId === props.circuit.id) return 'current'
-  return 'none'
+//computed class for mode
+const cardClass = computed(() => {
+  return props.displayMode === 'squared' ? 'circuit-card--squared' : 'circuit-card--long'
 })
 </script>
 

@@ -1,11 +1,12 @@
-import { strapiApi } from './ApiService.js'
+import { authHeader } from '../utils/headers'
+import { apiService } from './ApiService.js'
 import router from '@/router'
 
 /**
- * Authentication Service for Strapi
+ * Authentication Service for Laravel
  *
  * @class AuthService
- * @description Handles user authentication operations with Strapi CMS
+ * @description Handles user authentication operations with Laravel API
  * @example
  * // Login user
  * const response = await AuthService.login('user@example.com', 'password')
@@ -18,7 +19,30 @@ import router from '@/router'
  */
 class AuthService {
   /**
-   * Authenticate user with Strapi
+   * Fetch current authenticated user from Laravel API
+   * @returns {Promise<object|null>} - User object or null if not authenticated
+   */
+  async fetchCurrentUser() {
+    const token = this.getToken()
+    if (!token) return null
+    try {
+      const response = await apiService.get('/api/auth/me', {
+        headers: {
+          ...authHeader(token).headers,
+        },
+      })
+      if (response) {
+        localStorage.setItem('user', JSON.stringify(response))
+        return response
+      }
+      return null
+    } catch (error) {
+      console.error('Fetch user error:', error)
+      return null
+    }
+  }
+  /**
+   * Authenticate user with Laravel
    * @param {string} identifier - Email or username
    * @param {string} password - User password
    * @returns {Promise<object>} - User data and JWT token
@@ -26,21 +50,23 @@ class AuthService {
    */
   async login(identifier, password) {
     try {
-      const response = await strapiApi.post('/auth/local', {
-        identifier,
+      // Adaptation Laravel: /api/auth/login, payload { email, password }
+      const response = await apiService.post('/api/auth/login', {
+        email: identifier, // on suppose que identifier = email
         password,
       })
 
-      // Store token in localStorage
-      if (response.jwt) {
-        localStorage.setItem('authToken', response.jwt)
-        const userData = await strapiApi.get('/users/me?populate=*', {
+      // Store token in localStorage (Laravel response: { token, user })
+      if (response.token) {
+        localStorage.setItem('authToken', response.token)
+        // Récupérer le profil complet via /api/auth/me
+        const userProfile = await apiService.get('/api/auth/me', {
           headers: {
-            Authorization: `Bearer ${response.jwt}`,
+            Authorization: `Bearer ${response.token}`,
           },
         })
-        localStorage.setItem('user', JSON.stringify(userData))
-        // Redirect to home after successful login
+        localStorage.setItem('user', JSON.stringify(userProfile))
+        // Redirection après login
         router.push({ name: 'Home' })
       }
 
@@ -52,7 +78,7 @@ class AuthService {
   }
 
   /**
-   * Register new user with Strapi
+   * Register new user with Laravel
    * @param {string} username - Username
    * @param {string} email - User email
    * @param {string} password - User password
@@ -61,7 +87,7 @@ class AuthService {
    */
   async register(username, email, password) {
     try {
-      const response = await strapiApi.post('/auth/local/register', {
+      const response = await apiService.post('/api/auth/register', {
         username,
         email,
         password,
@@ -70,8 +96,14 @@ class AuthService {
       // Store token in localStorage
       if (response.jwt) {
         localStorage.setItem('authToken', response.jwt)
-        localStorage.setItem('user', JSON.stringify(response.user))
-        // Redirect to home after successful registration
+        // Récupérer le profil complet via /api/auth/me
+        const userProfile = await apiService.get('/api/auth/me', {
+          headers: {
+            Authorization: `Bearer ${response.jwt}`,
+          },
+        })
+        localStorage.setItem('user', JSON.stringify(userProfile))
+        // Redirection après inscription
         router.push({ name: 'Home' })
       }
 
@@ -116,7 +148,7 @@ class AuthService {
     return localStorage.getItem('authToken')
   }
   /**
-   * Update user fields in Strapi
+   * Update user fields in Laravel
    * @param {string|number} userId - User ID
    * @param {object} payload - Fields to update
    * @param {string} token - JWT token
@@ -124,13 +156,32 @@ class AuthService {
    */
   async updateUser(userId, payload, token) {
     try {
-      const response = await strapiApi.put(`/users/${userId}`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+      let response
+      // Adaptation selon la clé du payload
+      if (payload.current_circuit_id) {
+        response = await apiService.patch(
+          '/api/user/current-circuit',
+          { current_circuit_id: payload.current_circuit_id },
+          {
+            ...authHeader(token),
+          },
+        )
+      }
+
+      if (payload.current_mission_id) {
+        response = await apiService.patch(
+          '/api/user/current-mission',
+          { current_mission_id: payload.current_mission_id },
+          {
+            ...authHeader(token),
+          },
+        )
+      }
+      // Après la mise à jour, récupérer le profil complet
+      const userProfile = await apiService.get('/api/auth/me', {
+        ...authHeader(token),
       })
-      // Optionnel : mettre à jour le localStorage
-      localStorage.setItem('user', JSON.stringify(response))
+      localStorage.setItem('user', JSON.stringify(userProfile))
       return response
     } catch (error) {
       console.error('Update user error:', error)
