@@ -1,5 +1,4 @@
 <template>
-  <div class="leaderboard-page">
     <!-- Header avec UserCard (si authentifié) -->
     <AppHeader/>
 
@@ -10,7 +9,7 @@
       <div class="content-wrapper">
         <!-- Titre principal -->
         <div class="header-section">
-          <h1 class="main-title">Classement des Explorateurs</h1>
+          <h1 class="main-title">Classement des explorateurs</h1>
           <p class="subtitle">Les meilleurs aventuriers de la communauté</p>
           
           <!-- Filtres -->
@@ -134,7 +133,6 @@
 
     <!-- Footer -->
     <AppFooter />
-  </div>
 </template>
 
 <script setup>
@@ -145,7 +143,7 @@ import AppHeader from '@/components/layout/_header/Header.vue'
 import AppFooter from '@/components/layout/_footer/Footer.vue'
 
 const leaderboardUsers = ref([])
-const currentFilter = ref('badges')
+const currentFilter = ref('xp')
 
 const filteredUsers = computed(() => {
   const users = [...leaderboardUsers.value]
