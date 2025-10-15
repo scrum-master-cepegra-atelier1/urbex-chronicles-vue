@@ -17,9 +17,14 @@
       <p>{{ user.current_circuit.description }}</p> 
     </section>
     <section class="profile-page__circuit" v-else>
-      <h1>No current circuit</h1>
+      <h1>Vous n'avez pas encore choisi de parcours à faire</h1>
+      <p> Inscrivez vous à l'un des circuits d'urbex</p>
+      <button @click="showCircuits">Voir les circuits</button>
+      <button @click="randomCircuit">Surprends-moi</button>
     </section>
-    <h2>User Info</h2>
+    <aside>
+      <h2>User Info</h2>
+    </aside>
   </main>
   <AppFooter />
 </template>
@@ -44,10 +49,25 @@ const user = computed(() => authStore.user)
 const mission = computed(() => authStore.user.current_mission)
 const currentCircuit = JSON.parse(localStorage.getItem('current_circuit'))
 
+// Methods
+function showCircuits() {
+  // Rediriger vers la page des circuits
+  window.location.href = '/'
+}
+function randomCircuit() {
+  // Sélectionner un circuit aléatoire et rediriger vers sa page
+  const circuits = circuitStore.circuits
+  if (circuits.length > 0) {
+    const randomIndex = Math.floor(Math.random() * circuits.length)
+    const randomCircuit = circuits[randomIndex]
+    window.location.href = `/circuits/${randomCircuit.documentId}`
+  } else {
+    alert('Aucun circuit disponible pour le moment.')
+  }
+}
+
+
 </script>
-
-<style lang="scss" scoped></style>
-
 
 <style lang='scss' scoped>
 
@@ -56,6 +76,11 @@ const currentCircuit = JSON.parse(localStorage.getItem('current_circuit'))
   padding: 1rem;
   margin-top: 5.5rem;
   margin-bottom: 5.5rem;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-flow: column wrap;
 
 }
 .profile-page__background {
