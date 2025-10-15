@@ -44,8 +44,8 @@
       <div class="user-card__progress">
         <p class="user-card__progress__title">📈 Progression</p>
         <ProgressBar
-          :value="currentUser?.experience || 0"
-          :max="100"
+          :value="xp || 0"
+          :max="xpNeed || 100"
           :label="`${currentUser?.experience || 0} XP`"
           :show-text="false"
         />
@@ -96,7 +96,7 @@ import LogoutButton from '@/components/ui/_Button/LogoutButton.vue'
 
 //store & vue imports
 import { useAuthStore } from '@/stores/auth.js'
-import { computed, ref } from 'vue'
+import { computed, ref, onBeforeMount } from 'vue'
 import { getImageUrl } from '@/utils/image'
 const authStore = useAuthStore()
 // Computed property pour obtenir l'utilisateur actuel
@@ -196,6 +196,23 @@ function formatAny(value) {
   }
   return String(value)
 }
+
+//get xp
+const xpNeed= ref(0)
+const xp= ref(0)
+onBeforeMount(() => {
+  const userLevelInfos= authStore.getLevel(currentUser.value.experience)
+  console.log('userLevelInfos', userLevelInfos)
+  currentUser.value.level= userLevelInfos.level
+  currentUser.value.experience= userLevelInfos.xpInLevel
+  xp.value= userLevelInfos.xpInLevel
+  xpNeed.value= userLevelInfos.xpToNext
+  console.log('currentUser', userLevelInfos)
+})
+console.log('currentUser not mount', currentUser.value)
+
+
+
 </script>
 
 <style>
