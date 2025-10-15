@@ -3,14 +3,9 @@
 </script>
 
 <template>
-  <div id="app">
-    <!-- Contenu principal -->
     <main class="main-content">
       <router-view />
     </main>
-
-
-  </div>
 </template>
 
 <style lang="scss">
