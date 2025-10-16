@@ -1,11 +1,12 @@
 <template>
   <div class="register">
+    <div class="register__background"></div>
     <div class="register__container">
       <h1 class="register__title">Inscription</h1>
 
       <form @submit.prevent="handleRegister" class="register__form">
         <div class="register__form__group">
-          <label for="username" class="register__form__label"> Nom d'utilisateur </label>
+          <label for="username" class="register__form__label">Nom d'utilisateur</label>
           <input
             id="username"
             v-model="form.username"
@@ -16,7 +17,7 @@
         </div>
 
         <div class="register__form__group">
-          <label for="email" class="register__form__label"> Email </label>
+          <label for="email" class="register__form__label">Email</label>
           <input
             id="email"
             v-model="form.email"
@@ -27,7 +28,7 @@
         </div>
 
         <div class="register__form__group">
-          <label for="password" class="register__form__label"> Mot de passe </label>
+          <label for="password" class="register__form__label">Mot de passe</label>
           <input
             id="password"
             v-model="form.password"
@@ -38,9 +39,7 @@
         </div>
 
         <div class="register__form__group">
-          <label for="confirmPassword" class="register__form__label">
-            Confirmer le mot de passe
-          </label>
+          <label for="confirmPassword" class="register__form__label">Confirmer le mot de passe</label>
           <input
             id="confirmPassword"
             v-model="form.confirmPassword"
@@ -118,100 +117,149 @@ const handleRegister = async () => {
 </script>
 
 <style lang="scss" scoped>
+// Variables pour cohérence avec l'app
+$primary-color: #3b3d77; // Bleu foncé principal
+$secondary-color: #7c3aed; // Violet secondaire
+$accent-color: #6366f1; // Bleu clair pour accents
+$text-color: #e2e8f0; // Texte clair
+$bg-overlay: rgba(255, 255, 255, 0.1); // Fond semi-transparent
+$border-radius: 1rem; // Arrondi moderne
+$shadow: 0 4px 24px rgba(60, 60, 100, 0.15); // Ombre douce
+
 .register {
+  position: relative;
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 1rem;
-  background-color: #f5f5f5;
+  overflow: hidden; // Cache tout débordement
+}
+
+.register__background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, $primary-color 0%, $secondary-color 50%, #1a1a2e 100%);
+  background-size: 400% 400%;
+  animation: gradientShift 8s ease infinite;
+  z-index: -1; // Derrière le contenu
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 .register__container {
-  background: white;
-  padding: 2rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: $bg-overlay;
+  backdrop-filter: blur(10px); // Effet de flou pour modernité
+  padding: 2.5rem;
+  border-radius: $border-radius;
+  box-shadow: $shadow;
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .register__title {
   text-align: center;
   margin-bottom: 2rem;
-  color: #333;
-  font-size: 2rem;
+  color: $text-color;
+  font-size: 2.5rem;
   font-weight: bold;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .register__form__group {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .register__form__label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
-  color: #555;
+  color: $text-color;
+  font-size: 1rem;
 }
 
 .register__form__input {
   width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.75rem;
   font-size: 1rem;
+  background: rgba(255, 255, 255, 0.1);
+  color: $text-color;
   box-sizing: border-box;
+  transition: all 0.3s ease;
+
+  &::placeholder {
+    color: rgba(226, 232, 240, 0.7);
+  }
 
   &:focus {
     outline: none;
-    border-color: #28a745;
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.25);
+    border-color: $accent-color;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    background: rgba(255, 255, 255, 0.15);
   }
 }
 
 .register__form__button {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #28a745;
+  padding: 1rem;
+  background: linear-gradient(90deg, $secondary-color, $accent-color);
   color: white;
   border: none;
-  border-radius: 4px;
-  font-size: 1rem;
+  border-radius: 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
 
   &:hover:not(:disabled) {
-    background-color: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(124, 58, 237, 0.4);
   }
 
   &:disabled {
-    background-color: #ccc;
+    background: rgba(255, 255, 255, 0.2);
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
   }
 }
 
 .register__error {
   margin-top: 1rem;
-  padding: 0.75rem;
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-  border-radius: 4px;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 0.75rem;
   text-align: center;
+  font-weight: 500;
 }
 
 .register__login-link {
   text-align: center;
-  margin-top: 1.5rem;
-  color: #666;
+  margin-top: 2rem;
+  color: rgba(226, 232, 240, 0.8);
+  font-size: 0.95rem;
 
   a {
-    color: #007bff;
+    color: $accent-color;
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    transition: color 0.3s ease;
 
     &:hover {
+      color: $secondary-color;
       text-decoration: underline;
     }
   }
