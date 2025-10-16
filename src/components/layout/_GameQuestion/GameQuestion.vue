@@ -98,19 +98,36 @@ function submitAnswer() {
 
   // Check answer based on question type and API structure
   let correct = false
+  let expectedAnswer = null
 
-  if (props.question.type === 'qcm' && props.question.answer?.correct) {
-    correct = selectedAnswer.value === props.question.answer.correct
-  } else if (props.question.type === 'enigme' && props.question.answer?.correct) {
-    // Case insensitive comparison for enigma
-    correct =
-      selectedAnswer.value.toLowerCase().trim() ===
-      props.question.answer.correct.toLowerCase().trim()
+  // Déterminer la réponse attendue selon la structure de l'objet answer
+  if (props.question.answer?.correct) {
+    expectedAnswer = props.question.answer.correct
+  } else if (props.question.answer?.solution) {
+    expectedAnswer = props.question.answer.solution
   } else if (typeof props.question.answer === 'string') {
-    // Fallback for simple string answers
-    correct =
-      selectedAnswer.value.toLowerCase().trim() === props.question.answer.toLowerCase().trim()
+    expectedAnswer = props.question.answer
   }
+
+  // Debug temporaire (à supprimer plus tard)
+  console.log('🔍 Answer check:', {
+    questionType: props.question.type,
+    answerStructure: props.question.answer,
+    expectedAnswer,
+    userAnswer: selectedAnswer.value,
+  })
+
+  if (expectedAnswer !== null) {
+    if (props.question.type === 'qcm') {
+      // Pour les QCM, comparaison exacte
+      correct = selectedAnswer.value === expectedAnswer
+    } else {
+      // Pour les énigmes et autres types, comparaison insensible à la casse
+      correct = selectedAnswer.value.toLowerCase().trim() === expectedAnswer.toLowerCase().trim()
+    }
+  }
+
+  console.log('✅ Result:', correct ? 'CORRECT' : 'INCORRECT')
 
   isCorrect.value = correct
 
